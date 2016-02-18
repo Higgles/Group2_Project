@@ -6,7 +6,7 @@
    <persistence-unit name="coolbeanzzz1" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
       <jta-data-source>java:/mySQL/coolbeanzzz</jta-data-source>     
-      <class>com.conygre.training.entities.CompactDisc</class>
+      <class>com.coolbeanzzz.development.entities.BaseData</class>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
       </properties>
