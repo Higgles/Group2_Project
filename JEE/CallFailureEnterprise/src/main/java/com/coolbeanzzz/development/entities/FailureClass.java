@@ -10,48 +10,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="event cause")
+@Entity @Table(name="failure class")
 
 @XmlRootElement
-public class EventCause implements Serializable{
-	
+public class FailureClass implements Serializable{
+
 //	@Id
 //	@GeneratedValue(strategy=GenerationType.IDENTITY)
 //	@Column(name="id")
 //	private int id;
-
+	
 	private static final long serialVersionUID = 1L;
-	@Column(name="CauseCode") private int causeCode;
-	@Column(name="Event Id") private int eventId;
+	
+	@Column(name="FailureClass") private int failureClass;
 	@Column(name="Description") private String description;
 	
-	//Adding relationships
-	@OneToMany(mappedBy="eventcause", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="failureclass", cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
-	//@XmlTransient
-	
-	public EventCause(int causeCode, int eventId, String description){
-		this.causeCode = causeCode;
-		this.eventId = eventId;
-		this.description = description;
-		
+
+	public int getFailureClass() {
+		return failureClass;
 	}
 
-	public int getCauseCode() {
-		return causeCode;
-	}
-
-	public void setCauseCode(int causeCode) {
-		this.causeCode = causeCode;
-	}
-
-	public int getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(int eventId) {
-		this.eventId = eventId;
+	public void setFailureClass(int failureClass) {
+		this.failureClass = failureClass;
 	}
 
 	public String getDescription() {
@@ -61,7 +44,7 @@ public class EventCause implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-		
+
 	@JsonIgnore
 	public Set<BaseData> getBaseData() {
 		return baseData;
@@ -75,23 +58,21 @@ public class EventCause implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + causeCode;
-		result = prime * result + eventId;
+		result = prime * result + failureClass;
+		result = prime * result + description.hashCode();
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if(this == obj)
 			return true;
-		if (obj == null)
+		if(obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if(getClass() != obj.getClass())
 			return false;
-		EventCause other = (EventCause) obj;
-		if (causeCode != other.getCauseCode())
-			return false;
-		if(description.equals(other.getDescription()))
+		FailureClass other = (FailureClass) obj;
+		if(failureClass != other.getFailureClass())
 			return false;
 		return true;
 	}
