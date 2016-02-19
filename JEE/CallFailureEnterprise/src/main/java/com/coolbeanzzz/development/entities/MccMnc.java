@@ -9,27 +9,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-@Entity @Table(name="mcc-mnc")
+@Entity @Table(name="MCC-MNC")
 
 @XmlRootElement
+@IdClass(MccMncPk.class)
 public class MccMnc implements Serializable{
 
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
-//	private int id;
-
 	private static final long serialVersionUID = 1L;
-	@Column(name="MCC") private int mcc;
-	@Column(name="MNC") private int mnc;
+	@Id @Column(name="MCC") private int mcc;
+	@Id @Column(name="MNC") private int mnc;
 	@Column(name="Country") private String country;
 	@Column(name="Operator") private String operator;
 	
 	//Adding relationships
-	@OneToMany(mappedBy="eventcause", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="mmcmnc", cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 	//@XmlTransient
+	
+	public MccMnc(){}
+	
+	public MccMnc(int mcc, int mnc, String country, String operator){
+		this.mcc = mcc;
+		this.mnc = mnc;
+		this.country = country;
+		this.operator = operator;
+	}
 	
 	public int getMcc() {
 		return mcc;

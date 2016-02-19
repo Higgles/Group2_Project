@@ -10,19 +10,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="event cause")
+@Entity @Table(name="Event Cause")
 
 @XmlRootElement
+@IdClass(EventCausePk.class)
 public class EventCause implements Serializable{
-	
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
-//	private int id;
 
 	private static final long serialVersionUID = 1L;
-	@Column(name="CauseCode") private int causeCode;
-	@Column(name="Event Id") private int eventId;
+	@Id @Column(name="Cause Code") private int causeCode;
+	@Id @Column(name="Event Id") private int eventId;
 	@Column(name="Description") private String description;
 	
 	//Adding relationships
@@ -30,6 +26,8 @@ public class EventCause implements Serializable{
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 	//@XmlTransient
+	
+	public EventCause(){}
 	
 	public EventCause(int causeCode, int eventId, String description){
 		this.causeCode = causeCode;

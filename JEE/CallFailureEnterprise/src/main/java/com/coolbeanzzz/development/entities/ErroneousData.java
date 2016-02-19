@@ -5,10 +5,10 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity @Table(name="Base Data")
+@Entity @Table(name="erroneous data")
 
 @XmlRootElement
-public class BaseData implements Serializable{
+public class ErroneousData implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -18,61 +18,42 @@ public class BaseData implements Serializable{
 	private int id;
 
 	@Column(name="Date/Time") private String dateTime;
-	//@Column(name="Event Id") private int eventId;
-	//@Column(name="Failure Class") private int failureClass;
-	//@Column(name="UE Type") private int ueType;
-	//@Column(name="Market") private int market;
-	//@Column(name="Operator") private int operator;
+	@Column(name="Event Id") private int eventId;
+	@Column(name="Failure Class") private int failureClass;
+	@Column(name="UE Type") private int ueType;
+	@Column(name="Market") private int market;
+	@Column(name="Operator") private int operator;
 	@Column(name="Cell Id") private String cellId;
 	@Column(name="Duration") private String duration;
-	//@Column(name="Cause Code") private int causeCode;
+	@Column(name="Cause Code") private int causeCode;
 	@Column(name="NE Version") private String neVersion;
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
 	@Column(name="HIER32_ID") private String hier32_Id;
 	@Column(name="HIER321_ID") private String her321_Id;
 	
-	@ManyToOne
-	@JoinColumns({ 
-		@JoinColumn(name="Event Id", referencedColumnName = "Event Id") ,
-		@JoinColumn(name="Cause Code", referencedColumnName = "Cause Code")
-	})
-	private EventCause eventCause;
-	
-	@ManyToOne
-	@JoinColumns({ 
-		@JoinColumn(name="Market", referencedColumnName = "MCC") ,
-		@JoinColumn(name="Operator", referencedColumnName = "MNC")
-	})
-	private MccMnc mccmnc;
-	
-	@ManyToOne
-	@JoinColumn(name="UE Type", referencedColumnName = "TAC")
-	private UETable ueTable;
-	
-	@ManyToOne
-	@JoinColumn(name="Failure Class", referencedColumnName = " Failure Class")
-	private FailureClass failureClass;
-	
-	public BaseData() {}
-	
-	public BaseData(int id, String dateTime, String cellId, String duration,
-			String neVersion, String imsi, String hier3_Id, String hier32_Id,
-			String her321_Id, EventCause eventCause, MccMnc mccmnc,
-			UETable ueTable, FailureClass failureClass) {
+	public ErroneousData() {}
+
+	public ErroneousData(int id, String dateTime, int eventId,
+			int failureClass, int ueType, int market, int operator,
+			String cellId, String duration, int causeCode, String neVersion,
+			String imsi, String hier3_Id, String hier32_Id, String her321_Id) {
+		super();
 		this.id = id;
 		this.dateTime = dateTime;
+		this.eventId = eventId;
+		this.failureClass = failureClass;
+		this.ueType = ueType;
+		this.market = market;
+		this.operator = operator;
 		this.cellId = cellId;
 		this.duration = duration;
+		this.causeCode = causeCode;
 		this.neVersion = neVersion;
 		this.imsi = imsi;
 		this.hier3_Id = hier3_Id;
 		this.hier32_Id = hier32_Id;
 		this.her321_Id = her321_Id;
-		this.eventCause = eventCause;
-		this.mccmnc = mccmnc;
-		this.ueTable = ueTable;
-		this.failureClass = failureClass;
 	}
 
 	public int getId() {
@@ -147,35 +128,51 @@ public class BaseData implements Serializable{
 		this.her321_Id = her321_Id;
 	}
 
-	public EventCause getEventCause() {
-		return eventCause;
+	public int getEventId() {
+		return eventId;
 	}
 
-	public void setEventCause(EventCause eventCause) {
-		this.eventCause = eventCause;
+	public void setEventId(int eventId) {
+		this.eventId = eventId;
 	}
 
-	public MccMnc getMccmnc() {
-		return mccmnc;
-	}
-
-	public void setMccmnc(MccMnc mccmnc) {
-		this.mccmnc = mccmnc;
-	}
-
-	public UETable getUeTable() {
-		return ueTable;
-	}
-
-	public void setUeTable(UETable ueTable) {
-		this.ueTable = ueTable;
-	}
-
-	public FailureClass getFailureClass() {
+	public int getFailureClass() {
 		return failureClass;
 	}
 
-	public void setFailureClass(FailureClass failureClass) {
+	public void setFailureClass(int failureClass) {
 		this.failureClass = failureClass;
+	}
+
+	public int getUeType() {
+		return ueType;
+	}
+
+	public void setUeType(int ueType) {
+		this.ueType = ueType;
+	}
+
+	public int getMarket() {
+		return market;
+	}
+
+	public void setMarket(int market) {
+		this.market = market;
+	}
+
+	public int getOperator() {
+		return operator;
+	}
+
+	public void setOperator(int operator) {
+		this.operator = operator;
+	}
+
+	public int getCauseCode() {
+		return causeCode;
+	}
+
+	public void setCauseCode(int causeCode) {
+		this.causeCode = causeCode;
 	}
 }

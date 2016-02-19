@@ -10,25 +10,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="failure class")
+@Entity @Table(name="Failure Class")
 
 @XmlRootElement
 public class FailureClass implements Serializable{
-
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
-//	private int id;
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name="FailureClass") private int failureClass;
+	@Id @Column(name="Class") private int failureClass;
 	@Column(name="Description") private String description;
 	
-	@OneToMany(mappedBy="failureclass", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="failureClass", cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 
+	public FailureClass(){
+		
+	}
+	
+	public FailureClass(int failureClass, String description){
+		this.failureClass = failureClass;
+		this.description = description;
+	}
+	
 	public int getFailureClass() {
 		return failureClass;
 	}
