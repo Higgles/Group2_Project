@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity @Table(name="Base Data")
+@Entity @Table(name="`Base Data`")
 
 @XmlRootElement
 public class BaseData implements Serializable{
@@ -23,10 +23,10 @@ public class BaseData implements Serializable{
 	//@Column(name="UE Type") private int ueType;
 	//@Column(name="Market") private int market;
 	//@Column(name="Operator") private int operator;
-	@Column(name="Cell Id") private String cellId;
+	@Column(name="`Cell Id`") private String cellId;
 	@Column(name="Duration") private String duration;
 	//@Column(name="Cause Code") private int causeCode;
-	@Column(name="NE Version") private String neVersion;
+	@Column(name="`NE Version`") private String neVersion;
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
 	@Column(name="HIER32_ID") private String hier32_Id;
@@ -34,8 +34,8 @@ public class BaseData implements Serializable{
 	
 	@ManyToOne
 	@JoinColumns({ 
-		@JoinColumn(name="Event Id", referencedColumnName = "Event Id") ,
-		@JoinColumn(name="Cause Code", referencedColumnName = "Cause Code")
+		@JoinColumn(name="`Event Id`", referencedColumnName = "`Event Id`") ,
+		@JoinColumn(name="`Cause Code`", referencedColumnName = "`Cause Code`")
 	})
 	private EventCause eventCause;
 	
@@ -47,11 +47,11 @@ public class BaseData implements Serializable{
 	private MccMnc mccmnc;
 	
 	@ManyToOne
-	@JoinColumn(name="UE Type", referencedColumnName = "TAC")
+	@JoinColumn(name="`UE Type`", referencedColumnName = "TAC")
 	private UETable ueTable;
 	
 	@ManyToOne
-	@JoinColumn(name="Failure Class", referencedColumnName = " Failure Class")
+	@JoinColumn(name="`Failure Class`", referencedColumnName = "`Failure Class`")
 	private FailureClass failureClass;
 	
 	public BaseData() {}

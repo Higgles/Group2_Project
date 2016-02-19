@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity @Table(name="erroneous data")
+@Entity @Table(name="`Erroneous Data`")
 
 @XmlRootElement
 public class ErroneousData implements Serializable{
@@ -14,19 +14,19 @@ public class ErroneousData implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Id")
+	@Column(name="id")
 	private int id;
 
 	@Column(name="Date/Time") private String dateTime;
-	@Column(name="Event Id") private int eventId;
-	@Column(name="Failure Class") private int failureClass;
-	@Column(name="UE Type") private int ueType;
+	@Column(name="`Event Id`") private int eventId;
+	@Column(name="`Failure Class`") private int failureClass;
+	@Column(name="`UE Type`") private int ueType;
 	@Column(name="Market") private int market;
 	@Column(name="Operator") private int operator;
-	@Column(name="Cell Id") private String cellId;
+	@Column(name="`Cell Id`") private String cellId;
 	@Column(name="Duration") private String duration;
-	@Column(name="Cause Code") private int causeCode;
-	@Column(name="NE Version") private String neVersion;
+	@Column(name="`Cause Code`") private int causeCode;
+	@Column(name="`NE Version`") private String neVersion;
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
 	@Column(name="HIER32_ID") private String hier32_Id;

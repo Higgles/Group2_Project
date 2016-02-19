@@ -10,21 +10,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="UE Table")
+@Entity @Table(name="`UE Table`")
 
 @XmlRootElement
 public class UETable implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="TAC") private int tac;
-	@Column(name="Marketing Name") private String marketingName;
+	@Column(name="`Marketing Name`") private String marketingName;
 	@Column(name="Manufacturer") private String manufacturer;
-	@Column(name="Access Capability") private String accessCapability;
+	@Column(name="`Access Capability`") private String accessCapability;
 	@Column(name="Model") private String model;
-	@Column(name="Vendor Name") private String vendorName;
-	@Column(name="UE Type") private String ueType;
+	@Column(name="`Vendor Name`") private String vendorName;
+	@Column(name="`UE Type`") private String ueType;
 	@Column(name="OS") private String os;
-	@Column(name="Input Mode") private String inputMode;
+	@Column(name="`Input Mode`") private String inputMode;
 	
 	//Adding relationships
 	@OneToMany(mappedBy="ueTable", cascade={CascadeType.ALL})

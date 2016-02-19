@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.dao.jpa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,8 +36,9 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 	
 	
 	public Collection<FailureClass> getAllFailureClasses() {
-		Query query = em.createQuery("from `Failure Class`");
-		List<FailureClass> failureClasses = query.getResultList(); 
+		Query query = em.createQuery("from FailureClass");
+		List<FailureClass> failureClasses = query.getResultList();
+		
 		return failureClasses;
 	}
 }

@@ -12,7 +12,7 @@ public class FailureClassList implements Serializable {
         return failureClassCollection;
     }
 
-    public void setFailureClassCollection(Collection<FailureClass> FailureClassCollection) {
+    public void setFailureClassCollection(Collection<FailureClass> failureClassCollection) {
         this.failureClassCollection = failureClassCollection;
     }
 

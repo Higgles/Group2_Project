@@ -1,6 +1,8 @@
 package com.coolbeanzzz.development.entities;
 
-public class MccMncPk {
+import java.io.Serializable;
+
+public class MccMncPk implements Serializable{
 	private static final long serialVersionUID = 1L;
 	protected int mcc;
 	protected int mnc;

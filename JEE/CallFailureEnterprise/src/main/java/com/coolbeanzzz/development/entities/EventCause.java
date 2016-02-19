@@ -10,19 +10,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="Event Cause")
+@Entity @Table(name="`Event Cause`")
 
 @XmlRootElement
 @IdClass(EventCausePk.class)
 public class EventCause implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	@Id @Column(name="Cause Code") private int causeCode;
-	@Id @Column(name="Event Id") private int eventId;
+	@Id @Column(name="`Cause Code`") private int causeCode;
+	@Id @Column(name="`Event Id`") private int eventId;
 	@Column(name="Description") private String description;
 	
 	//Adding relationships
-	@OneToMany(mappedBy="eventcause", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="eventCause", cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 	//@XmlTransient
