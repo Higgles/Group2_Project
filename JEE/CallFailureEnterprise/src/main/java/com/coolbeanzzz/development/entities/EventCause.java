@@ -89,9 +89,9 @@ public class EventCause implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		EventCause other = (EventCause) obj;
-		if (causeCode != other.getCauseCode())
+		if (causeCode != other.causeCode)
 			return false;
-		if(description.equals(other.getDescription()))
+		if(eventId != other.eventId)
 			return false;
 		return true;
 	}

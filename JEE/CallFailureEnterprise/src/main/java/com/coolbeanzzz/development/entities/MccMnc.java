@@ -102,9 +102,9 @@ public class MccMnc implements Serializable{
 				return false;
 		} else if (!operator.equals(other.operator))
 			return false;
-		if (mcc != other.getMcc())
+		if (mcc != other.mcc)
 			return false;
-		if(mnc != other.getMnc())
+		if(mnc != other.mnc)
 			return false;
 		return true;
 	}
