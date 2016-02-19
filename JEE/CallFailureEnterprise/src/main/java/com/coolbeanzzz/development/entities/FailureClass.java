@@ -10,14 +10,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
-@Entity @Table(name="Failure Class")
+@Entity @Table(name="`Failure Class`")
 
 @XmlRootElement
 public class FailureClass implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id @Column(name="Class") private int failureClass;
+	@Id @Column(name="`Failure Class`") private int failureClass;
 	@Column(name="Description") private String description;
 	
 	@OneToMany(mappedBy="failureClass", cascade={CascadeType.ALL})
