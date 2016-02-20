@@ -37,6 +37,19 @@
 		<artifactId>junit</artifactId>
 		<version>4.12</version>
 	</dependency>
+	<!-- RESTeasy JAX-RS -->
+	<dependency>
+		<groupId>org.jboss.resteasy</groupId>
+		<artifactId>resteasy-jaxrs</artifactId>
+		<version>3.0.15.Final</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.jboss.resteasy</groupId>
+		<artifactId>resteasy-multipart-provider</artifactId>
+		<version>3.0.15.Final</version>
+		<scope>provided</scope>
+	</dependency>
 	
   </dependencies>
   <build>
