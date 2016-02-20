@@ -43,15 +43,18 @@ public class FileUploadService {
 			try {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				String fileName = getFileName(header);
-				
-				InputStream inputStream = inputPart.getBody(InputStream.class, null);
-
-				byte[] bytes = IOUtils.toByteArray(inputStream);
-				
-//				fileName = "./" + fileName;
-				writeFile(bytes, fileName);
-				
-				return Response.status(200).entity("Dataset uploaded: " + fileName).build();
+				if(fileName.contains(".xls")){
+					InputStream inputStream = inputPart.getBody(InputStream.class, null);
+	
+					byte[] bytes = IOUtils.toByteArray(inputStream);
+					
+					writeFile(bytes, fileName);
+					
+					return Response.status(200).entity("Dataset uploaded: " + fileName).build();
+				}
+				else{
+					return Response.status(200).entity("Please return to the upload page and provide an xls file").build();
+				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
