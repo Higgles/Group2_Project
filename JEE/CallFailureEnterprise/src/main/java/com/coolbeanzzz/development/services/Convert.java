@@ -34,15 +34,20 @@ public class Convert {
 	 */
 	public void read() throws IOException  {
 		File inputWorkbook = new File(inputFile);
-		FileWriter jsonConvert = new FileWriter("convertedFile.json");
+		FileWriter jsonConvert = new FileWriter("/home/user1/Group2_Project/JEE/CallFailureEnterprise/convertedFile.json");
 		Workbook workbook;
 		ArrayList<String> labels = new ArrayList<String>();
+		
+		Sheet sheet;
+		Cell cell;
+		CellType type;
+		String cellType;
 		
 		try {
 			workbook = Workbook.getWorkbook(inputWorkbook);
 			for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
-				jsonConvert = new FileWriter("convertedFile" + sheetNumber + ".json");
-				Sheet sheet = workbook.getSheet(sheetNumber);
+				jsonConvert = new FileWriter("/home/user1/Group2_Project/JEE/CallFailureEnterprise/convertedFile" + sheetNumber + ".json");
+				sheet = workbook.getSheet(sheetNumber);
 				jsonConvert.append("[");
 				for (int row = 0; row < sheet.getRows(); row++){
 					if(row != 0){
@@ -50,13 +55,13 @@ public class Convert {
 					}
 					for (int column = 0; column < sheet.getColumns(); column++) {
 						if(row == 0){
-							Cell cell = sheet.getCell(column, row);
+							cell = sheet.getCell(column, row);
 							labels.add(cell.getContents());
 						}
 						else{
-							Cell cell = sheet.getCell(column, row);
-							CellType type = cell.getType();
-							String cellType = type.toString();
+							cell = sheet.getCell(column, row);
+							type = cell.getType();
+							cellType = type.toString();
 							
 							jsonConvert.append("\"" + labels.get(column) + "\":");
 							

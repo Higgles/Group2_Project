@@ -17,6 +17,8 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import com.coolbeanzzz.development.services.Convert;
+
 @Path("/file")
 public class FileUploadService {
 	
@@ -46,7 +48,7 @@ public class FileUploadService {
 
 				byte[] bytes = IOUtils.toByteArray(inputStream);
 				
-				fileName = "/home/user1/Group2_Project/" + fileName;
+//				fileName = "./" + fileName;
 				writeFile(bytes, fileName);
 				
 				return Response.status(200).entity("Dataset uploaded: " + fileName).build();
@@ -82,6 +84,7 @@ public class FileUploadService {
 
 	/**
 	 * Write file being uploaded to the server directory
+	 * Conversion of the xls file sheets to json files is then run
 	 * 
 	 * @param content the content of the file to be uploaded and written
 	 * @param filename name of the uploaded file
@@ -97,5 +100,9 @@ public class FileUploadService {
 		fileOutput.write(content);
 		fileOutput.flush();
 		fileOutput.close();
+		
+		Convert convert = new Convert();
+		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
+		convert.read();
 	}
 }
