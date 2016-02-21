@@ -14,23 +14,23 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.coolbeanzzz.development.entities.MccMncList;
-import com.coolbeanzzz.development.services.MccMncService;
+import com.coolbeanzzz.development.entities.UETableList;
+import com.coolbeanzzz.development.services.UETableService;
 
-@Path("/mccmncs")
-public class MccMncCRUDService {
+@Path("/uetables")
+public class UETableCRUDService {
 	
 
 	@Inject
-	private MccMncService service;
+	private UETableService service;
 	
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public MccMncList getMccMncs() {
-    	MccMncList mccMncs = new MccMncList();
-    	mccMncs.setMccMncCollection(service.getCatalog());
-        return mccMncs;
+    public UETableList getUETableClasses() {
+    	UETableList ueTables = new UETableList();
+    	ueTables.setUETableCollection(service.getCatalog());
+        return ueTables;
     }
 
 }
