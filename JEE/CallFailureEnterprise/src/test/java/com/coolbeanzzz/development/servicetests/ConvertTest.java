@@ -18,7 +18,7 @@ public class ConvertTest {
 	public void testConversion() throws IOException {
 		convert.setInputFile("./testData.xls");
 		convert.convert();
-		assertEquals(FileUtils.readLines(new File("./testCheck.json")), FileUtils.readLines(new File("./convertedFile4.json")));
+		assertEquals(FileUtils.readLines(new File("./testCheck.json")), FileUtils.readLines(new File("./MCC - MNC Table.json")));
 	}
 
 }
