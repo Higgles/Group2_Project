@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +55,8 @@ public class FileUploadService {
 					return Response.status(200).entity("Dataset uploaded: " + fileName).build();
 				}
 				else{
-					return Response.status(200).entity("Please return to the upload page and provide an xls file").build();
+					return null;
+//					return Response.status(200).entity("Please return to the upload page and provide an xls file").build();
 				}
 				
 			} catch (Exception e) {
@@ -106,6 +109,6 @@ public class FileUploadService {
 		
 		Convert convert = new Convert();
 		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
-		convert.read();
+		convert.convert();
 	}
 }

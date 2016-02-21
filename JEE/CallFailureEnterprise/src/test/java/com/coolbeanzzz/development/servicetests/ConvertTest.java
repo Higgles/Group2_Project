@@ -17,7 +17,7 @@ public class ConvertTest {
 	@Test
 	public void testConversion() throws IOException {
 		convert.setInputFile("./testData.xls");
-		convert.read();
+		convert.convert();
 		assertEquals(FileUtils.readLines(new File("./testCheck.json")), FileUtils.readLines(new File("./convertedFile4.json")));
 	}
 

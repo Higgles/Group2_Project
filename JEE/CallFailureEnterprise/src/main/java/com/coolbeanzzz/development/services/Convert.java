@@ -13,12 +13,6 @@ import jxl.read.biff.BiffException;
 
 public class Convert {
 
-	public static void main(String[] args) throws IOException {
-		Convert convert = new Convert();
-		convert.setInputFile("./base_data.xls");
-		convert.read();
-	}
-
 	private String inputFile;
 
 	/**
@@ -32,7 +26,7 @@ public class Convert {
 	/**
 	 * Creates a json file from each sheet in a provided xls file
 	 */
-	public void read() throws IOException  {
+	public void convert() throws IOException  {
 		File inputWorkbook = new File(inputFile);
 		FileWriter jsonConvert = new FileWriter("/home/user1/Group2_Project/JEE/CallFailureEnterprise/convertedFile.json");
 		Workbook workbook;
