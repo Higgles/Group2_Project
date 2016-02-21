@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-@Entity @Table(name="MCC-MNC")
+@Entity @Table(name="`MCC-MNC`")
 
 @XmlRootElement
 @IdClass(MccMncPk.class)
