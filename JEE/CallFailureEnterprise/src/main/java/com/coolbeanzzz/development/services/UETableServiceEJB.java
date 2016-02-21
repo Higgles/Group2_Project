@@ -14,36 +14,36 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.coolbeanzzz.development.dao.MccMncDAO;
-import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.dao.UETableDAO;
+import com.coolbeanzzz.development.entities.UETable;
 
 @Stateless
 @Local
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
-public class MccMncServiceEJB implements MccMncService {
+public class UETableServiceEJB implements UETableService {
 
-	Logger logger = Logger.getLogger("MccMncServiceEJB");
+	Logger logger = Logger.getLogger("UETableServiceEJB");
 	
 	@PersistenceContext
 	private EntityManager em;
 		
 	@Inject
-	private MccMncDAO dao;
+	private UETableDAO dao;
 	
 	@Resource
 	private SessionContext context;
 
 	@PostConstruct
 	public void init() {
-		logger.info("in MccMncServiceEJB.init");
+		logger.info("in UETableServiceEJB.init");
 		logger.info(em.toString());
 	}
 	
-	public void setDao(MccMncDAO dao) {
+	public void setDao(UETableDAO dao) {
 		this.dao = dao;
 	}
 	
-	public Collection<MccMnc> getCatalog() {
-		return dao.getAllMccMncs();
+	public Collection<UETable> getCatalog() {
+		return dao.getAllUETables();
 	}
 }
