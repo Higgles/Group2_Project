@@ -46,8 +46,8 @@ public class Convert {
 		try {
 			workbook = Workbook.getWorkbook(inputWorkbook);
 			for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
-				jsonConvert = new FileWriter("/home/user1/Group2_Project/JEE/CallFailureEnterprise/convertedFile" + sheetNumber + ".json");
 				sheet = workbook.getSheet(sheetNumber);
+				jsonConvert = new FileWriter("/home/user1/Group2_Project/JEE/CallFailureEnterprise/" + sheet.getName() + ".json");
 				jsonConvert.append("[");
 				for (int row = 0; row < sheet.getRows(); row++){
 					if(row != 0){
@@ -85,11 +85,12 @@ public class Convert {
 					}
 				}
 				labels.clear();
+				
+				jsonConvert.append("]");
+				jsonConvert.close();
 			}
 		} catch (BiffException e) {
 			e.printStackTrace();
 		}
-		jsonConvert.append("]");
-		jsonConvert.close();
 	}
 }
