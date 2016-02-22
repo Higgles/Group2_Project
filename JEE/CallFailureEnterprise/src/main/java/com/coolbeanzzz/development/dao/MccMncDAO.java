@@ -8,4 +8,6 @@ import com.coolbeanzzz.development.entities.MccMnc;
 public interface MccMncDAO {
 	Collection<MccMnc> getAllMccMncs();
 	void populateMccMncTable(File jsonFile);
+	Collection<Integer> getMNCs();
+	Collection<Integer> getMCCs();
 }

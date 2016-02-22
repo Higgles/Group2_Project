@@ -11,4 +11,6 @@ import com.coolbeanzzz.development.entities.MccMnc;
 public interface MccMncService {
 	public Collection<MccMnc> getCatalog() ;
 	public void populateTable(File jsonFile);
+	public Collection<Integer> getMNCs();
+	public Collection<Integer> getMCCs();
 }

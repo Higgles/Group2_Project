@@ -51,4 +51,12 @@ public class MccMncServiceEJB implements MccMncService {
 	public void populateTable(File jsonFile){
 		dao.populateMccMncTable(jsonFile);
 	}
+	
+	public Collection<Integer> getMNCs() {
+		return dao.getMNCs();
+	}
+	
+	public Collection<Integer> getMCCs() {
+		return dao.getMCCs();
+	}
 }
