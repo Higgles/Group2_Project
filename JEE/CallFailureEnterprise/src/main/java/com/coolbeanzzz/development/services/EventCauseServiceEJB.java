@@ -54,6 +54,10 @@ public class EventCauseServiceEJB implements EventCauseService {
 	}
 
 	public Collection<Integer> getAllUniqueEventIds() {
-		return dao.getAllUniqueEventCauses();
+		return dao.getAllUniqueEventIds();
+	}
+	
+	public Collection<Integer> getAllUniqueCauseCodes() {
+		return dao.getAllUniqueCauseCodes();
 	}
 }

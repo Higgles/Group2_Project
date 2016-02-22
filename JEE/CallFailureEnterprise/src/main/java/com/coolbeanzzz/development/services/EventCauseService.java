@@ -12,4 +12,5 @@ public interface EventCauseService {
 	public Collection<EventCause> getCatalog() ;
 	public void populateTable(File jsonFile);
 	public Collection<Integer> getAllUniqueEventIds();
+	public Collection<Integer> getAllUniqueCauseCodes();
 }

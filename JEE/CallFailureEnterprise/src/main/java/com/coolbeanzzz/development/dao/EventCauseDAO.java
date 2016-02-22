@@ -7,6 +7,7 @@ import com.coolbeanzzz.development.entities.EventCause;
 
 public interface EventCauseDAO {
 	Collection<EventCause> getAllEventCauses();
-	Collection<Integer> getAllUniqueEventCauses();
+	Collection<Integer> getAllUniqueEventIds();
+	Collection<Integer> getAllUniqueCauseCodes();
 	void populateEventCauseTable(File jsonFile);
 }

@@ -52,11 +52,18 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return eventCauses;
 	}
 	
-	public Collection<Integer> getAllUniqueEventCauses() {
+	public Collection<Integer> getAllUniqueEventIds() {
 		Query query = em.createQuery("select e.eventId from EventCause e GROUP BY e.eventId");
-		List<Integer> eventCauses = query.getResultList();
+		List<Integer> eventIds = query.getResultList();
 		
-		return eventCauses;
+		return eventIds;
+	}
+	
+	public Collection<Integer> getAllUniqueCauseCodes() {
+		Query query = em.createQuery("select e.causeCode from EventCause e GROUP BY e.causeCode");
+		List<Integer> causeCodes = query.getResultList();
+		
+		return causeCodes;
 	}
 	
 	public void populateEventCauseTable(File jsonFile) {
