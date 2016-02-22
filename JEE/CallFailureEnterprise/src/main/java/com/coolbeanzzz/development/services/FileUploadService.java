@@ -45,7 +45,8 @@ import com.coolbeanzzz.development.tools.Convert;
 @Path("/file")
 public class FileUploadService {
 	
-	private JSONArray erroneous = new JSONArray();
+	private JSONArray erroneousData = new JSONArray();
+	private JSONArray validData = new JSONArray();
 	
 	@Inject
 	private FailureClassService failureClassService;
@@ -148,21 +149,27 @@ public class FileUploadService {
 		Convert convert = new Convert();
 		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
 		convert.convert();
-//		
+		
 //		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
 //		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
 //		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
 //		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
 		
 		Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-//		for(int i : uniqueEventIds){
-//			System.out.println(i);
-//		}
+		Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+		
+		Collection<Integer> uniqueFailureCodes = failureClassService.getFailureClasseCodes();
+		
+		Collection<Integer> mccs = mccMncService.getMCCs();
+		Collection<Integer> mncs = mccMncService.getMNCs();
+		
+		Collection<Integer> ueTypes = ueTableService.getUETypes();
+
 		compareData(uniqueEventIds);
 		
-//		baseData.populateTable(good);
+//		baseData.populateTable(validData);
 		
-		erroneousService.populateErroneousDataTable(erroneous);
+		erroneousService.populateErroneousDataTable(erroneousData);
 		System.out.println(erroneousService.getCatalog().size());
 	}
 	
@@ -176,29 +183,22 @@ public class FileUploadService {
 
 			JSONArray rows = (JSONArray) obj;
 //			
-//			JSONArray erroneous = new JSONArray();
-//			JSONArray good = new JSONArray();
-//			
-			Iterator<Object> iterator2 = rows.iterator();
-			FileWriter goodData = new FileWriter("goodData.json");
-			FileWriter erroneousData = new FileWriter("erroneousData.json");
+			Iterator<Object> iterator = rows.iterator();
 			
-			while (iterator2.hasNext()) {
+			while (iterator.hasNext()) {
 
-				JSONObject baseData = (JSONObject) iterator2.next();
+				JSONObject baseData = (JSONObject) iterator.next();
 				int compare = Integer.parseInt(baseData.get("Event Id").toString());
 				if(!uniqueEventIds.contains(compare)){
-//					System.out.println(compare);
-					erroneous.add(baseData);
+					erroneousData.add(baseData);
 				}
-//				else{
-//					good.add(baseData);
-//				}
+				else{
+					validData.add(baseData);
+				}
 			}
 			
-//			System.out.println(good.size());
-			System.out.println(erroneous.size());
-
+			System.out.println(validData.size());
+			System.out.println(erroneousData.size());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
