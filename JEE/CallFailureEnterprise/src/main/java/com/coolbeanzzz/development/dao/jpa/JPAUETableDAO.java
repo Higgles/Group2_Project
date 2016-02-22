@@ -52,6 +52,13 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 	
+	public Collection<Integer> getUETypes() {
+		Query query = em.createQuery("select u.tac from UETable u GROUP BY u.tac");
+		List<Integer> ueTables = query.getResultList();
+		
+		return ueTables;
+	}
+	
 	public void populateUETable(File jsonFile) {
     	Query query = em.createQuery("from UETable");
            

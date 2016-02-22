@@ -8,4 +8,5 @@ import com.coolbeanzzz.development.entities.UETable;
 public interface UETableDAO {
 	Collection<UETable> getAllUETables();
 	void populateUETable(File jsonFile);
+	Collection<Integer> getUETypes();
 }

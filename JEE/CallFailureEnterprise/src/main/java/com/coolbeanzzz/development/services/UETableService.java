@@ -11,4 +11,5 @@ import com.coolbeanzzz.development.entities.UETable;
 public interface UETableService {
 	public Collection<UETable> getCatalog() ;
 	public void populateTable(File jsonFile);
+	public Collection<Integer> getUETypes();
 }

@@ -51,4 +51,8 @@ public class UETableServiceEJB implements UETableService {
 	public void populateTable(File jsonFile){
 		dao.populateUETable(jsonFile);
 	}
+	
+	public Collection<Integer> getUETypes() {
+		return dao.getUETypes();
+	}
 }
