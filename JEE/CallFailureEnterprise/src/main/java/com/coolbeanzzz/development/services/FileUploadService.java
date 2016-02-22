@@ -165,15 +165,17 @@ public class FileUploadService {
 		
 		Collection<Integer> ueTypes = ueTableService.getUETypes();
 
-		compareData(uniqueEventIds);
+		compareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
 		
 //		baseData.populateTable(validData);
+//		erroneousService.populateErroneousDataTable(erroneousData);
 		
-		erroneousService.populateErroneousDataTable(erroneousData);
-		System.out.println(erroneousService.getCatalog().size());
+//		System.out.println(erroneousService.getCatalog().size());
 	}
 	
-	private void compareData(Collection<Integer> uniqueEventIds){
+	private void compareData(Collection<Integer> uniqueEventIds, Collection<Integer> uniqueCauseCodes,
+			Collection<Integer> uniqueFailureCodes, Collection<Integer> mccs,
+			Collection<Integer> mncs, Collection<Integer> ueTypes){
 
 		JSONParser parser = new JSONParser();
 
@@ -182,14 +184,24 @@ public class FileUploadService {
 			Object obj = parser.parse(new FileReader(new File("/home/user1/software/jboss/bin/Base Data.json")));
 
 			JSONArray rows = (JSONArray) obj;
-//			
+			
 			Iterator<Object> iterator = rows.iterator();
 			
 			while (iterator.hasNext()) {
 
 				JSONObject baseData = (JSONObject) iterator.next();
-				int compare = Integer.parseInt(baseData.get("Event Id").toString());
-				if(!uniqueEventIds.contains(compare)){
+				
+				int eventId = checkInt(baseData.get("Event Id").toString());
+				int causeCode = checkInt(baseData.get("Cause Code").toString());
+				int failureCode = checkInt(baseData.get("Failure Class").toString());
+				int mcc = checkInt(baseData.get("Market").toString());
+				int mnc = checkInt(baseData.get("Operator").toString());
+				int ueType = checkInt(baseData.get("UE Type").toString());
+				
+				
+				if(!uniqueEventIds.contains(eventId) || !uniqueCauseCodes.contains(causeCode) ||
+						!uniqueFailureCodes.contains(failureCode) || !mccs.contains(mcc) || !mncs.contains(mnc)||
+						!ueTypes.contains(ueType)){
 					erroneousData.add(baseData);
 				}
 				else{
@@ -206,6 +218,15 @@ public class FileUploadService {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private int checkInt(String test){
+		if(test.contains("(null")){
+			return -1;
+		}
+		else{
+			return Integer.parseInt(test);
 		}
 	}
 }
