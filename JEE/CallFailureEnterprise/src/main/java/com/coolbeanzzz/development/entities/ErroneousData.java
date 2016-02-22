@@ -17,7 +17,7 @@ public class ErroneousData implements Serializable{
 	@Column(name="id")
 	private int id;
 
-	@Column(name="Date/Time") private String dateTime;
+	@Column(name="`Date/Time`") private String dateTime;
 	@Column(name="`Event Id`") private int eventId;
 	@Column(name="`Failure Class`") private int failureClass;
 	@Column(name="`UE Type`") private int ueType;

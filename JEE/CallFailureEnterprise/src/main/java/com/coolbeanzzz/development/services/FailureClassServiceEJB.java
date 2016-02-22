@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -46,5 +47,9 @@ public class FailureClassServiceEJB implements FailureClassService {
 	
 	public Collection<FailureClass> getCatalog() {
 		return dao.getAllFailureClasses();
+	}
+	
+	public void populateTable(File jsonFile){
+		dao.populateFailureClassTable(jsonFile);
 	}
 }

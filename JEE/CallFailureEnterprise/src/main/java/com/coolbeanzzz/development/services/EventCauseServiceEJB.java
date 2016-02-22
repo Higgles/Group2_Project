@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -46,5 +47,13 @@ public class EventCauseServiceEJB implements EventCauseService {
 	
 	public Collection<EventCause> getCatalog() {
 		return dao.getAllEventCauses();
+	}
+	
+	public void populateTable(File jsonFile){
+		dao.populateEventCauseTable(jsonFile);
+	}
+
+	public Collection<Integer> getAllUniqueEventIds() {
+		return dao.getAllUniqueEventCauses();
 	}
 }

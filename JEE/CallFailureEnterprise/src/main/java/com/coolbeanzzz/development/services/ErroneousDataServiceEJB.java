@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -13,6 +14,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
 import com.coolbeanzzz.development.entities.ErroneousData;
@@ -47,4 +50,9 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	public Collection<ErroneousData> getCatalog() {
 		return dao.getAllErroneousData();
 	}
+	
+	public void populateErroneousDataTable(JSONArray erroneous){
+		dao.populateErroneousDataTable(erroneous);
+	}
+
 }

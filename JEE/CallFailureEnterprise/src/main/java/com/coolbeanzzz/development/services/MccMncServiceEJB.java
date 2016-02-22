@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -45,5 +46,9 @@ public class MccMncServiceEJB implements MccMncService {
 	
 	public Collection<MccMnc> getCatalog() {
 		return dao.getAllMccMncs();
+	}
+	
+	public void populateTable(File jsonFile){
+		dao.populateMccMncTable(jsonFile);
 	}
 }

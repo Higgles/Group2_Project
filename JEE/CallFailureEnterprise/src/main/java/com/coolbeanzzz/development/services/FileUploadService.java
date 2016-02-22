@@ -1,14 +1,25 @@
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,11 +29,38 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import com.coolbeanzzz.development.dao.FailureClassDAO;
+import com.coolbeanzzz.development.dao.jpa.JPAFailureClassDAO;
+import com.coolbeanzzz.development.entities.EventCause;
+import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.UETable;
 import com.coolbeanzzz.development.services.Convert;
 
 @Path("/file")
 public class FileUploadService {
+	
+	private JSONArray erroneous = new JSONArray();
+	
+	@Inject
+	private FailureClassService failureClassService;
+	
+	@Inject
+	private EventCauseService eventCauseService;
+	
+	@Inject
+	private MccMncService mccMncService;
+	
+	@Inject
+	private UETableService ueTableService;
+	
+	@Inject
+	private ErroneousDataService erroneousService;
 	
 	/**
 	 * Upload the user's selected file to the server and return the file location and
@@ -110,5 +148,64 @@ public class FileUploadService {
 		Convert convert = new Convert();
 		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
 		convert.convert();
+//		
+//		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
+//		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
+//		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
+//		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
+		
+		Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+//		for(int i : uniqueEventIds){
+//			System.out.println(i);
+//		}
+		compareData(uniqueEventIds);
+		
+//		baseData.populateTable(good);
+		
+		erroneousService.populateErroneousDataTable(erroneous);
+		System.out.println(erroneousService.getCatalog().size());
+	}
+	
+	private void compareData(Collection<Integer> uniqueEventIds){
+
+		JSONParser parser = new JSONParser();
+
+		try {
+
+			Object obj = parser.parse(new FileReader(new File("/home/user1/software/jboss/bin/Base Data.json")));
+
+			JSONArray rows = (JSONArray) obj;
+//			
+//			JSONArray erroneous = new JSONArray();
+//			JSONArray good = new JSONArray();
+//			
+			Iterator<Object> iterator2 = rows.iterator();
+			FileWriter goodData = new FileWriter("goodData.json");
+			FileWriter erroneousData = new FileWriter("erroneousData.json");
+			
+			while (iterator2.hasNext()) {
+
+				JSONObject baseData = (JSONObject) iterator2.next();
+				int compare = Integer.parseInt(baseData.get("Event Id").toString());
+				if(!uniqueEventIds.contains(compare)){
+//					System.out.println(compare);
+					erroneous.add(baseData);
+				}
+//				else{
+//					good.add(baseData);
+//				}
+			}
+			
+//			System.out.println(good.size());
+			System.out.println(erroneous.size());
+
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }

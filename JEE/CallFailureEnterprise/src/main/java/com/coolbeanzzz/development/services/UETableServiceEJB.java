@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -45,5 +46,9 @@ public class UETableServiceEJB implements UETableService {
 	
 	public Collection<UETable> getCatalog() {
 		return dao.getAllUETables();
+	}
+	
+	public void populateTable(File jsonFile){
+		dao.populateUETable(jsonFile);
 	}
 }
