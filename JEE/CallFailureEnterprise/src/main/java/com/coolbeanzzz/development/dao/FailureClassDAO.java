@@ -8,5 +8,6 @@ import com.coolbeanzzz.development.entities.FailureClass;
 
 public interface FailureClassDAO {
 	Collection<FailureClass> getAllFailureClasses();
+	Collection<Integer> getFailureClasseCodes();
 	void populateFailureClassTable(File jsonFile);
 }

@@ -11,5 +11,6 @@ public interface FailureClassService {
 
 	public Collection<FailureClass> getCatalog() ;
 	public void populateTable(File jsonFile);
+	public Collection<Integer> getFailureClasseCodes();
 	
 }

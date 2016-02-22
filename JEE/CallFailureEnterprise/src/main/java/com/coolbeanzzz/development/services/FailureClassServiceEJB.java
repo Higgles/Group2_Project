@@ -52,4 +52,8 @@ public class FailureClassServiceEJB implements FailureClassService {
 	public void populateTable(File jsonFile){
 		dao.populateFailureClassTable(jsonFile);
 	}
+	
+	public Collection<Integer> getFailureClasseCodes() {
+		return dao.getFailureClasseCodes();
+	}
 }

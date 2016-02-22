@@ -78,6 +78,13 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClasses;
 	}
 	
+	public Collection<Integer> getFailureClasseCodes() {
+		Query query = em.createQuery("select f.failureClass from FailureClass f GROUP BY f.failureClass");
+		List<Integer> failureClassIds = query.getResultList();
+		
+		return failureClassIds;
+	}
+	
 	
     public void populateFailureClassTable(File jsonFile) {
     	Query query = em.createQuery("from FailureClass");
