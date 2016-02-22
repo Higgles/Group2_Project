@@ -40,7 +40,7 @@ import com.coolbeanzzz.development.entities.EventCause;
 import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.MccMnc;
 import com.coolbeanzzz.development.entities.UETable;
-import com.coolbeanzzz.development.services.Convert;
+import com.coolbeanzzz.development.tools.Convert;
 
 @Path("/file")
 public class FileUploadService {

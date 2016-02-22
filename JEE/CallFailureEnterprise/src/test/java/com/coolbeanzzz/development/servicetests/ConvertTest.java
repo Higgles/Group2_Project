@@ -7,7 +7,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import com.coolbeanzzz.development.services.Convert;
+
+import com.coolbeanzzz.development.tools.Convert;
 
 public class ConvertTest {
 	
