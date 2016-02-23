@@ -186,10 +186,11 @@ public class FileUploadService {
 
 		compareData();
 		
-//		baseDataService.populateBaseDataTable(validData);
+		baseDataService.populateBaseDataTable(validData);
 		erroneousDataService.populateErroneousDataTable(erroneousData);
 		
-		System.out.println(erroneousDataService.getCatalog().size());
+//		System.out.println(baseDataService.getCatalog().size());
+//		System.out.println(erroneousDataService.getCatalog().size());
 	}
 	
 	/**
@@ -199,7 +200,6 @@ public class FileUploadService {
 	private void compareData(){
 
 		JSONParser parser = new JSONParser();
-		
 		
 		int eventId;
 		int causeCode;
@@ -243,8 +243,8 @@ public class FileUploadService {
 				}
 			}
 			
-			System.out.println(validData.size());
-			System.out.println(erroneousData.size());
+//			System.out.println(validData.size());
+//			System.out.println(erroneousData.size());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -270,7 +270,7 @@ public class FileUploadService {
 		try {
 			output = outFormat.format(inFormat.parse(dateTime));
 			date = outFormat.parse(output);
-			System.out.println(output);
+			
 			if(cal.getTime().after(date)){
 				baseData.put("Date / Time", output);
 				dateCheck = true;

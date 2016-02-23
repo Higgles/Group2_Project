@@ -20,6 +20,10 @@ import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.BaseData;
+import com.coolbeanzzz.development.entities.EventCause;
+import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.UETable;
 
 @Default
 @Stateless
@@ -49,50 +53,40 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery("from BaseData");
 
 		Iterator<Object> iterator = baseData.iterator();
-
-		int failureClass;
-		int causeCode;
+		
+		JSONObject baseRow;
+		BaseData object;
+		
+		EventCause eventCause;
+		MccMnc mccmnc;
+		UETable ueTable;
+		FailureClass failureClass;
+		
 		int j = 0;
+		
 		while (iterator.hasNext()) {
 			if(j < baseData.size()) j++;
 
-			JSONObject baseRow = (JSONObject) iterator.next();
-			
-			if(baseRow.get("Failure Class").toString().contains("null")){
-				failureClass = -1;
-			}
-			else{
-				failureClass = Integer.parseInt(baseRow.get("Failure Class").toString());
-			}
-			
-			if(baseRow.get("Cause Code").toString().contains("null")){
-				causeCode = -1;
-			}
-			else{
-				causeCode = Integer.parseInt(baseRow.get("Cause Code").toString());
-			}
-			
-			BaseData object = new BaseData(
-//					Integer.parseInt(erroneousRow.get("id").toString()),
+			baseRow = (JSONObject) iterator.next();
+//			System.out.println(baseRow.get("Date / Time").toString());
+			object = new BaseData(
 					j,
 					baseRow.get("Date / Time").toString(),
-					Integer.parseInt(baseRow.get("Event Id").toString()),
-//					failureClass,
-					Integer.parseInt(baseRow.get("Failure Class").toString()),
-					Integer.parseInt(baseRow.get("UE Type").toString()),
-					Integer.parseInt(baseRow.get("Market").toString()),
-					Integer.parseInt(baseRow.get("Operator").toString()),	
 					baseRow.get("Cell Id").toString(),
 					baseRow.get("Duration").toString(),
-//					causeCode,
-					Integer.parseInt(baseRow.get("Cause Code").toString()),
 					baseRow.get("NE Version").toString(),
 					baseRow.get("IMSI").toString(),
 					baseRow.get("HIER3_ID").toString(),
 					baseRow.get("HIER32_ID").toString(),
-					baseRow.get("HIER321_ID").toString()
+					baseRow.get("HIER321_ID").toString(),
+					eventCause = new EventCause(Integer.parseInt(baseRow.get("Cause Code").toString()),
+							Integer.parseInt(baseRow.get("Event Id").toString()), ""),
+					mccmnc = new MccMnc(Integer.parseInt(baseRow.get("Market").toString()),
+							Integer.parseInt(baseRow.get("Operator").toString()), "", ""),
+					ueTable = new UETable(Integer.parseInt(baseRow.get("UE Type").toString()), "", "", "", "", "",
+							"", "", ""),
+					failureClass = new FailureClass(Integer.parseInt(baseRow.get("Failure Class").toString()), "")
 					);
-//			List<BaseData> BaseData = query.getResultList();
 			
 			em.merge(object);
 

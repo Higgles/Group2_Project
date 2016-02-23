@@ -12,27 +12,14 @@ public class BaseData implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int eventId;
-	private int failureClassCode;
-	private int ueType;
-	private int market;
-	private int operator;
-	private int causeCode;
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="Id")
 	private int id;
 
-	@Column(name="Date/Time") private String dateTime;
-	//@Column(name="Event Id") private int eventId;
-	//@Column(name="Failure Class") private int failureClass;
-	//@Column(name="UE Type") private int ueType;
-	//@Column(name="Market") private int market;
-	//@Column(name="Operator") private int operator;
+	@Column(name="`Date/Time`") private String dateTime;
 	@Column(name="`Cell Id`") private String cellId;
 	@Column(name="Duration") private String duration;
-	//@Column(name="Cause Code") private int causeCode;
 	@Column(name="`NE Version`") private String neVersion;
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
@@ -80,28 +67,6 @@ public class BaseData implements Serializable{
 		this.mccmnc = mccmnc;
 		this.ueTable = ueTable;
 		this.failureClass = failureClass;
-	}
-	
-	public BaseData(int id, String dateTime, int eventId,
-			int failureClassCode, int ueType, int market, int operator,
-			String cellId, String duration, int causeCode, String neVersion,
-			String imsi, String hier3_Id, String hier32_Id, String her321_Id) {
-		super();
-		this.id = id;
-		this.dateTime = dateTime;
-		this.eventId = eventId;
-		this.failureClassCode = failureClassCode;
-		this.ueType = ueType;
-		this.market = market;
-		this.operator = operator;
-		this.cellId = cellId;
-		this.duration = duration;
-		this.causeCode = causeCode;
-		this.neVersion = neVersion;
-		this.imsi = imsi;
-		this.hier3_Id = hier3_Id;
-		this.hier32_Id = hier32_Id;
-		this.her321_Id = her321_Id;
 	}
 	
 	public int getId() {
