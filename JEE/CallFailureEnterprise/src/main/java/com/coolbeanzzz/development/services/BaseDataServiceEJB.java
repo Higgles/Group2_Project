@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.json.simple.JSONArray;
+
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.BaseData;
 
@@ -46,5 +48,9 @@ public class BaseDataServiceEJB implements BaseDataService {
 	
 	public Collection<BaseData> getCatalog() {
 		return dao.getAllBaseData();
+	}
+	
+	public void populateBaseDataTable(JSONArray baseData) {
+		dao.populateBaseDataTable(baseData);
 	}
 }
