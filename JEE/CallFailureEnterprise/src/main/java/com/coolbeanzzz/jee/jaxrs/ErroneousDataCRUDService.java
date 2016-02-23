@@ -33,13 +33,4 @@ public class ErroneousDataCRUDService {
         return erroneousData;
     }
 
-
-
-//    @GET
-//	@Path("/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//	public CompactDisc getCompactDisc(@PathParam("id") int id) {
-//		return library.get(id);
-//	}
-
 }
