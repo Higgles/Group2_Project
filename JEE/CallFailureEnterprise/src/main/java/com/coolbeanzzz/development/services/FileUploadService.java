@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +50,9 @@ public class FileUploadService {
 	
 	private JSONArray erroneousData = new JSONArray();
 	private JSONArray validData = new JSONArray();
+	
+	private JSONObject baseData;
+	private boolean dateCheck = true;
 	
 	private Collection<Integer> uniqueEventIds;
 	private Collection<Integer> uniqueCauseCodes;
@@ -163,10 +169,10 @@ public class FileUploadService {
 		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
 		convert.convert();
 		
-//		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-//		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-//		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-//		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
+		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
+		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
+		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
+		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
 		
 		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
 		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
@@ -193,7 +199,7 @@ public class FileUploadService {
 	private void compareData(){
 
 		JSONParser parser = new JSONParser();
-		JSONObject baseData;
+		
 		
 		int eventId;
 		int causeCode;
@@ -201,6 +207,8 @@ public class FileUploadService {
 		int mcc;
 		int mnc;
 		int ueType;
+		
+		String dateTime;
 
 		try {
 
@@ -214,6 +222,10 @@ public class FileUploadService {
 
 				baseData = (JSONObject) iterator.next();
 				
+				dateTime = baseData.get("Date / Time").toString();
+				
+				dateFormatter(dateTime);
+				
 				eventId = checkInt(baseData.get("Event Id").toString());
 				causeCode = checkInt(baseData.get("Cause Code").toString());
 				failureCode = checkInt(baseData.get("Failure Class").toString());
@@ -221,10 +233,9 @@ public class FileUploadService {
 				mnc = checkInt(baseData.get("Operator").toString());
 				ueType = checkInt(baseData.get("UE Type").toString());
 				
-				
 				if(!uniqueEventIds.contains(eventId) || !uniqueCauseCodes.contains(causeCode) ||
 						!uniqueFailureCodes.contains(failureCode) || !mccs.contains(mcc) || !mncs.contains(mnc)||
-						!ueTypes.contains(ueType)){
+						!ueTypes.contains(ueType) || dateCheck == false){
 					erroneousData.add(baseData);
 				}
 				else{
@@ -244,6 +255,36 @@ public class FileUploadService {
 		}
 	}
 	
+	private void dateFormatter(String dateTime) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		String output="";
+		
+		SimpleDateFormat inFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date date = new Date();
+		inFormat.setLenient(false);
+		
+		try {
+			output = outFormat.format(inFormat.parse(dateTime));
+			date = outFormat.parse(output);
+			System.out.println(output);
+			if(cal.getTime().after(date)){
+				baseData.put("Date / Time", output);
+				dateCheck = true;
+			}
+			else{
+				dateCheck = false;
+			}
+			
+		} catch (java.text.ParseException e) {
+			dateCheck = false;
+		}
+		
+	}
+
 	private int checkInt(String test){
 		if(test.contains("null")){
 			return -1;

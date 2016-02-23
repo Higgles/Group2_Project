@@ -3,10 +3,13 @@ package com.coolbeanzzz.development.tools;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import jxl.Cell;
 import jxl.CellType;
+import jxl.DateCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -61,6 +64,12 @@ public class Convert {
 							
 							if(cellType.equals("Number")){
 								jsonConvert.append(cell.getContents());
+							}
+							else if(cell.getType() == CellType.DATE){
+								DateCell dateCell = (DateCell) cell;
+								Date date = dateCell.getDate();
+								SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+								jsonConvert.append("\"" + formatter.format(date) + "\"");
 							}
 							else{
 								jsonConvert.append("\"" + cell.getContents() + "\"");

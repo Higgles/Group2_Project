@@ -52,8 +52,9 @@ public class JPABaseDataDAO implements BaseDataDAO {
 
 		int failureClass;
 		int causeCode;
-		
+		int j = 0;
 		while (iterator.hasNext()) {
+			if(j < baseData.size()) j++;
 
 			JSONObject baseRow = (JSONObject) iterator.next();
 			
@@ -73,23 +74,23 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			
 			BaseData object = new BaseData(
 //					Integer.parseInt(erroneousRow.get("id").toString()),
-					1,
+					j,
 					baseRow.get("Date / Time").toString(),
 					Integer.parseInt(baseRow.get("Event Id").toString()),
-					failureClass,
+//					failureClass,
+					Integer.parseInt(baseRow.get("Failure Class").toString()),
 					Integer.parseInt(baseRow.get("UE Type").toString()),
 					Integer.parseInt(baseRow.get("Market").toString()),
 					Integer.parseInt(baseRow.get("Operator").toString()),	
 					baseRow.get("Cell Id").toString(),
 					baseRow.get("Duration").toString(),
-					causeCode,
-//					Integer.parseInt(baseRow.get("Cause Code").toString()),
+//					causeCode,
+					Integer.parseInt(baseRow.get("Cause Code").toString()),
 					baseRow.get("NE Version").toString(),
 					baseRow.get("IMSI").toString(),
 					baseRow.get("HIER3_ID").toString(),
 					baseRow.get("HIER32_ID").toString(),
 					baseRow.get("HIER321_ID").toString()
-//					Integer.parseInt(baseRow.get("Failure Class").toString()),			
 					);
 //			List<BaseData> BaseData = query.getResultList();
 			
