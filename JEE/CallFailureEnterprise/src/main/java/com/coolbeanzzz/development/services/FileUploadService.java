@@ -48,6 +48,16 @@ public class FileUploadService {
 	private JSONArray erroneousData = new JSONArray();
 	private JSONArray validData = new JSONArray();
 	
+	private Collection<Integer> uniqueEventIds;
+	private Collection<Integer> uniqueCauseCodes;
+	
+	private Collection<Integer> uniqueFailureCodes;
+	
+	private Collection<Integer> mccs;
+	private Collection<Integer> mncs;
+	
+	private Collection<Integer> ueTypes;
+	
 	@Inject
 	private FailureClassService failureClassService;
 	
@@ -61,7 +71,10 @@ public class FileUploadService {
 	private UETableService ueTableService;
 	
 	@Inject
-	private ErroneousDataService erroneousService;
+	private BaseDataService baseDataService;
+	
+	@Inject
+	private ErroneousDataService erroneousDataService;
 	
 	/**
 	 * Upload the user's selected file to the server and return the file location and
@@ -155,29 +168,35 @@ public class FileUploadService {
 //		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
 //		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
 		
-		Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-		Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
 		
-		Collection<Integer> uniqueFailureCodes = failureClassService.getFailureClasseCodes();
+		uniqueFailureCodes = failureClassService.getFailureClasseCodes();
 		
-		Collection<Integer> mccs = mccMncService.getMCCs();
-		Collection<Integer> mncs = mccMncService.getMNCs();
+		mccs = mccMncService.getMCCs();
+		mncs = mccMncService.getMNCs();
 		
-		Collection<Integer> ueTypes = ueTableService.getUETypes();
+		ueTypes = ueTableService.getUETypes();
 
-		compareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
+		compareData();
 		
-//		baseData.populateTable(validData);
-//		erroneousService.populateErroneousDataTable(erroneousData);
+		baseDataService.populateBaseDataTable(validData);
+		erroneousDataService.populateErroneousDataTable(erroneousData);
 		
-//		System.out.println(erroneousService.getCatalog().size());
+		System.out.println(erroneousDataService.getCatalog().size());
 	}
 	
-	private void compareData(Collection<Integer> uniqueEventIds, Collection<Integer> uniqueCauseCodes,
-			Collection<Integer> uniqueFailureCodes, Collection<Integer> mccs,
-			Collection<Integer> mncs, Collection<Integer> ueTypes){
+	private void compareData(){
 
 		JSONParser parser = new JSONParser();
+		JSONObject baseData;
+		
+		int eventId;
+		int causeCode;
+		int failureCode;
+		int mcc;
+		int mnc;
+		int ueType;
 
 		try {
 
@@ -189,14 +208,14 @@ public class FileUploadService {
 			
 			while (iterator.hasNext()) {
 
-				JSONObject baseData = (JSONObject) iterator.next();
+				baseData = (JSONObject) iterator.next();
 				
-				int eventId = checkInt(baseData.get("Event Id").toString());
-				int causeCode = checkInt(baseData.get("Cause Code").toString());
-				int failureCode = checkInt(baseData.get("Failure Class").toString());
-				int mcc = checkInt(baseData.get("Market").toString());
-				int mnc = checkInt(baseData.get("Operator").toString());
-				int ueType = checkInt(baseData.get("UE Type").toString());
+				eventId = checkInt(baseData.get("Event Id").toString());
+				causeCode = checkInt(baseData.get("Cause Code").toString());
+				failureCode = checkInt(baseData.get("Failure Class").toString());
+				mcc = checkInt(baseData.get("Market").toString());
+				mnc = checkInt(baseData.get("Operator").toString());
+				ueType = checkInt(baseData.get("UE Type").toString());
 				
 				
 				if(!uniqueEventIds.contains(eventId) || !uniqueCauseCodes.contains(causeCode) ||
@@ -222,7 +241,7 @@ public class FileUploadService {
 	}
 	
 	private int checkInt(String test){
-		if(test.contains("(null")){
+		if(test.contains("null")){
 			return -1;
 		}
 		else{
