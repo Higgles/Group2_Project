@@ -93,7 +93,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 					);
 //			List<BaseData> BaseData = query.getResultList();
 			
-			em.persist(object);
+			em.merge(object);
 
 		} 
 	}

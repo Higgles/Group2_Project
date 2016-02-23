@@ -180,8 +180,8 @@ public class FileUploadService {
 
 		compareData();
 		
-		baseDataService.populateBaseDataTable(validData);
-//		erroneousDataService.populateErroneousDataTable(erroneousData);
+//		baseDataService.populateBaseDataTable(validData);
+		erroneousDataService.populateErroneousDataTable(erroneousData);
 		
 		System.out.println(erroneousDataService.getCatalog().size());
 	}

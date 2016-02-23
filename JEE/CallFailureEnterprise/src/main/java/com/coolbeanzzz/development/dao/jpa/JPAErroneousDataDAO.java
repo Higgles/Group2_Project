@@ -59,23 +59,23 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 	public void populateErroneousDataTable(JSONArray erroneous) {
 		Query query = em.createQuery("from ErroneousData");
 
-
 		Iterator<Object> iterator = erroneous.iterator();
 
+		int failureClass;
+		int causeCode;
+		int j = 0;
 		while (iterator.hasNext()) {
-
+			if(j < erroneous.size()) j++;
 			JSONObject erroneousRow = (JSONObject) iterator.next();
 			
-			int failureClass;
-			int causeCode;
-			
-			if(erroneousRow.get("Failure Class").toString().equals("(null)")){
+			if(erroneousRow.get("Failure Class").toString().contains("null")){
 				failureClass = -1;
 			}
 			else{
 				failureClass = Integer.parseInt(erroneousRow.get("Failure Class").toString());
 			}
-			if(erroneousRow.get("Cause Code").toString().equals("(null)")){
+			
+			if(erroneousRow.get("Cause Code").toString().contains("null")){
 				causeCode = -1;
 			}
 			else{
@@ -84,25 +84,27 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 			
 			ErroneousData object = new ErroneousData(
 //					Integer.parseInt(erroneousRow.get("id").toString()),
-					1,
+					j,
 					erroneousRow.get("Date / Time").toString(),
 					Integer.parseInt(erroneousRow.get("Event Id").toString()),
 					failureClass,
+//					Integer.parseInt(erroneousRow.get("Failure Class").toString()),
 					Integer.parseInt(erroneousRow.get("UE Type").toString()),
 					Integer.parseInt(erroneousRow.get("Market").toString()),
 					Integer.parseInt(erroneousRow.get("Operator").toString()),
 					erroneousRow.get("Cell Id").toString(),
 					erroneousRow.get("Duration").toString(),
 					causeCode,
+//					Integer.parseInt(erroneousRow.get("Cause Code").toString()),
 					erroneousRow.get("NE Version").toString(),
 					erroneousRow.get("IMSI").toString(),
 					erroneousRow.get("HIER3_ID").toString(),
 					erroneousRow.get("HIER32_ID").toString(),
 					erroneousRow.get("HIER321_ID").toString()
 					);
-			List<ErroneousData> ErroneousData = query.getResultList();
-			em.persist(object);
-
-		} 
+//			List<ErroneousData> ErroneousData = query.getResultList();
+			
+			em.merge(object);
+		}
 	}
 }
