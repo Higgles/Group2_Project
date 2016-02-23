@@ -181,11 +181,15 @@ public class FileUploadService {
 		compareData();
 		
 		baseDataService.populateBaseDataTable(validData);
-		erroneousDataService.populateErroneousDataTable(erroneousData);
+//		erroneousDataService.populateErroneousDataTable(erroneousData);
 		
 		System.out.println(erroneousDataService.getCatalog().size());
 	}
 	
+	/**
+	 * Compare imported base data table against the reference tables
+	 * to split it into erroneous data and valid data.
+	 */
 	private void compareData(){
 
 		JSONParser parser = new JSONParser();
