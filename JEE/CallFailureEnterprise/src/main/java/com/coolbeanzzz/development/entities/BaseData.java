@@ -12,6 +12,13 @@ public class BaseData implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	private int eventId;
+	private int failureClassCode;
+	private int ueType;
+	private int market;
+	private int operator;
+	private int causeCode;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="Id")
@@ -74,7 +81,29 @@ public class BaseData implements Serializable{
 		this.ueTable = ueTable;
 		this.failureClass = failureClass;
 	}
-
+	
+	public BaseData(int id, String dateTime, int eventId,
+			int failureClassCode, int ueType, int market, int operator,
+			String cellId, String duration, int causeCode, String neVersion,
+			String imsi, String hier3_Id, String hier32_Id, String her321_Id) {
+		super();
+		this.id = id;
+		this.dateTime = dateTime;
+		this.eventId = eventId;
+		this.failureClassCode = failureClassCode;
+		this.ueType = ueType;
+		this.market = market;
+		this.operator = operator;
+		this.cellId = cellId;
+		this.duration = duration;
+		this.causeCode = causeCode;
+		this.neVersion = neVersion;
+		this.imsi = imsi;
+		this.hier3_Id = hier3_Id;
+		this.hier32_Id = hier32_Id;
+		this.her321_Id = her321_Id;
+	}
+	
 	public int getId() {
 		return id;
 	}
