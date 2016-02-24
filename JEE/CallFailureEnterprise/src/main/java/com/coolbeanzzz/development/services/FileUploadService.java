@@ -188,7 +188,7 @@ public class FileUploadService {
 		compareData();
 		
 		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/validData.json"));
-//		erroneousDataService.populateErroneousDataTable(erroneousData);
+//		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 		
 //		System.out.println(baseDataService.getCatalog().size());
 //		System.out.println(erroneousDataService.getCatalog().size());

@@ -9,5 +9,5 @@ import com.coolbeanzzz.development.entities.ErroneousData;
 
 public interface ErroneousDataDAO {
 	Collection<ErroneousData> getAllErroneousData();
-	void populateErroneousDataTable(JSONArray erroneous);
+	void populateErroneousDataTable(File filename);
 }

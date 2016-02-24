@@ -51,8 +51,8 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 		return dao.getAllErroneousData();
 	}
 	
-	public void populateErroneousDataTable(JSONArray erroneous){
-		dao.populateErroneousDataTable(erroneous);
+	public void populateErroneousDataTable(File filename){
+		dao.populateErroneousDataTable(filename);
 	}
 
 }
