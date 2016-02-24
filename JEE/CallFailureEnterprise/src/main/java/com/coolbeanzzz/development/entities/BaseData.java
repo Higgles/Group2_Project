@@ -24,7 +24,7 @@ public class BaseData implements Serializable{
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
 	@Column(name="HIER32_ID") private String hier32_Id;
-	@Column(name="HIER321_ID") private String her321_Id;
+	@Column(name="HIER321_ID") private String hier321_Id;
 	
 	@ManyToOne
 	@JoinColumns({ 
@@ -52,7 +52,7 @@ public class BaseData implements Serializable{
 	
 	public BaseData(int id, String dateTime, String cellId, String duration,
 			String neVersion, String imsi, String hier3_Id, String hier32_Id,
-			String her321_Id, EventCause eventCause, MccMnc mccmnc,
+			String hier321_Id, EventCause eventCause, MccMnc mccmnc,
 			UETable ueTable, FailureClass failureClass) {
 		this.id = id;
 		this.dateTime = dateTime;
@@ -62,7 +62,7 @@ public class BaseData implements Serializable{
 		this.imsi = imsi;
 		this.hier3_Id = hier3_Id;
 		this.hier32_Id = hier32_Id;
-		this.her321_Id = her321_Id;
+		this.hier321_Id = hier321_Id;
 		this.eventCause = eventCause;
 		this.mccmnc = mccmnc;
 		this.ueTable = ueTable;
@@ -133,12 +133,12 @@ public class BaseData implements Serializable{
 		this.hier32_Id = hier32_Id;
 	}
 
-	public String getHer321_Id() {
-		return her321_Id;
+	public String getHier321_Id() {
+		return hier321_Id;
 	}
 
-	public void setHer321_Id(String her321_Id) {
-		this.her321_Id = her321_Id;
+	public void setHier321_Id(String hier321_Id) {
+		this.hier321_Id = hier321_Id;
 	}
 
 	public EventCause getEventCause() {

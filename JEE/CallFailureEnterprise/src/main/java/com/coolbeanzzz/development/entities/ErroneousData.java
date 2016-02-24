@@ -19,25 +19,25 @@ public class ErroneousData implements Serializable{
 
 	@Column(name="`Date/Time`") private String dateTime;
 	@Column(name="`Event Id`") private int eventId;
-	@Column(name="`Failure Class`") private int failureClass;
+	@Column(name="`Failure Class`") private String failureClass;
 	@Column(name="`UE Type`") private int ueType;
 	@Column(name="Market") private int market;
 	@Column(name="Operator") private int operator;
 	@Column(name="`Cell Id`") private String cellId;
 	@Column(name="Duration") private String duration;
-	@Column(name="`Cause Code`") private int causeCode;
+	@Column(name="`Cause Code`") private String causeCode;
 	@Column(name="`NE Version`") private String neVersion;
 	@Column(name="IMSI") private String imsi;
 	@Column(name="HIER3_ID") private String hier3_Id;
 	@Column(name="HIER32_ID") private String hier32_Id;
-	@Column(name="HIER321_ID") private String her321_Id;
+	@Column(name="HIER321_ID") private String hier321_Id;
 	
 	public ErroneousData() {}
 
 	public ErroneousData(int id, String dateTime, int eventId,
-			int failureClass, int ueType, int market, int operator,
-			String cellId, String duration, int causeCode, String neVersion,
-			String imsi, String hier3_Id, String hier32_Id, String her321_Id) {
+			String failureClass, int ueType, int market, int operator,
+			String cellId, String duration, String causeCode, String neVersion,
+			String imsi, String hier3_Id, String hier32_Id, String hier321_Id) {
 		super();
 		this.id = id;
 		this.dateTime = dateTime;
@@ -53,7 +53,7 @@ public class ErroneousData implements Serializable{
 		this.imsi = imsi;
 		this.hier3_Id = hier3_Id;
 		this.hier32_Id = hier32_Id;
-		this.her321_Id = her321_Id;
+		this.hier321_Id = hier321_Id;
 	}
 
 	public int getId() {
@@ -120,12 +120,12 @@ public class ErroneousData implements Serializable{
 		this.hier32_Id = hier32_Id;
 	}
 
-	public String getHer321_Id() {
-		return her321_Id;
+	public String getHier321_Id() {
+		return hier321_Id;
 	}
 
-	public void setHer321_Id(String her321_Id) {
-		this.her321_Id = her321_Id;
+	public void setHier321_Id(String hier321_Id) {
+		this.hier321_Id = hier321_Id;
 	}
 
 	public int getEventId() {
@@ -136,11 +136,11 @@ public class ErroneousData implements Serializable{
 		this.eventId = eventId;
 	}
 
-	public int getFailureClass() {
+	public String getFailureClass() {
 		return failureClass;
 	}
 
-	public void setFailureClass(int failureClass) {
+	public void setFailureClass(String failureClass) {
 		this.failureClass = failureClass;
 	}
 
@@ -168,11 +168,11 @@ public class ErroneousData implements Serializable{
 		this.operator = operator;
 	}
 
-	public int getCauseCode() {
+	public String getCauseCode() {
 		return causeCode;
 	}
 
-	public void setCauseCode(int causeCode) {
+	public void setCauseCode(String causeCode) {
 		this.causeCode = causeCode;
 	}
 }
