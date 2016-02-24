@@ -100,11 +100,18 @@ public class JPAFailureClassDAO implements FailureClassDAO {
             Iterator<Object> iterator = rows.iterator();
             
             while (iterator.hasNext()) {
-              
+            	
                 JSONObject failureClass = (JSONObject) iterator.next();
                 FailureClass object = new FailureClass(Integer.parseInt(failureClass.get("Failure Class").toString()), failureClass.get("Description").toString());
-                List<FailureClass> failures = query.getResultList();
-        		em.persist(object);
+//                Query query2 = em.createQuery("from FailureClass f where f.failureClass=:fclass");
+//            	query2.setParameter("fclass", object.getFailureClass());
+//                List<FailureClass> failures = query2.getResultList();
+//                if(!failures.contains(object)){
+//                	em.persist(object);
+//                }
+//                else{
+                	em.merge(object);
+//                }
             }
            
  

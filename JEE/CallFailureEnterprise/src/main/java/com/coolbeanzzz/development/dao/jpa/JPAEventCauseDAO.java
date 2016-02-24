@@ -85,8 +85,8 @@ public class JPAEventCauseDAO implements EventCauseDAO {
                 		Integer.parseInt(eventCause.get("Cause Code").toString()),
                 		Integer.parseInt(eventCause.get("Event Id").toString()),
                 		eventCause.get("Description").toString());
-                List<EventCause> eventCauses = query.getResultList();
-        		em.persist(object);
+                //List<EventCause> eventCauses = query.getResultList();
+        		em.merge(object);
             }
            
  
