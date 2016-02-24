@@ -27,7 +27,7 @@ public class ErroneousDataCRUDService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ErroneousDataList getFailureClasses() {
+    public ErroneousDataList getErroneousData() {
     	ErroneousDataList erroneousData = new ErroneousDataList();
     	erroneousData.setErroneousDataCollection(service.getCatalog());
         return erroneousData;

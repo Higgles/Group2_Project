@@ -111,7 +111,8 @@ public class FileUploadService {
 					writeFile(bytes, fileName);
 					
 					return Response.status(200).entity("Dataset uploaded: " + fileName + 
-							"<p><a href='http://localhost:8080/CallFailureEnterprise/erroneous.html'</a>View erroneous data").build();
+							"<p><a href='http://localhost:8080/CallFailureEnterprise/erroneous.html'</a>View erroneous data" +
+							"<p><a href='http://localhost:8080/CallFailureEnterprise/valid.html'</a>View valid data").build();
 				}
 				else{
 					return null;
@@ -188,7 +189,7 @@ public class FileUploadService {
 		compareData();
 		
 		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/validData.json"));
-//		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
+		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 		
 //		System.out.println(baseDataService.getCatalog().size());
 //		System.out.println(erroneousDataService.getCatalog().size());
