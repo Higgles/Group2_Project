@@ -4,6 +4,21 @@
   <artifactId>CallFailureEnterprise</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  <properties>
+   <version.jacoco>0.7.4.201502262128</version.jacoco>
+   <version.arquillian_jacoco>1.0.0.Alpha8</version.arquillian_jacoco>
+</properties>
+  <dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.arquillian</groupId>
+            <artifactId>arquillian-bom</artifactId>
+            <version>1.1.11.Final</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
   <dependencies>
 	<!--  JEE Dependencies  -->
 	<dependency>
@@ -59,8 +74,88 @@
 		<artifactId>json</artifactId>
 		<version>20160212</version>
 	</dependency>
-	
+	<dependency>
+	    <groupId>org.jboss.arquillian.junit</groupId>
+	    <artifactId>arquillian-junit-container</artifactId>
+    <scope>test</scope>
+</dependency>
   </dependencies>
+  <profiles>
+  <profile>
+    <id>arquillian-jbossas-remote</id>
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-6.0</artifactId>
+            <version>1.0.0.Final</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-arquillian-container-remote</artifactId>
+            <version>7.1.1.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>
+            <scope>test</scope>
+        </dependency>
+	<dependency>
+	    <groupId>org.jboss.arquillian.junit</groupId>
+	    <artifactId>arquillian-junit-container</artifactId>
+    <scope>test</scope>
+</dependency>
+<dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-jacoco</artifactId>
+                <scope>test</scope>
+                <version>1.0.0.Alpha1</version>
+            </dependency>
+    </dependencies>
+</profile>
+<profile>
+   <id>jacoco</id>
+   <dependencies>
+      <dependency>
+         <groupId>org.jacoco</groupId>
+         <artifactId>org.jacoco.core</artifactId>
+         <version>${version.jacoco}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.extension</groupId>
+         <artifactId>arquillian-jacoco</artifactId>
+         <version>${version.arquillian_jacoco}</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${version.jacoco}</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>report</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+</profile>
+</profiles>
   <build>
   	<pluginManagement>
     	<plugins>
@@ -91,10 +186,6 @@
 				<failOnMissingWebXml>false</failOnMissingWebXml>
 			</configuration>
 		</plugin>
-      	<plugin>
-        	<artifactId>maven-surefire-plugin</artifactId>
-          	<version>2.12</version>
-        </plugin>
     </plugins>
   </build>
 </project>

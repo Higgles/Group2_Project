@@ -85,7 +85,7 @@ public class JPAUETableDAO implements UETableDAO {
                 		ueTable.get("OS").toString(), 
                 		ueTable.get("INPUT_MODE").toString());
                 List<UETable> ueValues = query.getResultList();
-        		em.persist(object);
+        		em.merge(object);
             }
            
  

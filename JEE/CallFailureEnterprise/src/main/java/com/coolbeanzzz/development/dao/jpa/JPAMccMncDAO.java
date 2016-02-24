@@ -87,7 +87,7 @@ public class JPAMccMncDAO implements MccMncDAO {
                 		mccMnc.get("COUNTRY").toString(),
                 		mccMnc.get("OPERATOR").toString());
                 List<MccMnc> mccMncs = query.getResultList();
-        		em.persist(object);
+        		em.merge(object);
             }
            
  
