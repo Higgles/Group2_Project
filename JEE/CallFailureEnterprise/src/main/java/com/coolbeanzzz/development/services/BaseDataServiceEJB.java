@@ -1,5 +1,6 @@
 package com.coolbeanzzz.development.services;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -50,7 +51,7 @@ public class BaseDataServiceEJB implements BaseDataService {
 		return dao.getAllBaseData();
 	}
 	
-	public void populateBaseDataTable(JSONArray baseData) {
-		dao.populateBaseDataTable(baseData);
+	public void populateBaseDataTable(File filename) {
+		dao.populateBaseDataTable(filename);
 	}
 }

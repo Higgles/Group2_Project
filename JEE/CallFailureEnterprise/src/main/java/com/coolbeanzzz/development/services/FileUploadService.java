@@ -187,8 +187,8 @@ public class FileUploadService {
 
 		compareData();
 		
-		baseDataService.populateBaseDataTable(validData);
-		erroneousDataService.populateErroneousDataTable(erroneousData);
+		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/validData.json"));
+//		erroneousDataService.populateErroneousDataTable(erroneousData);
 		
 //		System.out.println(baseDataService.getCatalog().size());
 //		System.out.println(erroneousDataService.getCatalog().size());
@@ -243,6 +243,27 @@ public class FileUploadService {
 					validData.add(baseData);
 				}
 			}
+			
+			FileWriter fwValid = new FileWriter(new File("validData.json"));
+			Iterator<Object> iteratorValid = validData.iterator();
+			fwValid.write("[");
+			while (iteratorValid.hasNext()) {
+				JSONObject validObject = (JSONObject) iteratorValid.next();
+				fwValid.write(validObject.toJSONString() + ",");
+			}
+			fwValid.write("]");
+			fwValid.close();
+			
+			FileWriter fwErroneous = new FileWriter(new File("erroneousData.json"));
+			Iterator<Object> iteratorErroneous = erroneousData.iterator();
+			fwErroneous.write("[");
+			while (iteratorErroneous.hasNext()) {
+				JSONObject erroneousObject = (JSONObject) iteratorErroneous.next();
+				fwErroneous.write(erroneousObject.toJSONString() + ",");
+			}
+			fwErroneous.write("]");
+			fwErroneous.close();
+			
 			
 //			System.out.println(validData.size());
 //			System.out.println(erroneousData.size());
