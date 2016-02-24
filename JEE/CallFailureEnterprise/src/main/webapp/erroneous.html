@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+
+	<title>Erroneous Data Table</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
+	<link rel="stylesheet" type="text/css" href="resources/demo.css">
+	<link rel="stylesheet" href="media/css/bootstrap-table.css">
+	<style type="text/css" class="init">
+
+	</style>
+	<script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
+	<script type="text/javascript" language="javascript" src="resources/demo.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script src="media/js/bootstrap-table.js"></script>
+	<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
+	<script type="text/javascript" language="javascript" class="init">
+
+
+
+	</script>
+</head>
+
+<body>
+
+
+
+	<table id="erroneousData" class="table tablesorter tablesorter-default table-striped table-bordered" data-toggle="table" data-url="rest/erroneousdata" data-height="800" data-response-handler="responseHandler">
+    <thead>
+    <tr>
+        <th data-field="dateTime">Date / Time</th>
+        <th data-field="eventId">Event Id</th>
+        <th data-field="failureClass">Failure Class</th>
+        <th data-field="ueType">UE Type</th>
+        <th data-field="market">Market</th>
+        <th data-field="operator">Operator</th>
+        <th data-field="cellId">Cell Id</th>
+        <th data-field="duration">Duration</th>
+        <th data-field="causeCode">Cause Code</th>
+        <th data-field="neVersion">NE Version</th>
+        <th data-field="imsi">IMSI</th>
+        <th data-field="hier3_Id">HIER3_ID</th>
+        <th data-field="hier32_Id">HIER32_ID</th>
+        <th data-field="hier321_Id">HIER321_ID</th>
+    </tr>
+    </thead>
+</table>
+<script>
+
+$(document).ready(function(){
+	$(function(){
+		$("#erroneousData").tablesorter();
+	});
+});
+
+    // client side
+    function responseHandler(res) {
+        return res.erroneousDataCollection;
+    }
+
+
+</script>
+</body>
+</html>

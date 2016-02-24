@@ -111,7 +111,7 @@ public class FileUploadService {
 					writeFile(bytes, fileName);
 					
 					return Response.status(200).entity("Dataset uploaded: " + fileName + 
-							"<p><a href='http://localhost:8080/CallFailureEnterprise/rest/erroneousdata'</a>View erroneous data").build();
+							"<p><a href='http://localhost:8080/CallFailureEnterprise/erroneous.html'</a>View erroneous data").build();
 				}
 				else{
 					return null;
