@@ -5,11 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.Collection;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
-import javax.json.JsonArray;
-
-import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -41,22 +37,22 @@ import com.coolbeanzzz.development.services.UETableService;
 public class IntegrationTest {
 	
 	 @Inject
-	 FailureClassService fcservice;
+	 FailureClassService failureClassService;
 	 
 	 @Inject
-	 EventCauseService ecservice;
+	 EventCauseService eventCauseService;
 	 
 	 @Inject
-	 MccMncService mccmncservice;
+	 MccMncService mccmncService;
 	 
 	 @Inject
-	 UETableService uetableservice;
+	 UETableService ueTableService;
 	 
 	 @Inject
-	 BaseDataService basedataservice;
+	 BaseDataService baseDataService;
 	 
 	 @Inject
-	 ErroneousDataService erroneousdataservice;
+	 ErroneousDataService erroneousDataService;
 	
 	 @Deployment
 	 public static JavaArchive createDeployment(){
@@ -66,110 +62,86 @@ public class IntegrationTest {
 	      jar.addAsManifestResource("META-INF/persistence.xml", "persistence.xml");
 	      jar.addAsManifestResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
 	      .addPackage(JSONArray.class.getPackage()).addPackage(ParseException.class.getPackage());
-	      //jar.addAsManifestResource("ejb-jar.xml", "ejb-jar.xml");
 	     System.out.println(jar.toString(true));
   
 	     return jar;
     }
  
- 
 	 @Test
-	 public void callServiceToGetFailureClassFromDB() {
-		 Collection<FailureClass> f=fcservice.getCatalog();
-		 
-	     assertNotNull("not be null!", f);
-//	     FailureClass fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));	     
-	 }
+	public void callServiceToGetFailureClassFromDB() {
+		Collection<FailureClass> failureClasses=failureClassService.getCatalog();
+		assertTrue(failureClasses.size()>0); 
+	}
 	 
-	 @Test
-	 public void uploadFailureClassFromFile() {		 
-	     fcservice.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-	     Collection<FailureClass> f=fcservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
+	@Test
+	public void uploadFailureClassFromFile() {		 
+		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
+	    Collection<FailureClass> failureClasses=failureClassService.getCatalog();
+	    assertTrue(failureClasses.size()>0); 
+	}
 	 
-	 @Test
-	 public void callServiceToGetEventCauseFromDB() {
-		 Collection<EventCause> f=ecservice.getCatalog();
-	     assertNotNull("not be null!", f);
-//	     EventCause fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));
-	 }
+	@Test
+	public void callServiceToGetEventCauseFromDB() {
+		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
+		assertTrue(eventCauses.size()>0); 
+	}
 	 
-	 @Test
-	 public void uploadEventCauseFromFile() {		 
-		 ecservice.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-	     Collection<FailureClass> f=fcservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
+	@Test
+	public void uploadEventCauseFromFile() {		 
+		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/test_Event-Cause Table.json"));
+		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
+		assertTrue(eventCauses.size()>0);     
+	}
 	 
-	 @Test
-	 public void callServiceToGetMccMncFromDB() {
-		 Collection<MccMnc> f=mccmncservice.getCatalog();
-	     assertNotNull("not be null!", f);
-//	     MccMnc fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));
-	 }
+	@Test
+	public void callServiceToGetMccMncFromDB() {
+		Collection<MccMnc> mccmncs=mccmncService.getCatalog();
+		assertTrue(mccmncs.size()>0);   
+	}
 	 
-	 @Test
-	 public void uploadMccMncFromFile() {		 
-		 mccmncservice.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-	     Collection<MccMnc> f=mccmncservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
+	@Test
+	public void uploadMccMncFromFile() {		 
+		mccmncService.populateTable(new File("/home/user1/software/jboss/bin/test_MCC - MNC Table.json"));
+	    Collection<MccMnc> mccmncs=mccmncService.getCatalog();
+	    assertTrue(mccmncs.size()>0); 
+	}
 	 
-	 @Test
-	 public void callServiceToGetUETableFromDB() {
-		 Collection<UETable> f=uetableservice.getCatalog();
-	     assertNotNull("not be null!", f);
-//	     UETable fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));
-	 }
+	@Test
+	public void callServiceToGetUETableFromDB() {
+		Collection<UETable> ueTables=ueTableService.getCatalog();
+		assertTrue(ueTables.size()>0); 
+	}
 	 
-	 @Test
-	 public void uploadUETableFromFile() {		 
-		 uetableservice.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
-	     Collection<UETable> f=uetableservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
+	@Test
+	public void uploadUETableFromFile() {		 
+		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/test_UE Table.json"));
+	    Collection<UETable> ueTables=ueTableService.getCatalog();
+	    assertTrue(ueTables.size()>0); 
+	}
 	 
-	 @Test
-	 public void callServiceToGetBaseDataFromDB() {
-		 Collection<BaseData> f=basedataservice.getCatalog();
-	     assertNotNull("not be null!", f);
-//	     BaseData fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));
-	 }
+	@Test
+	public void callServiceToGetBaseDataFromDB() {
+		Collection<BaseData> baseDatas=baseDataService.getCatalog();
+		assertTrue(baseDatas.size()>0); 
+	}
 	 
-	 @Test
-	 public void uploadBaseDataFromFile() {		 
-		 basedataservice.populateBaseDataTable(new File("/home/user1/software/jboss/bin/validData.json"));
-	     Collection<BaseData> f=basedataservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
+	@Test
+	public void uploadBaseDataFromFile() {		 
+		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
+	    Collection<BaseData> baseDatas=baseDataService.getCatalog();
+	    assertTrue(baseDatas.size()>0); 
+	}
 	 
-	 @Test
-	 public void callServiceToGetErroneousDataFromDB() {
-		 Collection<ErroneousData> f=erroneousdataservice.getCatalog();
-	     assertNotNull("not be null!", f);
-//	     ErroneousData fc=f.iterator().next();
-//	     assertTrue(fc.equals(fc));
-	     
-	 }
+	@Test
+	public void callServiceToGetErroneousDataFromDB() {
+		Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
+		assertTrue(erroneousData.size()>0); 
+	}
 	 
-	 @Test
-	 public void uploadErroneousDataFromFile() {		 
-		 erroneousdataservice.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
-	     Collection<ErroneousData> f=erroneousdataservice.getCatalog();
-	     assertTrue(f.size()>0);
-	     
-	 }
-	 
-	 
+	@Test
+	public void uploadErroneousDataFromFile() {		 
+		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
+	    Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
+	    assertTrue(erroneousData.size()>0); 
+	} 
 }
