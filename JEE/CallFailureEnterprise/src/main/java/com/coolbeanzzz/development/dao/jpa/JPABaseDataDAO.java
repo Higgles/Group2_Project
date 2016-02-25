@@ -27,8 +27,10 @@ import org.json.simple.parser.ParseException;
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.entities.EventCause;
+import com.coolbeanzzz.development.entities.EventCausePk;
 import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.MccMncPk;
 import com.coolbeanzzz.development.entities.UETable;
 
 @Default
@@ -93,13 +95,10 @@ public class JPABaseDataDAO implements BaseDataDAO {
 						baseRow.get("HIER3_ID").toString(),
 						baseRow.get("HIER32_ID").toString(),
 						baseRow.get("HIER321_ID").toString(),
-						eventCause = new EventCause(Integer.parseInt(baseRow.get("Cause Code").toString()),
-								Integer.parseInt(baseRow.get("Event Id").toString()), ""),
-						mccmnc = new MccMnc(Integer.parseInt(baseRow.get("Market").toString()),
-								Integer.parseInt(baseRow.get("Operator").toString()), "", ""),
-						ueTable = new UETable(Integer.parseInt(baseRow.get("UE Type").toString()), "", "", "", "", "",
-								"", "", ""),
-						failureClass = new FailureClass(Integer.parseInt(baseRow.get("Failure Class").toString()), "")
+						em.find(EventCause.class, new EventCausePk(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
+						em.find(MccMnc.class, new MccMncPk(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
+						em.find(UETable.class, Integer.parseInt(baseRow.get("UE Type").toString())),
+						em.find(FailureClass.class, Integer.parseInt(baseRow.get("Failure Class").toString()))
 						);
 				
 				em.merge(object);
