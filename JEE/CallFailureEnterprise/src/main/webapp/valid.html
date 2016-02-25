@@ -57,6 +57,9 @@ $(document).ready(function(){
 	});
 });
 
+$("#validData").on('load-success.bs.table', function (e, data) {
+    $("#validData").trigger("update");
+})
     // client side
     function responseHandler(res) {
         return res.baseDataCollection;

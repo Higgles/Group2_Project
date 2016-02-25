@@ -57,6 +57,10 @@ $(document).ready(function(){
 	});
 });
 
+$("#erroneousData").on('load-success.bs.table', function (e, data) {
+    $("#erroneousData").trigger("update");
+})
+
     // client side
     function responseHandler(res) {
         return res.erroneousDataCollection;
