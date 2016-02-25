@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -67,78 +68,78 @@ public class IntegrationTest {
 	     return jar;
     }
  
-	 @Test
+	@Test @InSequence(1)
 	public void callServiceToGetFailureClassFromDB() {
 		Collection<FailureClass> failureClasses=failureClassService.getCatalog();
-		assertTrue(failureClasses.size()>0); 
+		assertNotNull(failureClasses); 
 	}
 	 
-	@Test
+	@Test @InSequence(2)
 	public void uploadFailureClassFromFile() {		 
 		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
 	    Collection<FailureClass> failureClasses=failureClassService.getCatalog();
 	    assertTrue(failureClasses.size()>0); 
 	}
 	 
-	@Test
+	@Test @InSequence(3)
 	public void callServiceToGetEventCauseFromDB() {
 		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
-		assertTrue(eventCauses.size()>0); 
+		assertNotNull(eventCauses); 
 	}
 	 
-	@Test
+	@Test @InSequence(4)
 	public void uploadEventCauseFromFile() {		 
 		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/test_Event-Cause Table.json"));
 		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
 		assertTrue(eventCauses.size()>0);     
 	}
 	 
-	@Test
+	@Test @InSequence(5)
 	public void callServiceToGetMccMncFromDB() {
 		Collection<MccMnc> mccmncs=mccmncService.getCatalog();
-		assertTrue(mccmncs.size()>0);   
+		assertNotNull(mccmncs);   
 	}
 	 
-	@Test
+	@Test @InSequence(6)
 	public void uploadMccMncFromFile() {		 
 		mccmncService.populateTable(new File("/home/user1/software/jboss/bin/test_MCC - MNC Table.json"));
 	    Collection<MccMnc> mccmncs=mccmncService.getCatalog();
 	    assertTrue(mccmncs.size()>0); 
 	}
 	 
-	@Test
+	@Test @InSequence(7)
 	public void callServiceToGetUETableFromDB() {
 		Collection<UETable> ueTables=ueTableService.getCatalog();
-		assertTrue(ueTables.size()>0); 
+		assertNotNull(ueTables); 
 	}
 	 
-	@Test
+	@Test @InSequence(8)
 	public void uploadUETableFromFile() {		 
 		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/test_UE Table.json"));
 	    Collection<UETable> ueTables=ueTableService.getCatalog();
 	    assertTrue(ueTables.size()>0); 
 	}
 	 
-	@Test
+	@Test @InSequence(9)
 	public void callServiceToGetBaseDataFromDB() {
 		Collection<BaseData> baseDatas=baseDataService.getCatalog();
-		assertTrue(baseDatas.size()>0); 
+		assertNotNull(baseDatas); 
 	}
 	 
-	@Test
+	@Test @InSequence(10)
 	public void uploadBaseDataFromFile() {		 
 		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
 	    Collection<BaseData> baseDatas=baseDataService.getCatalog();
 	    assertTrue(baseDatas.size()>0); 
 	}
 	 
-	@Test
+	@Test @InSequence(11)
 	public void callServiceToGetErroneousDataFromDB() {
 		Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
-		assertTrue(erroneousData.size()>0); 
+		assertNotNull(erroneousData); 
 	}
 	 
-	@Test
+	@Test @InSequence(12)
 	public void uploadErroneousDataFromFile() {		 
 		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
 	    Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
