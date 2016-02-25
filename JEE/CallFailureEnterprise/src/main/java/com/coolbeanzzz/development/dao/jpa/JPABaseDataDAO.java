@@ -113,12 +113,30 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		/*
+	}
+	
+	/*public void populateBaseDataTableJSON(JSONArray baseData) {
+		Query query = em.createQuery("from BaseData");
+
+		Iterator<Object> iterator = baseData.iterator();
+		
+		JSONObject baseRow;
+		BaseData object;
+		
+		EventCause eventCause;
+		MccMnc mccmnc;
+		UETable ueTable;
+		FailureClass failureClass;
+		
+		int j = 0;
+		
+		Iterator<Object> iteratorFile = baseData.iterator();
+
 		while (iterator.hasNext()) {
 			if(j < baseData.size()) j++;
 
 			baseRow = (JSONObject) iterator.next();
-//			System.out.println(baseRow.get("Date / Time").toString());
+
 			object = new BaseData(
 					j,
 					baseRow.get("Date / Time").toString(),
@@ -132,15 +150,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 					eventCause = new EventCause(Integer.parseInt(baseRow.get("Cause Code").toString()),
 							Integer.parseInt(baseRow.get("Event Id").toString()), ""),
 					mccmnc = new MccMnc(Integer.parseInt(baseRow.get("Market").toString()),
-							Integer.parseInt(baseRow.get("Operator").toString()), "", ""),
+									Integer.parseInt(baseRow.get("Operator").toString()), "", ""),
 					ueTable = new UETable(Integer.parseInt(baseRow.get("UE Type").toString()), "", "", "", "", "",
-							"", "", ""),
+											"", "", ""),
 					failureClass = new FailureClass(Integer.parseInt(baseRow.get("Failure Class").toString()), "")
 					);
-			
+
 			em.merge(object);
 
-		} 
-		*/
-	}
+		}
+	}*/
 }

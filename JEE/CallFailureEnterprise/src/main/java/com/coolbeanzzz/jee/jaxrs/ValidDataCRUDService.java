@@ -18,7 +18,7 @@ import com.coolbeanzzz.development.entities.BaseDataList;
 import com.coolbeanzzz.development.services.BaseDataService;
 
 @Path("/validdata")
-public class validDataCRUDService {
+public class ValidDataCRUDService {
 	
 
 	@Inject
