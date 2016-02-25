@@ -110,9 +110,11 @@ public class FileUploadService {
 					
 					writeFile(bytes, fileName);
 					
-					return Response.status(200).entity("Dataset uploaded: " + fileName + 
-							"<p><a href='http://localhost:8080/CallFailureEnterprise/erroneous.html'</a>View erroneous data" +
-							"<p><a href='http://localhost:8080/CallFailureEnterprise/valid.html'</a>View valid data").build();
+					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/erroneous.html");
+					return Response.temporaryRedirect(location).build();
+//					return Response.status(200).entity("Dataset uploaded: " + fileName + 
+//							"<p><a href='http://localhost:8080/CallFailureEnterprise/erroneous.html'</a>View erroneous data" +
+//							"<p><a href='http://localhost:8080/CallFailureEnterprise/valid.html'</a>View valid data").build();
 				}
 				else{
 					return null;
