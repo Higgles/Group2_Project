@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
-import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -44,12 +44,12 @@ public class MccMncServiceEJB implements MccMncService {
 		this.dao = dao;
 	}
 	
-	public Collection<MccMnc> getCatalog() {
-		return dao.getAllMccMncs();
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
 	public void populateTable(File jsonFile){
-		dao.populateMccMncTable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 	
 	public Collection<Integer> getMNCs() {

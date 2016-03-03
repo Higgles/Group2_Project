@@ -12,8 +12,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`MCC-MNC`")
 
 @XmlRootElement
-@IdClass(MccMncPk.class)
-public class MccMnc implements Serializable{
+@IdClass(MccMncPrimaryKey.class)
+public class MccMnc implements Serializable, FailureTable{
 
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="MCC") private int mcc;

@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-public class EventCausePk implements Serializable{
+public class EventCausePrimaryKey implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	protected int eventId;
-	protected int causeCode;
+	private int eventId;
+	private int causeCode;
 	
-	public EventCausePk() {}
+	public EventCausePrimaryKey() {}
 
-	public EventCausePk(int eventId, int causeCode) {
+	public EventCausePrimaryKey(int eventId, int causeCode) {
 		super();
 		this.eventId = eventId;
 		this.causeCode = causeCode;
@@ -26,7 +26,7 @@ public class EventCausePk implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EventCausePk other = (EventCausePk) obj;
+		EventCausePrimaryKey other = (EventCausePrimaryKey) obj;
 		if (eventId != other.eventId)
 			return false;
 		if(causeCode != other.causeCode)

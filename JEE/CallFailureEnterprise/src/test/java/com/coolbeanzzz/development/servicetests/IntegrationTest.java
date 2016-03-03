@@ -21,12 +21,8 @@ import org.junit.runner.RunWith;
 
 import com.coolbeanzzz.development.dao.FailureClassDAO;
 import com.coolbeanzzz.development.dao.jpa.JPAFailureClassDAO;
-import com.coolbeanzzz.development.entities.BaseData;
-import com.coolbeanzzz.development.entities.ErroneousData;
-import com.coolbeanzzz.development.entities.EventCause;
 import com.coolbeanzzz.development.entities.FailureClass;
-import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.UETable;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
 import com.coolbeanzzz.development.services.EventCauseService;
@@ -70,79 +66,79 @@ public class IntegrationTest {
  
 	@Test @InSequence(1)
 	public void callServiceToGetFailureClassFromDB() {
-		Collection<FailureClass> failureClasses=failureClassService.getCatalog();
+		Collection<FailureTable> failureClasses=failureClassService.getCatalog();
 		assertNotNull(failureClasses); 
 	}
 	 
 	@Test @InSequence(2)
 	public void uploadFailureClassFromFile() {		 
 		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
-	    Collection<FailureClass> failureClasses=failureClassService.getCatalog();
+	    Collection<FailureTable> failureClasses=failureClassService.getCatalog();
 	    assertTrue(failureClasses.size()>0); 
 	}
 	 
 	@Test @InSequence(3)
 	public void callServiceToGetEventCauseFromDB() {
-		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
+		Collection<FailureTable> eventCauses=eventCauseService.getCatalog();
 		assertNotNull(eventCauses); 
 	}
 	 
 	@Test @InSequence(4)
 	public void uploadEventCauseFromFile() {		 
 		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/test_Event-Cause Table.json"));
-		Collection<EventCause> eventCauses=eventCauseService.getCatalog();
+		Collection<FailureTable> eventCauses=eventCauseService.getCatalog();
 		assertTrue(eventCauses.size()>0);     
 	}
 	 
 	@Test @InSequence(5)
 	public void callServiceToGetMccMncFromDB() {
-		Collection<MccMnc> mccmncs=mccmncService.getCatalog();
+		Collection<FailureTable> mccmncs=mccmncService.getCatalog();
 		assertNotNull(mccmncs);   
 	}
 	 
 	@Test @InSequence(6)
 	public void uploadMccMncFromFile() {		 
 		mccmncService.populateTable(new File("/home/user1/software/jboss/bin/test_MCC - MNC Table.json"));
-	    Collection<MccMnc> mccmncs=mccmncService.getCatalog();
+	    Collection<FailureTable> mccmncs=mccmncService.getCatalog();
 	    assertTrue(mccmncs.size()>0); 
 	}
 	 
 	@Test @InSequence(7)
 	public void callServiceToGetUETableFromDB() {
-		Collection<UETable> ueTables=ueTableService.getCatalog();
+		Collection<FailureTable> ueTables=ueTableService.getCatalog();
 		assertNotNull(ueTables); 
 	}
 	 
 	@Test @InSequence(8)
 	public void uploadUETableFromFile() {		 
 		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/test_UE Table.json"));
-	    Collection<UETable> ueTables=ueTableService.getCatalog();
+	    Collection<FailureTable> ueTables=ueTableService.getCatalog();
 	    assertTrue(ueTables.size()>0); 
 	}
 	 
 	@Test @InSequence(9)
 	public void callServiceToGetBaseDataFromDB() {
-		Collection<BaseData> baseDatas=baseDataService.getCatalog();
+		Collection<FailureTable> baseDatas=baseDataService.getCatalog();
 		assertNotNull(baseDatas); 
 	}
 	 
 	@Test @InSequence(10)
 	public void uploadBaseDataFromFile() {		 
-		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
-	    Collection<BaseData> baseDatas=baseDataService.getCatalog();
+		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
+	    Collection<FailureTable> baseDatas=baseDataService.getCatalog();
 	    assertTrue(baseDatas.size()>0); 
 	}
 	 
 	@Test @InSequence(11)
 	public void callServiceToGetErroneousDataFromDB() {
-		Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
+		Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
 		assertNotNull(erroneousData); 
 	}
 	 
 	@Test @InSequence(12)
 	public void uploadErroneousDataFromFile() {		 
-		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
-	    Collection<ErroneousData> erroneousData=erroneousDataService.getCatalog();
+		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
+	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
 	    assertTrue(erroneousData.size()>0); 
 	} 
 }

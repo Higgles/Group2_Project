@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity @Table(name="`Erroneous Data`")
 
 @XmlRootElement
-public class ErroneousData implements Serializable{
+public class ErroneousData implements Serializable, FailureTable{
 
 	private static final long serialVersionUID = 1L;
 	

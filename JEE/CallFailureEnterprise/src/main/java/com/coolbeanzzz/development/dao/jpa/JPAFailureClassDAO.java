@@ -1,7 +1,6 @@
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -16,43 +15,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import com.coolbeanzzz.development.dao.FailureClassDAO;
-import com.coolbeanzzz.development.entities.FailureClass;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-
-
-//import org.json.JSONArray;
-//import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.coolbeanzzz.development.dao.FailureClassDAO;
+import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Default
 @Stateless
@@ -70,10 +44,9 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		logger.info(em.toString());
 	}
 	
-	
-	public Collection<FailureClass> getAllFailureClasses() {
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from FailureClass");
-		List<FailureClass> failureClasses = query.getResultList();
+		List<FailureTable> failureClasses = query.getResultList();
 		
 		return failureClasses;
 	}
@@ -86,8 +59,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 	}
 	
 	
-    public void populateFailureClassTable(File jsonFile) {
-    	Query query = em.createQuery("from FailureClass");
+    public void populateTable(File jsonFile) {
            
         JSONParser parser = new JSONParser();
  
@@ -97,32 +69,19 @@ public class JPAFailureClassDAO implements FailureClassDAO {
             
             JSONArray rows = (JSONArray) obj;
             
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
             while (iterator.hasNext()) {
-            	
                 JSONObject failureClass = (JSONObject) iterator.next();
                 FailureClass object = new FailureClass(Integer.parseInt(failureClass.get("Failure Class").toString()), failureClass.get("Description").toString());
-//                Query query2 = em.createQuery("from FailureClass f where f.failureClass=:fclass");
-//            	query2.setParameter("fclass", object.getFailureClass());
-//                List<FailureClass> failures = query2.getResultList();
-//                if(!failures.contains(object)){
-//                	em.persist(object);
-//                }
-//                else{
                 	em.merge(object);
-//                }
-            }
-           
- 
+            } 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-         
+        }    
     }
-	
 }

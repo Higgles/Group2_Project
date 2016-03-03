@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`UE Table`")
 
 @XmlRootElement
-public class UETable implements Serializable {
+public class UETable implements Serializable, FailureTable{
 	
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="TAC") private int tac;

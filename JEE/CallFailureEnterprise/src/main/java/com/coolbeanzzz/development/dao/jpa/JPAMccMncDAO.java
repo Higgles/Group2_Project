@@ -25,8 +25,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.UETable;
 
 @Default
 @Stateless
@@ -45,9 +45,9 @@ public class JPAMccMncDAO implements MccMncDAO {
 	}
 	
 	
-	public Collection<MccMnc> getAllMccMncs() {
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from MccMnc");
-		List<MccMnc> mccMncs = query.getResultList();
+		List<FailureTable> mccMncs = query.getResultList();
 		
 		return mccMncs;
 	}
@@ -66,9 +66,7 @@ public class JPAMccMncDAO implements MccMncDAO {
 		return mccs;
 	}
 	
-	public void populateMccMncTable(File jsonFile) {
-    	Query query = em.createQuery("from MccMnc");
-           
+	public void populateTable(File jsonFile) {           
         JSONParser parser = new JSONParser();
  
         try {
@@ -76,28 +74,23 @@ public class JPAMccMncDAO implements MccMncDAO {
             Object obj = parser.parse(new FileReader(jsonFile));
             
             JSONArray rows = (JSONArray) obj;
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
-            while (iterator.hasNext()) {
-              
+            while (iterator.hasNext()) {  
                 JSONObject mccMnc = (JSONObject) iterator.next();
                 MccMnc object = new MccMnc(
                 		Integer.parseInt(mccMnc.get("MCC").toString()),
                 		Integer.parseInt(mccMnc.get("MNC").toString()),
                 		mccMnc.get("COUNTRY").toString(),
                 		mccMnc.get("OPERATOR").toString());
-                List<MccMnc> mccMncs = query.getResultList();
         		em.merge(object);
             }
-           
- 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-         
+        }  
     }
 }

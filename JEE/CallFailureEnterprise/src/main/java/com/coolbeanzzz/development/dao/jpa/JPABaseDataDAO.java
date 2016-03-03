@@ -27,10 +27,11 @@ import org.json.simple.parser.ParseException;
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.EventCausePk;
+import com.coolbeanzzz.development.entities.EventCausePrimaryKey;
 import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.MccMncPk;
+import com.coolbeanzzz.development.entities.MccMncPrimaryKey;
 import com.coolbeanzzz.development.entities.UETable;
 
 @Default
@@ -50,25 +51,16 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	
-	public Collection<BaseData> getAllBaseData() {
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from BaseData");
-		List<BaseData> basedata = query.getResultList();
+		List<FailureTable> basedata = query.getResultList();
 		
 		return basedata;
 	}
 	
-	public void populateBaseDataTable(File filename) {
-		Query query = em.createQuery("from BaseData");
-
-//		Iterator<Object> iterator = baseData.iterator();
-		
+	public void populateTable(File filename) {		
 		JSONObject baseRow;
 		BaseData object;
-		
-		EventCause eventCause;
-		MccMnc mccmnc;
-		UETable ueTable;
-		FailureClass failureClass;
 		
 		int j = 0;
 
@@ -78,7 +70,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 
 			JSONArray rows = (JSONArray) obj;
 
-			Iterator<Object> iteratorFile = rows.iterator();
+			Iterator<?> iteratorFile = rows.iterator();
 			
 			while(iteratorFile.hasNext()){
 				j++;
@@ -95,8 +87,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 						baseRow.get("HIER3_ID").toString(),
 						baseRow.get("HIER32_ID").toString(),
 						baseRow.get("HIER321_ID").toString(),
-						em.find(EventCause.class, new EventCausePk(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
-						em.find(MccMnc.class, new MccMncPk(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
+						em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
+						em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
 						em.find(UETable.class, Integer.parseInt(baseRow.get("UE Type").toString())),
 						em.find(FailureClass.class, Integer.parseInt(baseRow.get("Failure Class").toString()))
 						);

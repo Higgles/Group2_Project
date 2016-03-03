@@ -1,13 +1,8 @@
 package com.coolbeanzzz.development.dao;
 
-import java.io.File;
 import java.util.Collection;
 
-import com.coolbeanzzz.development.entities.MccMnc;
-
-public interface MccMncDAO {
-	Collection<MccMnc> getAllMccMncs();
-	void populateMccMncTable(File jsonFile);
+public interface MccMncDAO extends FailureTableDAO{
 	Collection<Integer> getMNCs();
 	Collection<Integer> getMCCs();
 }

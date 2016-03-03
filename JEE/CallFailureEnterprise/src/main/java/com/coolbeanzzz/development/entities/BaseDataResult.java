@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BaseDataResult implements Serializable{
+public class BaseDataResult implements Serializable, FailureTable{
 private static final long serialVersionUID = 1L;
 	
 	private int id;

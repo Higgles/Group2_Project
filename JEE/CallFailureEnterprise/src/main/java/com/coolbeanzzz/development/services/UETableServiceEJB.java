@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.UETableDAO;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.UETable;
 
 @Stateless
@@ -44,12 +45,12 @@ public class UETableServiceEJB implements UETableService {
 		this.dao = dao;
 	}
 	
-	public Collection<UETable> getCatalog() {
-		return dao.getAllUETables();
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
 	public void populateTable(File jsonFile){
-		dao.populateUETable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 	
 	public Collection<Integer> getUETypes() {

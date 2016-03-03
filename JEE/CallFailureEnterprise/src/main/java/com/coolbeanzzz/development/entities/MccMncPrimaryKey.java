@@ -2,14 +2,14 @@ package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
 
-public class MccMncPk implements Serializable{
+public class MccMncPrimaryKey implements Serializable{
 	private static final long serialVersionUID = 1L;
-	protected int mcc;
-	protected int mnc;
+	private int mcc;
+	private int mnc;
 	
-	public MccMncPk() {}
+	public MccMncPrimaryKey() {}
 	
-	public MccMncPk(int mcc, int mnc) {
+	public MccMncPrimaryKey(int mcc, int mnc) {
 		super();
 		this.mcc = mcc;
 		this.mnc = mnc;
@@ -23,7 +23,7 @@ public class MccMncPk implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MccMncPk other = (MccMncPk) obj;
+		MccMncPrimaryKey other = (MccMncPrimaryKey) obj;
 		if (mcc != other.mcc)
 			return false;
 		if(mnc != other.mnc)

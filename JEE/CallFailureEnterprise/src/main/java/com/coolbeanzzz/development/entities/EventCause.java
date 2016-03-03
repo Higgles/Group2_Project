@@ -13,8 +13,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`Event Cause`")
 
 @XmlRootElement
-@IdClass(EventCausePk.class)
-public class EventCause implements Serializable{
+@IdClass(EventCausePrimaryKey.class)
+public class EventCause implements Serializable, FailureTable{
 
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="`Cause Code`") private int causeCode;

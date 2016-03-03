@@ -26,7 +26,7 @@ import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.EventCauseDAO;
 import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Default
 @Stateless
@@ -45,9 +45,9 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 	}
 	
 	
-	public Collection<EventCause> getAllEventCauses() {
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from EventCause");
-		List<EventCause> eventCauses = query.getResultList();
+		List<FailureTable> eventCauses = query.getResultList();
 		
 		return eventCauses;
 	}
@@ -66,8 +66,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return causeCodes;
 	}
 	
-	public void populateEventCauseTable(File jsonFile) {
-    	Query query = em.createQuery("from EventCause");
+	public void populateTable(File jsonFile) {
            
         JSONParser parser = new JSONParser();
  
@@ -76,7 +75,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
             Object obj = parser.parse(new FileReader(jsonFile));
             
             JSONArray rows = (JSONArray) obj;
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
             while (iterator.hasNext()) {
               
@@ -85,7 +84,6 @@ public class JPAEventCauseDAO implements EventCauseDAO {
                 		Integer.parseInt(eventCause.get("Cause Code").toString()),
                 		Integer.parseInt(eventCause.get("Event Id").toString()),
                 		eventCause.get("Description").toString());
-                //List<EventCause> eventCauses = query.getResultList();
         		em.merge(object);
             }
            
@@ -96,7 +94,6 @@ public class JPAEventCauseDAO implements EventCauseDAO {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-         
+        }   
     }
 }

@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.EventCauseDAO;
-import com.coolbeanzzz.development.entities.EventCause;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -45,12 +45,12 @@ public class EventCauseServiceEJB implements EventCauseService {
 		this.dao = dao;
 	}
 	
-	public Collection<EventCause> getCatalog() {
-		return dao.getAllEventCauses();
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
 	public void populateTable(File jsonFile){
-		dao.populateEventCauseTable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 
 	public Collection<Integer> getAllUniqueEventIds() {

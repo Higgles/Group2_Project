@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`Failure Class`")
 
 @XmlRootElement
-public class FailureClass implements Serializable{
+public class FailureClass implements Serializable, FailureTable{
 	
 	private static final long serialVersionUID = 1L;
 	

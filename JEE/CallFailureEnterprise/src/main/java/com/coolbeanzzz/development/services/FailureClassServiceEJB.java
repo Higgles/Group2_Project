@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.FailureClassDAO;
-import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -45,12 +45,12 @@ public class FailureClassServiceEJB implements FailureClassService {
 		this.dao = dao;
 	}
 	
-	public Collection<FailureClass> getCatalog() {
-		return dao.getAllFailureClasses();
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
 	public void populateTable(File jsonFile){
-		dao.populateFailureClassTable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 	
 	public Collection<Integer> getFailureClasseCodes() {

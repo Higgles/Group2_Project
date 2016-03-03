@@ -1,6 +1,5 @@
 package com.coolbeanzzz.development.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,20 +7,15 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BaseDataList implements Serializable {
-	private Collection<BaseDataResult> baseDataCollection;
-	
-	public Collection<BaseDataResult> getBaseDataCollection() {
-        return baseDataCollection;
-    }
+public class BaseDataList extends ResultList{	
 
-    public void setBaseDataCollection(Collection<BaseData> baseDataCollection) {
-    	Iterator<BaseData> basedata=baseDataCollection.iterator();
+    public void setDataCollection(Collection<FailureTable> dataCollection) {
+    	Iterator<FailureTable> basedata=dataCollection.iterator();
     			
-        this.baseDataCollection = new ArrayList<BaseDataResult>();
+        this.dataCollection = new ArrayList<FailureTable>();
         while(basedata.hasNext()){
-        	BaseData c=basedata.next();
-	        this.baseDataCollection.add(new BaseDataResult(
+        	BaseData c=(BaseData) basedata.next();
+	        this.dataCollection.add(new BaseDataResult(
 	        	c.getId(),
 	        	c.getDateTime(),
 	        	c.getEventCause().getEventId(),
