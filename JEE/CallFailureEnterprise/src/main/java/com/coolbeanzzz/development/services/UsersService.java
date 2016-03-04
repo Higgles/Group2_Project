@@ -7,12 +7,12 @@ import javax.ejb.Local;
 
 import org.json.simple.JSONArray;
 
-import com.coolbeanzzz.development.entities.User;
+import com.coolbeanzzz.development.entities.Users;
 
 
 @Local
-public interface UserService {
+public interface UsersService {
 
-	public Collection<User> getCatalog();
+	public Collection<Users> getCatalog();
 	 
 }

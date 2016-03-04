@@ -14,23 +14,23 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.coolbeanzzz.development.entities.UserList;
-import com.coolbeanzzz.development.services.UserService;
+import com.coolbeanzzz.development.entities.UsersList;
+import com.coolbeanzzz.development.services.UsersService;
 
 @Path("/users")
 public class UserCRUDService {
 
 
 	@Inject
-	private UserService service;
+	private UsersService service;
 	
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UserList getUsers() {
-    	UserList user = new UserList();
-    	user.setUserCollection(service.getCatalog());  //???
-        return UserList;
+    public UsersList getUsers() {
+    	UsersList user = new UsersList();
+    	user.setUsersCollection(service.getCatalog());  //???
+        return UsersList;
     }
 
 	

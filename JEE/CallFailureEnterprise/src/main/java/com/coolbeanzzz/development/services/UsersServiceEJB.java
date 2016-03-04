@@ -17,41 +17,41 @@ import javax.persistence.PersistenceContext;
 
 import org.json.simple.JSONArray;
 
-import com.coolbeanzzz.development.dao.ErroneousDataDAO;
-import com.coolbeanzzz.development.entities.ErroneousData;
+import com.coolbeanzzz.development.dao.UsersDAO;
+import com.coolbeanzzz.development.entities.Users;
 
 @Stateless
 @Local
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
-public class UserServiceEJB implements UserService{
+public class UsersServiceEJB implements UsersService{
 
-Logger logger = Logger.getLogger("ErroneousDataServiceEJB");
+Logger logger = Logger.getLogger("UsersEJB");
 	
 	@PersistenceContext
 	private EntityManager em;
 		
 	@Inject
-	private UserDAO dao;
+	private UsersDAO dao;
 	
 	@Resource
 	private SessionContext context;
 
 	@PostConstruct
 	public void init() {
-		logger.info("in UserServiceEJB.init");
+		logger.info("in UsersServiceEJB.init");
 		logger.info(em.toString());
 	}
 	
-	public void setDao(UserDAO dao) {
+	public void setDao(UsersDAO dao) {
 		this.dao = dao;
 	}
 	
-	public Collection<ErroneousData> getCatalog() {
-		return dao.getAllUsers();  //???
+	public Collection<Users> getCatalog() {
+		return dao.getAllUsers();  
 	}
 	
-	public void populateUserTable(File filename){
-		dao.populateUserTable(filename);
+	public void populateUserTable(){
+		
 	}
 	
 }
