@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
+import com.conygre.training.entities.CompactDisc;
 import com.coolbeanzzz.development.dao.UsersDAO;
 import com.coolbeanzzz.development.entities.Users;
 
@@ -56,8 +56,11 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 	
 	
 	
-public void populateUserTable() {
-    	
+public void addUser(Users user) {
+	Query query = em.createQuery("from Users");
+	List<Users> users = query.getResultList();
+	if (!users.contains(user))
+		em.persist(user);	
          
     }
 }

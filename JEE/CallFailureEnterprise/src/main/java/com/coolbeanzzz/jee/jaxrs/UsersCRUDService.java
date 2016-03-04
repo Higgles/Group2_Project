@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.coolbeanzzz.development.entities.Users;
 import com.coolbeanzzz.development.entities.UsersList;
 import com.coolbeanzzz.development.services.UsersService;
 
@@ -32,6 +33,14 @@ public class UsersCRUDService {
     	users.setUsersCollection(service.getCatalog());  
         return users;
     }
+    
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+		public Users addUsers(Users user) {
+		user.setId(0); // make sure the ID is not set
+		service.addUser(user);
+		return user;
+	}
 
 	
 }

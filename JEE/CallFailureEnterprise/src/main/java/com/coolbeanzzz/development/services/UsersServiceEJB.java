@@ -47,5 +47,9 @@ Logger logger = Logger.getLogger("UsersEJB");
 		return dao.getAllUsers();  
 	}
 	
+	public void addUser(Users user){
+		dao.addUser(user);		
+	}
+	
 	
 }
