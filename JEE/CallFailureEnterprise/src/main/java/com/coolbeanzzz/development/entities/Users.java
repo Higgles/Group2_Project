@@ -19,11 +19,11 @@ private static final long serialVersionUID = 1L;
 	
 	@Column(name="username") private String username;
 	@Column(name="passkey") private String passkey;
-	@Column(name="userType") private UserType userType;
+	@Column(name="userType") private String userType;
 
 	public Users() {}
 	
-	public Users(int id, String username, String passkey, UserType userType) {
+	public Users(int id, String username, String passkey, String userType) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -55,12 +55,52 @@ private static final long serialVersionUID = 1L;
 		this.passkey = passkey;
 	}
 
-	public UserType getUserType() {
+	public String getUserType() {
 		return userType;
 	}
 
-	public void setUserType(UserType userType) {
+	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Users other = (Users) obj;
+		if (id != other.getId())
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		if (passkey == null) {
+			if (other.passkey != null)
+				return false;
+		} else if (!passkey.equals(other.passkey))
+			return false;
+		if (userType == null) {
+			if (other.userType != null)
+				return false;
+		} else if (!userType.equals(other.userType))
+			return false;
+		return true;
+	}	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((passkey == null) ? 0 : passkey.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		return result;
 	}
 	
 }
