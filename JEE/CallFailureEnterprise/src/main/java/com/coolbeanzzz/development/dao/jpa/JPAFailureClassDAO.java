@@ -51,7 +51,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClasses;
 	}
 	
-	public Collection<Integer> getFailureClasseCodes() {
+	public Collection<Integer> getFailureClassCodes() {
 		Query query = em.createQuery("select f.failureClass from FailureClass f GROUP BY f.failureClass");
 		List<Integer> failureClassIds = query.getResultList();
 		

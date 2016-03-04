@@ -181,7 +181,7 @@ public class FileUploadService {
 		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
 		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
 		
-		uniqueFailureCodes = failureClassService.getFailureClasseCodes();
+		uniqueFailureCodes = failureClassService.getFailureClassCodes();
 		
 		mccs = mccMncService.getMCCs();
 		mncs = mccMncService.getMNCs();

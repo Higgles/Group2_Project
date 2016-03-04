@@ -5,5 +5,5 @@ import javax.ejb.Local;
 
 @Local
 public interface FailureClassService extends Service{
-	public Collection<Integer> getFailureClasseCodes();
+	public Collection<Integer> getFailureClassCodes();
 }

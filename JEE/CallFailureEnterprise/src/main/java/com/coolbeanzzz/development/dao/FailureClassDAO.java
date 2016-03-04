@@ -4,5 +4,5 @@ import java.util.Collection;
 
 
 public interface FailureClassDAO extends FailureTableDAO{
-	Collection<Integer> getFailureClasseCodes();
+	Collection<Integer> getFailureClassCodes();
 }

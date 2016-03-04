@@ -1,4 +1,4 @@
-package com.coolbeanzzz.development.servicetests;
+package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
 
