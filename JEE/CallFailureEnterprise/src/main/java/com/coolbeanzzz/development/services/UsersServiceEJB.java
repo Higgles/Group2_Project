@@ -1,6 +1,5 @@
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -14,8 +13,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.dao.UsersDAO;
 import com.coolbeanzzz.development.entities.Users;
@@ -50,8 +47,5 @@ Logger logger = Logger.getLogger("UsersEJB");
 		return dao.getAllUsers();  
 	}
 	
-	public void populateUserTable(){
-		
-	}
 	
 }

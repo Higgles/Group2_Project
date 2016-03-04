@@ -18,7 +18,7 @@ import com.coolbeanzzz.development.entities.UsersList;
 import com.coolbeanzzz.development.services.UsersService;
 
 @Path("/users")
-public class UserCRUDService {
+public class UsersCRUDService {
 
 
 	@Inject
@@ -28,9 +28,9 @@ public class UserCRUDService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UsersList getUsers() {
-    	UsersList user = new UsersList();
-    	user.setUsersCollection(service.getCatalog());  //???
-        return UsersList;
+    	UsersList users = new UsersList();
+    	users.setUsersCollection(service.getCatalog());  
+        return users;
     }
 
 	
