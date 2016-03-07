@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
@@ -16,7 +19,10 @@ public class FailureClassCRUDService {
 	@Inject
 	private FailureClassService service;
 	
-
+	/**
+	 * Gets all failure class records from the underlying table within the database
+	 * @return a list of failure class results
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getFailureClasses() {

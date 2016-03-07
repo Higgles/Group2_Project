@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -40,23 +43,31 @@ public class MccMncServiceEJB implements MccMncService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(MccMncDAO dao) {
 		this.dao = dao;
 	}
 	
+	@Override
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File jsonFile){
 		dao.populateTable(jsonFile);
 	}
 	
-	public Collection<Integer> getMNCs() {
-		return dao.getMNCs();
+	@Override
+	public Collection<Integer> getAllUniqueMNCs() {
+		return dao.getAllUniqueMNCs();
 	}
 	
-	public Collection<Integer> getMCCs() {
-		return dao.getMCCs();
+	@Override
+	public Collection<Integer> getAllUniqueMCCs() {
+		return dao.getAllUniqueMCCs();
 	}
 }

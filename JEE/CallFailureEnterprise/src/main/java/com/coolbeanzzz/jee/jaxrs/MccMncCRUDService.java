@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
@@ -16,7 +19,10 @@ public class MccMncCRUDService {
 	@Inject
 	private MccMncService service;
 	
-
+	/**
+	 * Gets a list of MccMnc records from the MccMnc table within the database
+	 * @return a list of MccMnc records
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getMccMncs() {

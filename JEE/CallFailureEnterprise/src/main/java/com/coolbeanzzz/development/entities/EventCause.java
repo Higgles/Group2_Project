@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -36,35 +39,67 @@ public class EventCause implements Serializable, FailureTable{
 		
 	}
 
+	/**
+	 * Gets the record's cause code value
+	 * @return cause code value
+	 */
 	public int getCauseCode() {
 		return causeCode;
 	}
 
+	/**
+	 * Sets the ecord's cause code value
+	 * @param causeCode new cause code
+	 */
 	public void setCauseCode(int causeCode) {
 		this.causeCode = causeCode;
 	}
 
+	/**
+	 * Gets the record's Event Id
+	 * @return event id
+	 */
 	public int getEventId() {
 		return eventId;
 	}
 
+	/**
+	 * Sets the records event id
+	 * @param eventId new event id
+	 */
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
 
+	/**
+	 * Gets the description relating to the event cause
+	 * @return description
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Sets the record's description to a new value
+	 * @param description new description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-		
+	
+	/**
+	 * Gets the relating base data record to this recod
+	 * @return relating base data record
+	 */
 	@JsonIgnore
 	public Set<BaseData> getBaseData() {
 		return baseData;
 	}
 
+	/**
+	 * Sets the relating base data record
+	 * @param baseData new base data record relation
+	 */
 	public void setBaseData(Set<BaseData> baseData) {
 		this.baseData = baseData;
 	}

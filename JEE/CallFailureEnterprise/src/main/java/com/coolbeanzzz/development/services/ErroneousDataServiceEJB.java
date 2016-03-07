@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -40,15 +43,21 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(ErroneousDataDAO dao) {
 		// do something really important on injection
 		this.dao = dao;
 	}
 	
+	@Override
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File filename){
 		dao.populateTable(filename);
 	}

@@ -34,12 +34,12 @@ public class MccMncServiceTest {
 		Collection<Integer> uniqueMccs = new ArrayList<>();
 		uniqueMccs.add(mccmnc1.getMcc());
 		uniqueMccs.add(mccmnc2.getMcc());
-		when(mockedMccMncDao.getMCCs()).thenReturn(uniqueMccs);
+		when(mockedMccMncDao.getAllUniqueMCCs()).thenReturn(uniqueMccs);
 		
 		Collection<Integer> uniqueMncs = new ArrayList<>();
 		uniqueMncs.add(mccmnc1.getMnc());
 		uniqueMncs.add(mccmnc2.getMnc());
-		when(mockedMccMncDao.getMNCs()).thenReturn(uniqueMncs);
+		when(mockedMccMncDao.getAllUniqueMNCs()).thenReturn(uniqueMncs);
 		
 		mccService=new MccMncServiceEJB();
 		mccService.setDao(mockedMccMncDao);
@@ -53,7 +53,7 @@ public class MccMncServiceTest {
 	
 	@Test
 	public void getAllUniqueCauseCodes(){
-		Collection<Integer> uniqueMccs = mccService.getMCCs();
+		Collection<Integer> uniqueMccs = mccService.getAllUniqueMCCs();
 		Iterator<Integer> uniqueValues = uniqueMccs.iterator();
 		
 		assertEquals(mccmnc1.getMcc(), uniqueValues.next().intValue());
@@ -62,7 +62,7 @@ public class MccMncServiceTest {
 	
 	@Test
 	public void getAllUniqueEventIds(){
-		Collection<Integer> uniqueMncs = mccService.getMNCs();
+		Collection<Integer> uniqueMncs = mccService.getAllUniqueMNCs();
 		Iterator<Integer> uniqueValues = uniqueMncs.iterator();
 		
 		assertEquals(mccmnc1.getMnc(), uniqueValues.next().intValue());

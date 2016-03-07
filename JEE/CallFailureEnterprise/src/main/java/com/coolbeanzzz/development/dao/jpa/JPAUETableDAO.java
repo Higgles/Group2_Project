@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -44,6 +47,7 @@ public class JPAUETableDAO implements UETableDAO {
 		logger.info(em.toString());
 	}
 	
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from UETable");
 		List<FailureTable> ueTables = query.getResultList();
@@ -51,6 +55,7 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 	
+	@Override
 	public Collection<Integer> getUETypes() {
 		Query query = em.createQuery("select u.tac from UETable u GROUP BY u.tac");
 		List<Integer> ueTables = query.getResultList();
@@ -58,6 +63,7 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 	
+	@Override
 	public void populateTable(File jsonFile) {           
         JSONParser parser = new JSONParser();
  

@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -44,14 +47,15 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		logger.info(em.toString());
 	}
 	
-	
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
-		Query query = em.createQuery("from EventCause");
+		Query query = em.createQuery("select e.eventId, e.causeCode from EventCause e");
 		List<FailureTable> eventCauses = query.getResultList();
 		
 		return eventCauses;
 	}
 	
+	@Override
 	public Collection<Integer> getAllUniqueEventIds() {
 		Query query = em.createQuery("select e.eventId from EventCause e GROUP BY e.eventId");
 		List<Integer> eventIds = query.getResultList();
@@ -59,6 +63,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return eventIds;
 	}
 	
+	@Override
 	public Collection<Integer> getAllUniqueCauseCodes() {
 		Query query = em.createQuery("select e.causeCode from EventCause e GROUP BY e.causeCode");
 		List<Integer> causeCodes = query.getResultList();
@@ -66,6 +71,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return causeCodes;
 	}
 	
+	@Override
 	public void populateTable(File jsonFile) {
            
         JSONParser parser = new JSONParser();

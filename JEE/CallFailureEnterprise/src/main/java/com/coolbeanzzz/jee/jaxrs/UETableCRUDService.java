@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
@@ -16,7 +19,10 @@ public class UETableCRUDService {
 	@Inject
 	private UETableService service;
 	
-
+	/**
+	 * Gets a list of UETable records from the table within the database
+	 * @return a list of ueTable results
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getUETableClasses() {

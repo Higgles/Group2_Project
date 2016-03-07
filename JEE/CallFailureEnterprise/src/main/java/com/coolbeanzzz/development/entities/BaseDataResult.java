@@ -1,3 +1,7 @@
+/**
+ * Temporary class, Can be removed once Base Data Retrieval is completed
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;

@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -44,7 +47,7 @@ public class JPAMccMncDAO implements MccMncDAO {
 		logger.info(em.toString());
 	}
 	
-	
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from MccMnc");
 		List<FailureTable> mccMncs = query.getResultList();
@@ -52,20 +55,23 @@ public class JPAMccMncDAO implements MccMncDAO {
 		return mccMncs;
 	}
 	
-	public Collection<Integer> getMNCs() {
+	@Override
+	public Collection<Integer> getAllUniqueMNCs() {
 		Query query = em.createQuery("select m.mnc from MccMnc m GROUP BY m.mnc");
 		List<Integer> mncs = query.getResultList();
 		
 		return mncs;
 	}
 	
-	public Collection<Integer> getMCCs() {
+	@Override
+	public Collection<Integer> getAllUniqueMCCs() {
 		Query query = em.createQuery("select m.mcc from MccMnc m GROUP BY m.mcc");
 		List<Integer> mccs = query.getResultList();
 		
 		return mccs;
 	}
 	
+	@Override
 	public void populateTable(File jsonFile) {           
         JSONParser parser = new JSONParser();
  

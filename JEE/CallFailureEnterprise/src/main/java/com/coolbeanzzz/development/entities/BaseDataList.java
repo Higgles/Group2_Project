@@ -1,3 +1,7 @@
+/**
+ * Temporary class, Can be removed once Base Data Retrieval is completed
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.util.ArrayList;
@@ -9,7 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class BaseDataList extends ResultList{	
 
-    public void setDataCollection(Collection<FailureTable> dataCollection) {
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public void setDataCollection(Collection<FailureTable> dataCollection) {
     	Iterator<FailureTable> basedata=dataCollection.iterator();
     			
         this.dataCollection = new ArrayList<FailureTable>();

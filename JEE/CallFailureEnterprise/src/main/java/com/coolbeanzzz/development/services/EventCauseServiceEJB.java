@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -40,23 +43,31 @@ public class EventCauseServiceEJB implements EventCauseService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(EventCauseDAO dao) {
 		// do something really important on injection
 		this.dao = dao;
 	}
 	
+	@Override
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File jsonFile){
 		dao.populateTable(jsonFile);
 	}
 
+	@Override
 	public Collection<Integer> getAllUniqueEventIds() {
 		return dao.getAllUniqueEventIds();
 	}
 	
+	@Override
 	public Collection<Integer> getAllUniqueCauseCodes() {
 		return dao.getAllUniqueCauseCodes();
 	}

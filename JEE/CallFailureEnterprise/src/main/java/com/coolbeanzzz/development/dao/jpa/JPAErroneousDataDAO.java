@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -44,6 +47,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 		logger.info(em.toString());
 	}
 
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from ErroneousData");
 		List<FailureTable> erroneousData = query.getResultList();
@@ -51,6 +55,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 		return erroneousData;
 	}
 
+	@Override
 	public void populateTable(File filename) {
 
 		String failureClass;
@@ -158,5 +163,5 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 			em.merge(object);
 		}
 		*/
-}
+	}
 }

@@ -52,4 +52,9 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public void populateTable(File filename) {
 		dao.populateTable(filename);
 	}
+
+	@Override
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
+		return dao.getUniqueEventIdsCauseCodeForPhoneType(ueType);
+	}
 }

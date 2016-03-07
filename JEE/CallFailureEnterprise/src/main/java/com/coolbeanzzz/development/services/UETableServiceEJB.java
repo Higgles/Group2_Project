@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -17,7 +20,6 @@ import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.UETableDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
-import com.coolbeanzzz.development.entities.UETable;
 
 @Stateless
 @Local
@@ -41,18 +43,25 @@ public class UETableServiceEJB implements UETableService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(UETableDAO dao) {
 		this.dao = dao;
 	}
 	
+	@Override
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File jsonFile){
 		dao.populateTable(jsonFile);
 	}
 	
+	@Override
 	public Collection<Integer> getUETypes() {
 		return dao.getUETypes();
 	}

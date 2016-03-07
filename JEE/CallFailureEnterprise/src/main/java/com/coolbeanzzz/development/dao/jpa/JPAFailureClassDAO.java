@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -44,6 +47,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		logger.info(em.toString());
 	}
 	
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from FailureClass");
 		List<FailureTable> failureClasses = query.getResultList();
@@ -51,6 +55,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClasses;
 	}
 	
+	@Override
 	public Collection<Integer> getFailureClassCodes() {
 		Query query = em.createQuery("select f.failureClass from FailureClass f GROUP BY f.failureClass");
 		List<Integer> failureClassIds = query.getResultList();
@@ -58,7 +63,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClassIds;
 	}
 	
-	
+	@Override
     public void populateTable(File jsonFile) {
            
         JSONParser parser = new JSONParser();

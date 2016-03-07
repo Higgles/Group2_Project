@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
@@ -16,7 +19,10 @@ public class EventCauseCRUDService {
 	@Inject
 	private EventCauseService service;
 	
-
+	/**
+	 * Gets all eventcause records within the EventCause table of the database
+	 * @return a list of results
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getEventCauses() {
@@ -24,5 +30,4 @@ public class EventCauseCRUDService {
         eventCauses.setDataCollection(service.getCatalog());
         return eventCauses;
     }
-
 }

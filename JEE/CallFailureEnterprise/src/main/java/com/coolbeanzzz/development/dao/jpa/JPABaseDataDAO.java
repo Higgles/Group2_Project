@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -50,7 +53,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		logger.info(em.toString());
 	}
 	
-	
+	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from BaseData");
 		List<FailureTable> basedata = query.getResultList();
@@ -58,6 +61,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
+	@Override
 	public void populateTable(File filename) {		
 		JSONObject baseRow;
 		BaseData object;
@@ -104,6 +108,18 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.ueTable.tac, count(bd.id), bd.ueTable.manufacturer, bd.ueTable.marketingName"
+				+ " from BaseData bd where bd.ueTable.tac=:ueType"
+				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
+		query.setParameter("ueType", ueType);
+		List<FailureTable> basedata = query.getResultList();
+		
+		return basedata;
 	}
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {

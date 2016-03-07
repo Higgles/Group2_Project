@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -24,36 +27,58 @@ public class FailureClass implements Serializable, FailureTable{
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 
-	public FailureClass(){
-		
-	}
+	public FailureClass(){}
 	
 	public FailureClass(int failureClass, String description){
 		this.failureClass = failureClass;
 		this.description = description;
 	}
 	
+	/**
+	 * Gets the failure class key rating of the record
+	 * @return failure class
+	 */
 	public int getFailureClass() {
 		return failureClass;
 	}
-
+	
+	/**
+	 * Sets the record's failure class key value
+	 * @param failureClass new failure class value
+	 */
 	public void setFailureClass(int failureClass) {
 		this.failureClass = failureClass;
 	}
 
+	/**
+	 * Gets the records failure class description
+	 * @return description
+	 */
 	public String getDescription() {
 		return description;
 	}
-
+	
+	/**
+	 * Sets the record's failure class description to a new value
+	 * @param description new description value
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Gets the relating base data record to this record
+	 * @return base data record
+	 */
 	@JsonIgnore
 	public Set<BaseData> getBaseData() {
 		return baseData;
 	}
 
+	/**
+	 * Sets the elating base data record to a new record
+	 * @param baseData
+	 */
 	public void setBaseData(Set<BaseData> baseData) {
 		this.baseData = baseData;
 	}

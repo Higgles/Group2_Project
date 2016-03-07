@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
@@ -16,7 +19,10 @@ public class ErroneousDataCRUDService {
 	@Inject
 	private ErroneousDataService service;
 	
-
+	/**
+	 * Gets a resultlis of all data within the Erroneous table
+	 * @return list of erroneous results
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getErroneousData() {
@@ -24,5 +30,4 @@ public class ErroneousDataCRUDService {
     	erroneousData.setDataCollection(service.getCatalog());
         return erroneousData;
     }
-
 }
