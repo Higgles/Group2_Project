@@ -1,8 +1,5 @@
 package com.coolbeanzzz.jee.jaxrs;
 
-import java.util.*;
-
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,17 +27,28 @@ public class UsersCRUDService {
     @Produces(MediaType.APPLICATION_JSON)
     public UsersList getUsers() {
     	UsersList users = new UsersList();
-    	users.setUsersCollection(service.getCatalog());  
+    	users.setUsersCollection(service.getAllUsers());  
         return users;
     }
     
     @POST
 	@Consumes(MediaType.APPLICATION_JSON)
-		public Users addUsers(Users user) {
+	public Users addUsers(Users user) {
 		user.setId(0); // make sure the ID is not set
 		service.addUser(user);
 		return user;
 	}
 
-	
+    @DELETE
+    @Path("/{id}")
+	public void removeUser(@PathParam("id") Users user) {
+		service.removeUser(user);
+	}
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateUser(Users updatedUser) {
+		service.updateUserUsingId(updatedUser.getId());  
+	}
+    
 }

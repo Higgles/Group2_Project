@@ -8,6 +8,9 @@ public interface UsersDAO {
 	
 	void addUser(Users user);
 	Collection<Users> getAllUsers();
+	Users removeUser(Users user);
+	Users removeUser(int id);
+	void updateUserUsingId(int id);
 	
 	
 	

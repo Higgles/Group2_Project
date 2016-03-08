@@ -1,11 +1,6 @@
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,17 +10,12 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Default;
-import javax.persistence.Column;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import com.conygre.training.entities.CompactDisc;
 import com.coolbeanzzz.development.dao.UsersDAO;
 import com.coolbeanzzz.development.entities.Users;
 
@@ -47,10 +37,10 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 	}
 	
 	
-	public Collection<Users> getAllUsers() {
+public Collection<Users> getAllUsers() {
 		Query query = em.createQuery("from Users");
 		List<Users> users = query.getResultList();
-		
+	//	if (users!=null)	
 		return users;
 	}
 	
@@ -63,4 +53,49 @@ public void addUser(Users user) {
 		em.persist(user);	
          
     }
+
+public Users removeUser(Users user) {
+	Query query = em.createQuery("from Users");
+	List<Users> users = query.getResultList();
+	if (users.contains(user)){
+		em.remove(user);	
+        return user;
+	}
+	return null;
+}
+
+public Users removeUser(int id) {
+	
+	Query query = em.createQuery("from Users");
+	List<Users> users = query.getResultList();
+	Users userById=null;
+	for(Users user:users){
+		if(user.getId()==id)
+			userById=user;
+	}
+	if (userById!=null){
+		em.remove(userById);
+		return userById;
+	}
+	return null;
+}
+
+
+
+public void updateUserUsingId(int id) {
+	
+	Query query = em.createQuery("from Users");
+	List<Users> users = query.getResultList();
+	Users user=null;
+	for(Users thisUser:users){
+		if(thisUser.getId()==id)
+			user=thisUser;
+	}
+	em.merge(user);
+}
+
+
+
+
+
 }

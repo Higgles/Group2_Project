@@ -43,12 +43,30 @@ Logger logger = Logger.getLogger("UsersEJB");
 		this.dao = dao;
 	}
 	
-	public Collection<Users> getCatalog() {
+	public Collection<Users> getAllUsers() {
 		return dao.getAllUsers();  
 	}
 	
 	public void addUser(Users user){
 		dao.addUser(user);		
+	}
+
+	@Override
+	public Users removeUser(Users user) {
+		return dao.removeUser(user);
+				
+	}
+
+	@Override
+	public Users removeUser(int id) {
+		return dao.removeUser(id);
+		
+	}
+
+	@Override
+	public void updateUserUsingId(int id) {
+		dao.updateUserUsingId(id);
+		
 	}
 	
 	

@@ -11,7 +11,11 @@ import com.coolbeanzzz.development.entities.Users;
 @Local
 public interface UsersService {
 
-	public Collection<Users> getCatalog();
+	
 	public void addUser(Users user);
+	public Collection<Users> getAllUsers();
+	public Users removeUser(Users user);
+	public Users removeUser(int id);
+	public void updateUserUsingId(int id);
 	 
 }
