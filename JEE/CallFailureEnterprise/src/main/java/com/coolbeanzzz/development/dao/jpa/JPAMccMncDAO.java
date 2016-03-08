@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -25,8 +28,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.UETable;
 
 @Default
 @Stateless
@@ -44,31 +47,32 @@ public class JPAMccMncDAO implements MccMncDAO {
 		logger.info(em.toString());
 	}
 	
-	
-	public Collection<MccMnc> getAllMccMncs() {
+	@Override
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from MccMnc");
-		List<MccMnc> mccMncs = query.getResultList();
+		List<FailureTable> mccMncs = query.getResultList();
 		
 		return mccMncs;
 	}
 	
-	public Collection<Integer> getMNCs() {
+	@Override
+	public Collection<Integer> getAllUniqueMNCs() {
 		Query query = em.createQuery("select m.mnc from MccMnc m GROUP BY m.mnc");
 		List<Integer> mncs = query.getResultList();
 		
 		return mncs;
 	}
 	
-	public Collection<Integer> getMCCs() {
+	@Override
+	public Collection<Integer> getAllUniqueMCCs() {
 		Query query = em.createQuery("select m.mcc from MccMnc m GROUP BY m.mcc");
 		List<Integer> mccs = query.getResultList();
 		
 		return mccs;
 	}
 	
-	public void populateMccMncTable(File jsonFile) {
-    	Query query = em.createQuery("from MccMnc");
-           
+	@Override
+	public void populateTable(File jsonFile) {           
         JSONParser parser = new JSONParser();
  
         try {
@@ -76,28 +80,23 @@ public class JPAMccMncDAO implements MccMncDAO {
             Object obj = parser.parse(new FileReader(jsonFile));
             
             JSONArray rows = (JSONArray) obj;
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
-            while (iterator.hasNext()) {
-              
+            while (iterator.hasNext()) {  
                 JSONObject mccMnc = (JSONObject) iterator.next();
                 MccMnc object = new MccMnc(
                 		Integer.parseInt(mccMnc.get("MCC").toString()),
                 		Integer.parseInt(mccMnc.get("MNC").toString()),
                 		mccMnc.get("COUNTRY").toString(),
                 		mccMnc.get("OPERATOR").toString());
-                List<MccMnc> mccMncs = query.getResultList();
         		em.merge(object);
             }
-           
- 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-         
+        }  
     }
 }

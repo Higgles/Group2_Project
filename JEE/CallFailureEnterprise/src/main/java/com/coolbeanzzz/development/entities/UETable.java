@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -13,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`UE Table`")
 
 @XmlRootElement
-public class UETable implements Serializable {
+public class UETable implements Serializable, FailureTable{
 	
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="TAC") private int tac;
@@ -48,82 +51,163 @@ public class UETable implements Serializable {
 		this.inputMode = inputMode;
 	}
 
+	/**
+	 * Gets the tac value
+	 * @return tac
+	 */
 	public int getTac() {
 		return tac;
 	}
 
+	/**
+	 * Sets the tac value to a new value
+	 * @param tac new tac value
+	 */
 	public void setTac(int tac) {
 		this.tac = tac;
 	}
 
+	/**
+	 * Gets the Marketing name value
+	 * @return marketingName
+	 */
 	public String getMarketingName() {
 		return marketingName;
 	}
 
+	/**
+	 * Sets the Marketing name value to a new value
+	 * @param marketingName new marketingName value
+	 */
 	public void setMarketingName(String marketingName) {
 		this.marketingName = marketingName;
 	}
 
+	/**
+	 * Gets the Manufacturer value
+	 * @return manufacturer
+	 */
 	public String getManufacturer() {
 		return manufacturer;
 	}
 
+	/**
+	 * Sets the manufacturer value to a new value
+	 * @param manufacturer new manufacturer value
+	 */
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
 	}
-
+	
+	/**
+	 * Gets the access capability value
+	 * @return accessCapability
+	 */
 	public String getAccessCapability() {
 		return accessCapability;
 	}
 
+	/**
+	 * Sets the access capability value to a new value
+	 * @param accessCapability new access capability value
+	 */
 	public void setAccessCapability(String accessCapability) {
 		this.accessCapability = accessCapability;
 	}
 
+	/**
+	 * Gets the model value
+	 * @return model
+	 */
 	public String getModel() {
 		return model;
 	}
 
+	/**
+	 * Sets the model value to a new value
+	 * @param model new model value
+	 */
 	public void setModel(String model) {
 		this.model = model;
 	}
 
+	/**
+	 * Gets the vendorName value
+	 * @return vendorName
+	 */
 	public String getVendorName() {
 		return vendorName;
 	}
 
+	/**
+	 * Sets the vendor name value to a new value
+	 * @param vendorName new vendor name
+	 */
 	public void setVendorName(String vendorName) {
 		this.vendorName = vendorName;
 	}
 
+	/**
+	 * Gets the ue type value
+	 * @return ueType
+	 */
 	public String getUeType() {
 		return ueType;
 	}
 
+	/**
+	 * Sets the ue type value to a new value
+	 * @param ueType new ue type value
+	 */
 	public void setUeType(String ueType) {
 		this.ueType = ueType;
 	}
 
+	/**
+	 * Gets the OS value
+	 * @return os
+	 */
 	public String getOs() {
 		return os;
 	}
 
+	/**
+	 * Sets the OS value to a new value
+	 * @param os new os value
+	 */
 	public void setOs(String os) {
 		this.os = os;
 	}
 
+	/**
+	 * Gets the input mode value
+	 * @return inputMode
+	 */
 	public String getInputMode() {
 		return inputMode;
 	}
 
+	/**
+	 * Sets the input mode value to a new value
+	 * @param inputMode new input mode
+	 */
 	public void setInputMode(String inputMode) {
 		this.inputMode = inputMode;
 	}
 
+	/**
+	 * Gets the relating base data record to this record
+	 * @return baseData
+	 */
+	@JsonIgnore
 	public Set<BaseData> getBaseData() {
 		return baseData;
 	}
 
+	/**
+	 * Sets the relating base data record to a new record
+	 * @param baseData new base data record
+	 */
 	public void setBaseData(Set<BaseData> baseData) {
 		this.baseData = baseData;
 	}

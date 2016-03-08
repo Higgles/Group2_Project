@@ -1,13 +1,15 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao;
 
-import java.io.File;
 import java.util.Collection;
 
-import com.coolbeanzzz.development.entities.FailureClass;
 
-
-public interface FailureClassDAO {
-	Collection<FailureClass> getAllFailureClasses();
-	Collection<Integer> getFailureClasseCodes();
-	void populateFailureClassTable(File jsonFile);
+public interface FailureClassDAO extends FailureTableDAO{
+	/**
+	 * Retrieves all failure class codes from Failure class table
+	 * @return a collection of failure class integers from Failure class table
+	 */
+	Collection<Integer> getFailureClassCodes();
 }

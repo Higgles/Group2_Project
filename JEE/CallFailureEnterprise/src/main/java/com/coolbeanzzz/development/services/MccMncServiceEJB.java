@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -16,7 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
-import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -40,23 +43,31 @@ public class MccMncServiceEJB implements MccMncService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(MccMncDAO dao) {
 		this.dao = dao;
 	}
 	
-	public Collection<MccMnc> getCatalog() {
-		return dao.getAllMccMncs();
+	@Override
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File jsonFile){
-		dao.populateMccMncTable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 	
-	public Collection<Integer> getMNCs() {
-		return dao.getMNCs();
+	@Override
+	public Collection<Integer> getAllUniqueMNCs() {
+		return dao.getAllUniqueMNCs();
 	}
 	
-	public Collection<Integer> getMCCs() {
-		return dao.getMCCs();
+	@Override
+	public Collection<Integer> getAllUniqueMCCs() {
+		return dao.getAllUniqueMCCs();
 	}
 }

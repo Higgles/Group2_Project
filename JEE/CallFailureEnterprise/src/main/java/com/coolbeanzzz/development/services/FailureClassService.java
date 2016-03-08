@@ -1,16 +1,17 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
-import java.io.File;
 import java.util.Collection;
 
 import javax.ejb.Local;
 
-import com.coolbeanzzz.development.entities.FailureClass;
-
 @Local
-public interface FailureClassService {
-
-	public Collection<FailureClass> getCatalog() ;
-	public void populateTable(File jsonFile);
-	public Collection<Integer> getFailureClasseCodes();
+public interface FailureClassService extends FailureTableService{
 	
+	/**
+	 * Gets all failure class values from the FailureClass table in the database
+	 * @return a collection of failure class codes
+	 */
+	public Collection<Integer> getFailureClassCodes();
 }

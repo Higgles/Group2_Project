@@ -15,10 +15,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.json.simple.JSONArray;
-
 import com.coolbeanzzz.development.dao.BaseDataDAO;
-import com.coolbeanzzz.development.entities.BaseData;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -47,11 +45,16 @@ public class BaseDataServiceEJB implements BaseDataService {
 		this.dao = dao;
 	}
 	
-	public Collection<BaseData> getCatalog() {
-		return dao.getAllBaseData();
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
-	public void populateBaseDataTable(File filename) {
-		dao.populateBaseDataTable(filename);
+	public void populateTable(File filename) {
+		dao.populateTable(filename);
+	}
+
+	@Override
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
+		return dao.getUniqueEventIdsCauseCodeForPhoneType(ueType);
 	}
 }

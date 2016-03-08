@@ -1,3 +1,7 @@
+/**
+ * Temporary class, Can be removed once Base Data Retrieval is completed
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -5,7 +9,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BaseDataResult implements Serializable{
+public class BaseDataResult implements Serializable, FailureTable{
 private static final long serialVersionUID = 1L;
 	
 	private int id;

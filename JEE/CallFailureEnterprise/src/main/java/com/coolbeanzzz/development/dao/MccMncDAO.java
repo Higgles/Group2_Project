@@ -1,13 +1,20 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao;
 
-import java.io.File;
 import java.util.Collection;
 
-import com.coolbeanzzz.development.entities.MccMnc;
-
-public interface MccMncDAO {
-	Collection<MccMnc> getAllMccMncs();
-	void populateMccMncTable(File jsonFile);
-	Collection<Integer> getMNCs();
-	Collection<Integer> getMCCs();
+public interface MccMncDAO extends FailureTableDAO{
+	/**
+	 * Retrieves all unique mnc values from underlying MncMcc table
+	 * @return a collection of unique MNC integers from underlying table
+	 */
+	Collection<Integer> getAllUniqueMNCs();
+	
+	/**
+	 * Retrieves all unique mcc values from underlying MncMcc table 
+	 * @return a collection of unique MCC integers from underlying table
+	 */
+	Collection<Integer> getAllUniqueMCCs();
 }

@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -12,8 +15,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity @Table(name="`MCC-MNC`")
 
 @XmlRootElement
-@IdClass(MccMncPk.class)
-public class MccMnc implements Serializable{
+@IdClass(MccMncPrimaryKey.class)
+public class MccMnc implements Serializable, FailureTable{
 
 	private static final long serialVersionUID = 1L;
 	@Id @Column(name="MCC") private int mcc;
@@ -36,43 +39,83 @@ public class MccMnc implements Serializable{
 		this.operator = operator;
 	}
 	
+	/**
+	 * Gets the records Mcc value
+	 * @return mcc
+	 */
 	public int getMcc() {
 		return mcc;
 	}
 	
+	/**
+	 * Sets the records mcc value to a new value
+	 * @param mcc new mcc value
+	 */
 	public void setMcc(int mcc) {
 		this.mcc = mcc;
 	}
 	
+	/**
+	 * Gets the records mnc value
+	 * @return mnc
+	 */
 	public int getMnc() {
 		return mnc;
 	}
 	
+	/**
+	 * Sets the records mnc value to a new value
+	 * @param mnc new mnc value
+	 */
 	public void setMnc(int mnc) {
 		this.mnc = mnc;
 	}
 	
+	/**
+	 * Gets the records country value
+	 * @return country
+	 */
 	public String getCountry() {
 		return country;
 	}
 	
+	/**
+	 * Sets the records country value to a new value
+	 * @param country new country value
+	 */
 	public void setCountry(String country) {
 		this.country = country;
 	}
 	
+	/**
+	 * Gets the records operator value
+	 * @return operator
+	 */
 	public String getOperator() {
 		return operator;
 	}
 	
+	/**
+	 * Sets the records operator value to a new value
+	 * @param operator new operator value
+	 */
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 	
+	/**
+	 * Gets the records relating base data record
+	 * @return relating base data record
+	 */
 	@JsonIgnore
 	public Set<BaseData> getBaseData() {
 		return baseData;
 	}
 	
+	/**
+	 * Sets the records relating base data record to a new base data record
+	 * @param mbaseData
+	 */
 	public void setBaseData(Set<BaseData> baseData) {
 		this.baseData = baseData;
 	}

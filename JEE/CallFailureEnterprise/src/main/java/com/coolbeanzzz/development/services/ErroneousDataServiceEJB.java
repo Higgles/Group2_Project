@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -15,10 +18,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.json.simple.JSONArray;
-
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
-import com.coolbeanzzz.development.entities.ErroneousData;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -42,17 +43,23 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(ErroneousDataDAO dao) {
 		// do something really important on injection
 		this.dao = dao;
 	}
 	
-	public Collection<ErroneousData> getCatalog() {
-		return dao.getAllErroneousData();
+	@Override
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
-	public void populateErroneousDataTable(File filename){
-		dao.populateErroneousDataTable(filename);
+	@Override
+	public void populateTable(File filename){
+		dao.populateTable(filename);
 	}
 
 }

@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.tools;
 
 import java.io.File;
@@ -20,6 +23,7 @@ public class Convert {
 
 	/**
 	 * Sets the xls file to be converted to json
+	 * @param inputFile new inputFile value
 	 */
 	public void setInputFile(String inputFile) {
 		this.inputFile = inputFile;
