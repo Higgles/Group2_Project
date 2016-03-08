@@ -1,16 +1,24 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.ejb.Local;
 
-import com.coolbeanzzz.development.entities.MccMnc;
-
 @Local
-public interface MccMncService {
-	public Collection<MccMnc> getCatalog() ;
-	public void populateTable(File jsonFile);
-	public Collection<Integer> getMNCs();
-	public Collection<Integer> getMCCs();
+public interface MccMncService extends FailureTableService{
+	
+	/**
+	 * Gets all unique MNC values from the MccMnc table in the database
+	 * @return unique MNCs
+	 */
+	public Collection<Integer> getAllUniqueMNCs();
+	
+	/**
+	 * Gets all unique MCC values from the MccMnc table in the database
+	 * @return unique MCCs
+	 */
+	public Collection<Integer> getAllUniqueMCCs();
 }

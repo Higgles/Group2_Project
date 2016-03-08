@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -15,9 +18,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Default;
-import javax.persistence.Column;
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,6 +28,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.UETableDAO;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.UETable;
 
 @Default
@@ -45,13 +47,15 @@ public class JPAUETableDAO implements UETableDAO {
 		logger.info(em.toString());
 	}
 	
-	public Collection<UETable> getAllUETables() {
+	@Override
+	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from UETable");
-		List<UETable> ueTables = query.getResultList();
+		List<FailureTable> ueTables = query.getResultList();
 		
 		return ueTables;
 	}
 	
+	@Override
 	public Collection<Integer> getUETypes() {
 		Query query = em.createQuery("select u.tac from UETable u GROUP BY u.tac");
 		List<Integer> ueTables = query.getResultList();
@@ -59,17 +63,15 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 	
-	public void populateUETable(File jsonFile) {
-    	Query query = em.createQuery("from UETable");
-           
+	@Override
+	public void populateTable(File jsonFile) {           
         JSONParser parser = new JSONParser();
  
         try {
- 
             Object obj = parser.parse(new FileReader(jsonFile));
             
             JSONArray rows = (JSONArray) obj;
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
             while (iterator.hasNext()) {
               
@@ -84,11 +86,8 @@ public class JPAUETableDAO implements UETableDAO {
                 		ueTable.get("UE TYPE").toString(),
                 		ueTable.get("OS").toString(), 
                 		ueTable.get("INPUT_MODE").toString());
-                List<UETable> ueValues = query.getResultList();
         		em.merge(object);
             }
-           
- 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -96,6 +95,5 @@ public class JPAUETableDAO implements UETableDAO {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-         
     }
 }

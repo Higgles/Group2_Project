@@ -1,16 +1,22 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.ejb.Local;
 
-import org.json.simple.JSONArray;
+import com.coolbeanzzz.development.entities.FailureTable;
 
-import com.coolbeanzzz.development.entities.BaseData;
 
 @Local
-public interface BaseDataService {
-	public Collection<BaseData> getCatalog();
-	public void populateBaseDataTable(File filename);
+public interface BaseDataService extends FailureTableService{
+	
+	/**
+	 * Gets all unique event id and cause code combinations for a given phone type from the database
+	 * @param ueType input phone type
+	 * @return a collection of FailureTable results
+	 */
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
 }

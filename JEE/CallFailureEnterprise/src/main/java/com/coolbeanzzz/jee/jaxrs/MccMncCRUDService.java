@@ -1,20 +1,15 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.jee.jaxrs;
 
-import java.util.*;
-
-import javax.ejb.EJB;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.coolbeanzzz.development.entities.MccMncList;
+import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.services.MccMncService;
 
 @Path("/mccmncs")
@@ -24,12 +19,15 @@ public class MccMncCRUDService {
 	@Inject
 	private MccMncService service;
 	
-
+	/**
+	 * Gets a list of MccMnc records from the MccMnc table within the database
+	 * @return a list of MccMnc records
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public MccMncList getMccMncs() {
-    	MccMncList mccMncs = new MccMncList();
-    	mccMncs.setMccMncCollection(service.getCatalog());
+    public ResultList getMccMncs() {
+    	ResultList mccMncs = new ResultList();
+    	mccMncs.setDataCollection(service.getCatalog());
         return mccMncs;
     }
 

@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -7,22 +10,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -37,12 +33,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.coolbeanzzz.development.dao.FailureClassDAO;
-import com.coolbeanzzz.development.dao.jpa.JPAFailureClassDAO;
-import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.FailureClass;
-import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.UETable;
 import com.coolbeanzzz.development.tools.Convert;
 
 @Path("/file")
@@ -87,7 +77,7 @@ public class FileUploadService {
 	 * success message
 	 * 
 	 * @param input file details from upload form input on the html page
-	 * @return
+	 * @return Rest response
 	 * @throws IOException
 	 */
 	@POST
@@ -132,7 +122,7 @@ public class FileUploadService {
 	 * Get filename from uploaded file
 	 * 
 	 * @param header
-	 * @return
+	 * @return filename
 	 */
 	private String getFileName(MultivaluedMap<String, String> header) {
 
@@ -181,20 +171,17 @@ public class FileUploadService {
 		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
 		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
 		
-		uniqueFailureCodes = failureClassService.getFailureClasseCodes();
+		uniqueFailureCodes = failureClassService.getFailureClassCodes();
 		
-		mccs = mccMncService.getMCCs();
-		mncs = mccMncService.getMNCs();
+		mccs = mccMncService.getAllUniqueMCCs();
+		mncs = mccMncService.getAllUniqueMNCs();
 		
 		ueTypes = ueTableService.getUETypes();
 
 		compareData();
 		
-		baseDataService.populateBaseDataTable(new File("/home/user1/software/jboss/bin/validData.json"));
-		erroneousDataService.populateErroneousDataTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
-		
-//		System.out.println(baseDataService.getCatalog().size());
-//		System.out.println(erroneousDataService.getCatalog().size());
+		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
+		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 	}
 	
 	/**
@@ -220,7 +207,7 @@ public class FileUploadService {
 
 			JSONArray rows = (JSONArray) obj;
 			
-			Iterator<Object> iterator = rows.iterator();
+			Iterator<?> iterator = rows.iterator();
 			
 			while (iterator.hasNext()) {
 
@@ -248,7 +235,7 @@ public class FileUploadService {
 			}
 			
 			FileWriter fwValid = new FileWriter(new File("validData.json"));
-			Iterator<Object> iteratorValid = validData.iterator();
+			Iterator<?> iteratorValid = validData.iterator();
 			fwValid.write("[");
 			while (iteratorValid.hasNext()) {
 				JSONObject validObject = (JSONObject) iteratorValid.next();
@@ -258,7 +245,7 @@ public class FileUploadService {
 			fwValid.close();
 			
 			FileWriter fwErroneous = new FileWriter(new File("erroneousData.json"));
-			Iterator<Object> iteratorErroneous = erroneousData.iterator();
+			Iterator<?> iteratorErroneous = erroneousData.iterator();
 			fwErroneous.write("[");
 			while (iteratorErroneous.hasNext()) {
 				JSONObject erroneousObject = (JSONObject) iteratorErroneous.next();
@@ -266,11 +253,6 @@ public class FileUploadService {
 			}
 			fwErroneous.write("]");
 			fwErroneous.close();
-			
-			
-//			System.out.println(validData.size());
-//			System.out.println(erroneousData.size());
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -1,13 +1,17 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao;
 
-import java.io.File;
 import java.util.Collection;
 
-import org.json.simple.JSONArray;
+import com.coolbeanzzz.development.entities.FailureTable;
 
-import com.coolbeanzzz.development.entities.BaseData;
-
-public interface BaseDataDAO {
-	Collection<BaseData> getAllBaseData();
-	void populateBaseDataTable(File filename);
+public interface BaseDataDAO extends FailureTableDAO{
+	/**
+	 * Queries the underlying table for unique event id and cause code combinations for an input phone type
+	 * @param ueType input phone type code
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
 }

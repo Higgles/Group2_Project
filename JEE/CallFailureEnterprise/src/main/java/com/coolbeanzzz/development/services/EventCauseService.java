@@ -1,16 +1,24 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.ejb.Local;
 
-import com.coolbeanzzz.development.entities.EventCause;
-
 @Local
-public interface EventCauseService {
-	public Collection<EventCause> getCatalog() ;
-	public void populateTable(File jsonFile);
+public interface EventCauseService extends FailureTableService{
+	
+	/**
+	 * Gets all unique event ids from the EventCause table in the database
+	 * @return a collection of unique EventIds 
+	 */
 	public Collection<Integer> getAllUniqueEventIds();
+	
+	/**
+	 *Gets all unique cause code from the EventCause table in the database
+	 * @return a collection of unique cause code value 
+	 */
 	public Collection<Integer> getAllUniqueCauseCodes();
 }

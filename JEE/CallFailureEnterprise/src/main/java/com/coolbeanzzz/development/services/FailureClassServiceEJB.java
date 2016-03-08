@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
@@ -16,7 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.coolbeanzzz.development.dao.FailureClassDAO;
-import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Stateless
 @Local
@@ -40,20 +43,27 @@ public class FailureClassServiceEJB implements FailureClassService {
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(FailureClassDAO dao) {
 		// do something really important on injection
 		this.dao = dao;
 	}
 	
-	public Collection<FailureClass> getCatalog() {
-		return dao.getAllFailureClasses();
+	@Override
+	public Collection<FailureTable> getCatalog() {
+		return dao.getAllTableRows();
 	}
 	
+	@Override
 	public void populateTable(File jsonFile){
-		dao.populateFailureClassTable(jsonFile);
+		dao.populateTable(jsonFile);
 	}
 	
-	public Collection<Integer> getFailureClasseCodes() {
-		return dao.getFailureClasseCodes();
+	@Override
+	public Collection<Integer> getFailureClassCodes() {
+		return dao.getFailureClassCodes();
 	}
 }

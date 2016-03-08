@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.io.File;
@@ -26,7 +29,7 @@ import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.EventCauseDAO;
 import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.FailureTable;
 
 @Default
 @Stateless
@@ -44,14 +47,15 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		logger.info(em.toString());
 	}
 	
-	
-	public Collection<EventCause> getAllEventCauses() {
-		Query query = em.createQuery("from EventCause");
-		List<EventCause> eventCauses = query.getResultList();
+	@Override
+	public Collection<FailureTable> getAllTableRows() {
+		Query query = em.createQuery("select e.eventId, e.causeCode from EventCause e");
+		List<FailureTable> eventCauses = query.getResultList();
 		
 		return eventCauses;
 	}
 	
+	@Override
 	public Collection<Integer> getAllUniqueEventIds() {
 		Query query = em.createQuery("select e.eventId from EventCause e GROUP BY e.eventId");
 		List<Integer> eventIds = query.getResultList();
@@ -59,6 +63,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return eventIds;
 	}
 	
+	@Override
 	public Collection<Integer> getAllUniqueCauseCodes() {
 		Query query = em.createQuery("select e.causeCode from EventCause e GROUP BY e.causeCode");
 		List<Integer> causeCodes = query.getResultList();
@@ -66,8 +71,8 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return causeCodes;
 	}
 	
-	public void populateEventCauseTable(File jsonFile) {
-    	Query query = em.createQuery("from EventCause");
+	@Override
+	public void populateTable(File jsonFile) {
            
         JSONParser parser = new JSONParser();
  
@@ -76,7 +81,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
             Object obj = parser.parse(new FileReader(jsonFile));
             
             JSONArray rows = (JSONArray) obj;
-            Iterator<Object> iterator = rows.iterator();
+            Iterator<?> iterator = rows.iterator();
             
             while (iterator.hasNext()) {
               
@@ -85,7 +90,6 @@ public class JPAEventCauseDAO implements EventCauseDAO {
                 		Integer.parseInt(eventCause.get("Cause Code").toString()),
                 		Integer.parseInt(eventCause.get("Event Id").toString()),
                 		eventCause.get("Description").toString());
-                //List<EventCause> eventCauses = query.getResultList();
         		em.merge(object);
             }
            
@@ -96,7 +100,6 @@ public class JPAEventCauseDAO implements EventCauseDAO {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-         
+        }   
     }
 }
