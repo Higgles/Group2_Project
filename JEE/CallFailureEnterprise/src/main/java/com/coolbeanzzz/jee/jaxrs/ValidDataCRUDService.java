@@ -44,5 +44,20 @@ public class ValidDataCRUDService {
     	baseData.setDataCollection(service.getUniqueEventIdsCauseCodeForPhoneType(21060800));
         return baseData;
     }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/q5")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ5() {
+    	String date1 = "2013-01-11 17:15:00";
+    	String date2 = "2013-01-11 17:16:45";
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getImsiListBetween2Dates(date1,date2));
+    	return baseData;
+    }
 
 }

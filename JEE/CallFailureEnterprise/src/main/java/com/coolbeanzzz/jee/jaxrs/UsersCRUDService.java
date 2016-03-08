@@ -39,11 +39,11 @@ public class UsersCRUDService {
 		return user;
 	}
 
-    @DELETE
-    @Path("/{id}")
-	public void removeUser(@PathParam("id") Users user) {
-		service.removeUser(user);
-	}
+//    @DELETE
+//    @Path("/{id}")
+//	public void removeUser(@PathParam("id") Users user) {
+//		service.removeUser(user);
+//	}
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

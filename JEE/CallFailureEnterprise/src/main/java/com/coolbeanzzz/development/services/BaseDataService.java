@@ -19,4 +19,14 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	
+	/**
+	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
+	 * @param start date, end date 
+	 * @return a collection of FailureTable results
+	 */	
+	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
+	
+
+	
 }

@@ -14,4 +14,14 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	
+	/**
+	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
+	 * @param start date, end date 
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
+	
+	
+	
 }
