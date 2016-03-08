@@ -54,8 +54,10 @@ public class IntegrationTest {
 	 @Deployment
 	 public static JavaArchive createDeployment(){
 	      JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "callfailureenterprise.jar");
-	      jar.addPackage(FailureClass.class.getPackage()).addPackage(FailureClassService.class.getPackage())
-	      .addPackage(JPAFailureClassDAO.class.getPackage()).addPackage(FailureClassDAO.class.getPackage());
+	      jar.addPackage(FailureClass.class.getPackage())
+	      .addPackage(FailureClassService.class.getPackage())
+	      .addPackage(JPAFailureClassDAO.class.getPackage())
+	      .addPackage(FailureClassDAO.class.getPackage());
 	      jar.addAsManifestResource("META-INF/persistence.xml", "persistence.xml");
 	      jar.addAsManifestResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
 	      .addPackage(JSONArray.class.getPackage()).addPackage(ParseException.class.getPackage());
