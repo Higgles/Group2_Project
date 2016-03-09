@@ -3,6 +3,7 @@
  */
 package com.coolbeanzzz.development.services;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 import javax.ejb.Local;
@@ -19,4 +20,6 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
+
 }

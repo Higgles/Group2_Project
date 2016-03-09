@@ -3,6 +3,7 @@
  */
 package com.coolbeanzzz.development.dao;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -14,4 +15,5 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
 }
