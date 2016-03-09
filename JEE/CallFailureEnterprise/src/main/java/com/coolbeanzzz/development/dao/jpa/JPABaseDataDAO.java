@@ -43,6 +43,10 @@ import com.coolbeanzzz.development.entities.UETable;
 @Local
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
+	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
+			new String[]{"EventId", "CauseCode", "UEType", "Total", "Manufacturer", "MarketingName"};
+	private static final String[] baseDataHeadings=
+			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
 	
 	@PersistenceContext
@@ -56,9 +60,9 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
-		Query query = em.createQuery("from BaseData");
-		List<FailureTable> basedata = query.getResultList();
-		
+		Query query = em.createQuery("select bd.dateTime, bd.eventCause.eventId, bd.failureClass.failureClass, bd.ueTable.tac, bd.mccmnc.mcc, bd.mccmnc.mnc, bd.cellId, bd.duration, bd.eventCause.causeCode, bd.neVersion, bd.imsi, bd.hier3_Id, bd.hier32_Id, bd.hier321_Id from BaseData bd");
+		List basedata = query.getResultList();
+		basedata.add(0,baseDataHeadings);
 		return basedata;
 	}
 	
@@ -112,14 +116,15 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
 		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.ueTable.tac, count(bd.id), bd.ueTable.manufacturer, bd.ueTable.marketingName"
 				+ " from BaseData bd where bd.ueTable.tac=:ueType"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("ueType", ueType);
-		List<FailureTable> basedata = query.getResultList();
-		
+		List basedata = query.getResultList();
+		basedata.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 		return basedata;
 	}
 	
