@@ -42,6 +42,10 @@
 	<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
 		
 	</table>
+	<br/>
+	<br/>
+	<p id="count">
+	</p>
 	<button id="query1" type="button" class="btn btn-primary">Query 1</button>
 	<script>
 		$(document).ready(function() {
@@ -55,7 +59,7 @@
 				type : 'GET',
 				url : $("#title").val(),
 				success : function(data){
-					
+					document.getElementById("count").innerHTML="Count ="+(data.dataCollection.length-1);
 					var columnTitles=[];
 					for(j=0;j<data.dataCollection[0].length;j++){
 						columnTitles.push({
@@ -70,7 +74,7 @@
 					$('#dataTable').bootstrapTable({			
 			            columns: columnTitles
 			        });
-
+					
 					var arr=[];
 					for(i=1;i<data.dataCollection.length;i++){
 						var rowData='{';

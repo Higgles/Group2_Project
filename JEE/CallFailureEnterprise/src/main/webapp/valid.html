@@ -41,7 +41,6 @@ $(document).ready(function(){
 			type : 'GET',
 			url : 'rest/validdata',
 			success : function(data){
-				alert(data.dataCollection[1][0]);
 				var columnTitles=[];
 				for(j=0;j<data.dataCollection[0].length;j++){
 					columnTitles.push({
