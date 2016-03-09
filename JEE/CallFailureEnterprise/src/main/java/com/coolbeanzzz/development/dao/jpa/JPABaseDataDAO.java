@@ -143,9 +143,10 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		+"group by bd.imsi");
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
-		List<FailureTable> basedata = query.getResultList();
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"Id", "Imsi", "dateTime", "cellId", "neVersion"});
 		return basedata;
-		}	
+	}	
 
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
