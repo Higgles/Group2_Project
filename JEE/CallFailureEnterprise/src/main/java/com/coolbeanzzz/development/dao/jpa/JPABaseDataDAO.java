@@ -128,18 +128,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 
 	@Override
-	/*
-	 	As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
-	  		MYSQL SCRIPT:
-	  
-	  		SELECT * 
-			FROM CoolBeanzzz.`Base Data`
-			where `Date/Time` between '2013-01-11 17:11:00' and '2013-01-11 17:16:00'
-			GROUP BY IMSI;
-	 
-	 * (non-Javadoc)
-	 * @see com.coolbeanzzz.development.dao.BaseDataDAO#getImsiListBetween2Dates(java.lang.String, java.lang.String)
-	 */
 	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
 		Query query = em.createQuery(""
 		+"select bd.id, bd.imsi, bd.dateTime, bd.cellId, bd.neVersion "
