@@ -143,4 +143,11 @@ public class IntegrationTest {
 	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
 	    assertTrue(erroneousData.size()>0); 
 	} 
+	
+	@Test @InSequence(14)
+	public void testGetEventIdsCauseCodeForIMSI() {		 
+		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
+	    Collection<FailureTable> baseData=baseDataService.getEventIdsCauseCodeForIMSI("240210000000013");
+	    assertTrue(baseData.size()>0); 
+	} 
 }
