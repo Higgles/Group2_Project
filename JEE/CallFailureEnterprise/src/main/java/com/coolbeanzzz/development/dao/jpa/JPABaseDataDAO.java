@@ -126,6 +126,20 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		basedata.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 		return basedata;
 	}
+
+	@Override
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
+			String fromDate, String toDate) {
+		Query query = em.createQuery("select bd.dateTime, bd.imsi, count(bd.id), sum(duration) "
+				+ "from BaseData bd "
+				+ "where bd.dateTime>=:date1 and bd.dateTime<:date2 "
+				+ "group by bd.imsi");
+		query.setParameter("date1", fromDate);
+		query.setParameter("date2", toDate);
+		List basedata = query.getResultList();
+		basedata.add(0,new Object[]{"DateTime", "IMSI", "Occurrences", "TotalCallDuration"});
+		return basedata;
+	}
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

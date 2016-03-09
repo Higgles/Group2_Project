@@ -57,4 +57,10 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
 		return dao.getUniqueEventIdsCauseCodeForPhoneType(ueType);
 	}
+
+	@Override
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
+			String date1, String date2) {
+		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2);
+	}
 }

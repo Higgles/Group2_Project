@@ -35,7 +35,7 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/q1")
+    @Path("/cb_8")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getQ1() {
@@ -43,5 +43,17 @@ public class ValidDataCRUDService {
     	baseData.setDataCollection(service.getUniqueEventIdsCauseCodeForPhoneType(21060800));
         return baseData;
     }
-
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/cb_7")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ2() {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange("2013-01-11 00:00:00", "2013-01-11 23:59:00"));
+        return baseData;
+    }
 }
