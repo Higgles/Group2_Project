@@ -3,7 +3,6 @@ package com.coolbeanzzz.development.tools;
 import java.io.File;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -20,9 +19,4 @@ public class FolderWatcherService {
 		File dir = new File("/home/user1/testing2/");
 		folderWatcher.watchDirectoryPath(dir.toPath());
 	}
-//
-//	@PreDestroy
-//	void atShutdown() {
-//
-//	}
 }
