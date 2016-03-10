@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
@@ -31,38 +34,70 @@ private static final long serialVersionUID = 1L;
 		this.userType = userType;
 	}
 	
+	/**
+	 * Retrieves user id
+	 * @return int id 
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Set user id
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Retrieves username 
+	 * @return string username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Set username  
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
+	/**
+	 * Retrieve passkey 
+	 * @return String passkey
+	 */
 	public String getPasskey() {
 		return passkey;
 	}
 
+	/**
+	 * Set pass key
+	 * @param passkey
+	 */
 	public void setPasskey(String passkey) {
 		this.passkey = passkey;
 	}
 
+	/**
+	 * Retrieve String user type
+	 * @return string user type
+	 */
 	public String getUserType() {
 		return userType;
 	}
-
+	
+	/**
+	 * Set user type
+	 * @param userType
+	 */
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-
+		
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

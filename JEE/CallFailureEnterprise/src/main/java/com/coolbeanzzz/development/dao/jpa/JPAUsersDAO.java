@@ -1,3 +1,6 @@
+/**
+ * @author Coolbeanzzz
+ */
 package com.coolbeanzzz.development.dao.jpa;
 
 import java.util.Collection;
@@ -14,7 +17,6 @@ import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 
 import com.coolbeanzzz.development.dao.UsersDAO;
 import com.coolbeanzzz.development.entities.Users;
@@ -36,66 +38,62 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		logger.info(em.toString());
 	}
 	
-	
-public Collection<Users> getAllUsers() {
+	@Override	
+	public Collection<Users> getAllUsers() {
 		Query query = em.createQuery("from Users");
 		List<Users> users = query.getResultList();
-	//	if (users!=null)	
 		return users;
 	}
 	
 	
-	
-public void addUser(Users user) {
-	Query query = em.createQuery("from Users");
-	List<Users> users = query.getResultList();
-	if (!users.contains(user))
-		em.persist(user);	
-         
+	@Override	
+	public void addUser(Users user) {
+		Query query = em.createQuery("from Users");
+		List<Users> users = query.getResultList();
+		if (!users.contains(user)){
+			em.persist(user);
+		}        
     }
-
-public Users removeUser(Users user) {
-	Query query = em.createQuery("from Users");
-	List<Users> users = query.getResultList();
-	if (users.contains(user)){
-		em.remove(user);	
-        return user;
-	}
-	return null;
-}
-
-public Users removeUser(int id) {
 	
-	Query query = em.createQuery("from Users");
-	List<Users> users = query.getResultList();
-	Users userById=null;
-	for(Users user:users){
-		if(user.getId()==id)
-			userById=user;
+	@Override
+	public Users removeUser(Users user) {
+		Query query = em.createQuery("from Users");
+		List<Users> users = query.getResultList();
+		if (users.contains(user)){
+			em.remove(user);	
+			return user;
+		}
+		return null;
 	}
-	if (userById!=null){
-		em.remove(userById);
-		return userById;
-	}
-	return null;
-}
-
-
-
-public void updateUserUsingId(int id) {
 	
-	Query query = em.createQuery("from Users");
-	List<Users> users = query.getResultList();
-	Users user=null;
-	for(Users thisUser:users){
-		if(thisUser.getId()==id)
-			user=thisUser;
+	@Override
+	public Users removeUser(int id) {
+		Query query = em.createQuery("from Users");
+		List<Users> users = query.getResultList();
+		Users userById=null;
+		for(Users user:users){
+			if(user.getId()==id){
+				userById=user;
+			}
+		}
+		if (userById!=null){
+			em.remove(userById);
+			return userById;
+		}
+		return null;
 	}
-	em.merge(user);
-}
 
-
-
-
+	@Override
+	public void updateUserUsingId(int id) {
+		Query query = em.createQuery("from Users");
+		List<Users> users = query.getResultList();
+		Users user=null;
+		for(Users thisUser:users){
+			if(thisUser.getId()==id){
+				user=thisUser;
+			}
+		}
+		em.merge(user);
+	}
 
 }

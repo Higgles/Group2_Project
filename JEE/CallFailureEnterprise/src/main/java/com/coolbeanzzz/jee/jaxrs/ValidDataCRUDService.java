@@ -48,7 +48,7 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/q5")
+    @Path("/CB-5")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getQ5() {
