@@ -35,7 +35,7 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/cb_8")
+    @Path("/CB-8")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getQ1() {
@@ -48,7 +48,7 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/cb_7")
+    @Path("/CB-7")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getQ2() {
