@@ -140,6 +140,20 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		basedata.add(0,new Object[]{"DateTime", "IMSI", "Occurrences", "TotalCallDuration"});
 		return basedata;
 	}
+
+	@Override
+	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
+		Query query = em.createQuery(""
+		+"select bd.id, bd.imsi, bd.dateTime, bd.cellId, bd.neVersion "
+		+"from BaseData bd "
+		+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
+		+"group by bd.imsi");
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"Id", "Imsi", "dateTime", "cellId", "neVersion"});
+		return basedata;
+	}	
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

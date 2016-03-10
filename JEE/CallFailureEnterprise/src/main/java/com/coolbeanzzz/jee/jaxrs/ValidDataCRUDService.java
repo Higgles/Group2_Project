@@ -56,4 +56,20 @@ public class ValidDataCRUDService {
     	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange("2013-01-11 00:00:00", "2013-01-11 23:59:00"));
         return baseData;
     }
+
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-5")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ5() {
+    	String date1 = "2012-01-11 16:11:00";
+    	String date2 = "2013-01-11 17:17:45";
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getImsiListBetween2Dates(date1,date2));
+    	return baseData;
+    }
+
 }

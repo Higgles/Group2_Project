@@ -143,4 +143,12 @@ public class IntegrationTest {
 	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
 	    assertTrue(erroneousData.size()>0); 
 	} 
+	
+	@Test @InSequence(13)
+	public void getImsiListBetween2Dates() {		 
+		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
+		Collection<FailureTable> baseDatas=baseDataService.getImsiListBetween2Dates("2012-01-11 16:11:00", "2012-01-11 16:11:00");
+	    assertTrue(baseDatas.size()>0); 
+	} 
+	
 }
