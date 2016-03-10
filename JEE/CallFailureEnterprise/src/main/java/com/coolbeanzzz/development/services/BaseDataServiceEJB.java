@@ -63,5 +63,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 		return dao.getImsiListBetween2Dates(date1, date2);
 	}
 	
+	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd) {
+		return dao.getFailCountByImsi(ueType, dateStart, dateEnd);
+	}
 	
 }
