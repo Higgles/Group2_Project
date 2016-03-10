@@ -14,4 +14,6 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+
+	Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
 }
