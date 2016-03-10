@@ -71,5 +71,14 @@ public class ValidDataCRUDService {
     	baseData.setDataCollection(service.getImsiListBetween2Dates(date1,date2));
     	return baseData;
     }
+    
+    @Path("/CB-6")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getCB6() {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getFailCountByImsi(21060800, "2013-01-11 17:15:00", "2013-01-11 17:26:00"));
+        return baseData;
+    }
 
 }

@@ -155,6 +155,21 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}	
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd) {
+		Query query = em.createQuery(""
+		+"select count(bd.id) "
+		+"from BaseData bd where bd.ueTable.tac=:ueType "
+		+"and bd.dateTime >=:dateStart and bd.dateTime <:dateEnd ");
+		query.setParameter("ueType", ueType);
+		query.setParameter("dateStart", dateStart);
+		query.setParameter("dateEnd", dateEnd);
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"Count"});
+		return basedata;
+	}	
+	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");
 

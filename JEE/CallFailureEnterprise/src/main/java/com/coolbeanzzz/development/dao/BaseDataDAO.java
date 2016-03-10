@@ -29,4 +29,14 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
 	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
+	
+	/**
+	 * As a Support Engineer I want to count, for a given model of phone, the number of call failures it 
+	 * has had during a given time period.
+	 * @param ueType phone model to be checked
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
 }

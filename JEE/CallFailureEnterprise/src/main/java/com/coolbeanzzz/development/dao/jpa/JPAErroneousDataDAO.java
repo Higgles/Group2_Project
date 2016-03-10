@@ -63,16 +63,20 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 		int j = 0;
 		JSONParser parser = new JSONParser();
 		ErroneousData object;
+		
+		JSONObject erroneousRow;
+		
 		try{
 			Object obj = parser.parse(new FileReader(filename));
 
 			JSONArray rows = (JSONArray) obj;
 
 			Iterator<?> iteratorFile = rows.iterator();
-			JSONObject erroneousRow = (JSONObject) iteratorFile.next();
 			
 			while(iteratorFile.hasNext()){
 				j++;
+				
+				erroneousRow =  (JSONObject) iteratorFile.next();
 				
 				if(erroneousRow.get("Failure Class").toString().contains("null")){
 					failureClass = "NULL";
@@ -87,8 +91,6 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 				else{
 					causeCode = erroneousRow.get("Cause Code").toString();
 				}
-				
-				erroneousRow = (JSONObject) iteratorFile.next();
 				
 				object = new ErroneousData(
 						j,
