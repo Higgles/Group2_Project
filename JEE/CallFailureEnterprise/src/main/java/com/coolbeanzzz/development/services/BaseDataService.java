@@ -19,4 +19,13 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	
+	/**
+	 * Get the count for all failures for a phone model
+	 * @param ueType phone type
+	 * @param dateStart date to check from for time period
+	 * @param dateEnd date to check to for time period
+	 * @return a collection of FailureTable results
+	 */
+	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
 }
