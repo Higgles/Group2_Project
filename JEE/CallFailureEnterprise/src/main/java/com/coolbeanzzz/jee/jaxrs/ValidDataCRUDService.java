@@ -72,6 +72,10 @@ public class ValidDataCRUDService {
     	return baseData;
     }
     
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
     @Path("/CB-6")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

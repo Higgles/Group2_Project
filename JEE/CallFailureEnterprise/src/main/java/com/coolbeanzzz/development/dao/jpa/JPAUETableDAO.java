@@ -47,6 +47,7 @@ public class JPAUETableDAO implements UETableDAO {
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from UETable");
@@ -55,6 +56,7 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getUETypes() {
 		Query query = em.createQuery("select u.tac from UETable u GROUP BY u.tac");

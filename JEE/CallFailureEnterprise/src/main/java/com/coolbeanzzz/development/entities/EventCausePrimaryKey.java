@@ -5,8 +5,6 @@ package com.coolbeanzzz.development.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
 public class EventCausePrimaryKey implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

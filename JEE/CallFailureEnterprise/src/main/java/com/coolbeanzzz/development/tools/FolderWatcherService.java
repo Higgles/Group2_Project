@@ -1,10 +1,8 @@
 package com.coolbeanzzz.development.tools;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;

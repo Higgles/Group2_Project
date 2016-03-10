@@ -47,6 +47,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("select e.eventId, e.causeCode from EventCause e");
@@ -55,6 +56,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return eventCauses;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getAllUniqueEventIds() {
 		Query query = em.createQuery("select e.eventId from EventCause e GROUP BY e.eventId");
@@ -63,6 +65,7 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 		return eventIds;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getAllUniqueCauseCodes() {
 		Query query = em.createQuery("select e.causeCode from EventCause e GROUP BY e.causeCode");

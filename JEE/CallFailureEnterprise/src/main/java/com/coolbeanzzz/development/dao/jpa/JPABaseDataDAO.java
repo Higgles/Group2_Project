@@ -57,6 +57,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("select bd.dateTime, bd.eventCause.eventId, bd.failureClass.failureClass, bd.ueTable.tac, bd.mccmnc.mcc, bd.mccmnc.mnc, bd.cellId, bd.duration, bd.eventCause.causeCode, bd.neVersion, bd.imsi, bd.hier3_Id, bd.hier32_Id, bd.hier321_Id from BaseData bd");
@@ -127,6 +128,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
 			String fromDate, String toDate) {
@@ -141,6 +143,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
 		Query query = em.createQuery(""
