@@ -68,16 +68,16 @@ public class FolderWatcher{
 	 * The dataset is then copied from the monitored directory to the upload
 	 * directory
 	 * 
-	 * @param path
+	 * @param path Directory to monitor for changes
 	 */
 	@Asynchronous
 	public void watchDirectoryPath(Path path){
 		FileSystem fileSystem = path.getFileSystem();
-		try (WatchService service = fileSystem.newWatchService()){
-			path.register(service, ENTRY_CREATE);
+		try(WatchService folderWatchService = fileSystem.newWatchService()){
+			path.register(folderWatchService, ENTRY_CREATE);
             WatchKey key = null;
             while (true){
-                key = service.take();
+                key = folderWatchService.take();
                 Kind<?> kind = null;
                 for (WatchEvent<?> watchEvent : key.pollEvents()) {
                     kind = watchEvent.kind();
@@ -113,6 +113,16 @@ public class FolderWatcher{
                         }
                     }
                 }
+                
+                Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
+        			public void run(){
+        				try{
+        					folderWatchService.close();  
+        				}catch (IOException e){
+        					System.out.println("IOEXception: " + e.toString()); 
+        				}  
+        			}
+        		});
 
                 if (!key.reset()) {
                     break;
