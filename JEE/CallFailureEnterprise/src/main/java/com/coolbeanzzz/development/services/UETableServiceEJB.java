@@ -65,4 +65,14 @@ public class UETableServiceEJB implements UETableService {
 	public Collection<Integer> getUETypes() {
 		return dao.getUETypes();
 	}
+
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		dao.addNewEntry(newEntry);
+	}
+	
+	@Override
+	public void clearAllEntries() {
+		dao.clearAllEntries();
+	}
 }

@@ -4,11 +4,15 @@
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.coolbeanzzz.development.entities.BaseData;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.services.BaseDataService;
 
@@ -84,5 +88,18 @@ public class ValidDataCRUDService {
     	baseData.setDataCollection(service.getFailCountByImsi(21060800, "2013-01-11 17:15:00", "2013-01-11 17:26:00"));
         return baseData;
     }
+    
+    /**
+     * Adds new entry to failure table in database
+     * @param newEntry to be added to database
+     * @return added failuretable entry
+     */
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public FailureTable addNewEntry(BaseData newEntry) {
+    	newEntry.setId(0);
+		service.addNewEntry(newEntry);
+		return newEntry;
+	}
 
 }

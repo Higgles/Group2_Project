@@ -48,7 +48,6 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	 * @param dao new dao
 	 */
 	public void setDao(ErroneousDataDAO dao) {
-		// do something really important on injection
 		this.dao = dao;
 	}
 	
@@ -60,6 +59,16 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	@Override
 	public void populateTable(File filename){
 		dao.populateTable(filename);
+	}
+
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		dao.addNewEntry(newEntry);
+	}
+	
+	@Override
+	public void clearAllEntries() {
+		dao.clearAllEntries();
 	}
 
 }

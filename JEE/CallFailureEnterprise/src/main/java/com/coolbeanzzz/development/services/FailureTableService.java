@@ -21,4 +21,15 @@ public interface FailureTableService {
 	 * @param filename input json filename
 	 */
 	public void populateTable(File filename);
+	
+	/**
+	 * Adds Failure table record to database
+	 * @param newEntry Failure table entry to be added to database
+	 */
+	public void addNewEntry(FailureTable newEntry);
+	
+	/**
+	 * Deletes all table Entries
+	 */
+	public void clearAllEntries();
 }

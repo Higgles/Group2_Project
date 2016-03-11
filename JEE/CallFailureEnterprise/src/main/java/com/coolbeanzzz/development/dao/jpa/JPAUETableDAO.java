@@ -98,4 +98,19 @@ public class JPAUETableDAO implements UETableDAO {
             e.printStackTrace();
         }
     }
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		Query query = em.createQuery("from UETable");
+		List<FailureTable> entries = query.getResultList(); 
+		if (!entries.contains(newEntry))
+			em.persist(newEntry);	
+	}	
+	
+	@Override
+	public void clearAllEntries() {
+		Query query = em.createQuery("DELETE from UETable");
+		query.executeUpdate();
+	}	
 }

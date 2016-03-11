@@ -81,4 +81,14 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd) {
 		return dao.getFailCountByImsi(ueType, dateStart, dateEnd);
 	}
+
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		dao.addNewEntry(newEntry);
+	}
+
+	@Override
+	public void clearAllEntries() {
+		dao.clearAllEntries();
+	}
 }

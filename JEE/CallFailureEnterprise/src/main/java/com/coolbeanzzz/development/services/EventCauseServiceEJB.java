@@ -48,7 +48,6 @@ public class EventCauseServiceEJB implements EventCauseService {
 	 * @param dao new dao
 	 */
 	public void setDao(EventCauseDAO dao) {
-		// do something really important on injection
 		this.dao = dao;
 	}
 	
@@ -70,5 +69,15 @@ public class EventCauseServiceEJB implements EventCauseService {
 	@Override
 	public Collection<Integer> getAllUniqueCauseCodes() {
 		return dao.getAllUniqueCauseCodes();
+	}
+
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		dao.addNewEntry(newEntry);
+	}
+	
+	@Override
+	public void clearAllEntries() {
+		dao.clearAllEntries();
 	}
 }
