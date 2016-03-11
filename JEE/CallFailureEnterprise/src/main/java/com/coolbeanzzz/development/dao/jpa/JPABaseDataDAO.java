@@ -67,7 +67,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	@Override
-	public void populateTable(File filename) {		
+	public void populateTable(File filename) {	
 		JSONObject baseRow;
 		BaseData object;
 		
@@ -172,6 +172,21 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		basedata.add(0, new Object[]{"Count"});
 		return basedata;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		Query query = em.createQuery("from BaseData");
+		List<FailureTable> entries = query.getResultList(); 
+		if (!entries.contains(newEntry))
+			em.persist(newEntry);	
+	}
+
+	@Override
+	public void clearAllEntries() {
+		Query query = em.createQuery("DELETE from BaseData");
+		query.executeUpdate();
+	}	
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

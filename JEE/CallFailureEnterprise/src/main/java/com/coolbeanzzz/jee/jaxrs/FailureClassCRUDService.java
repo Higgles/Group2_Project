@@ -4,11 +4,15 @@
 package com.coolbeanzzz.jee.jaxrs;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.coolbeanzzz.development.entities.FailureClass;
+import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.services.FailureClassService;
 
@@ -31,6 +35,17 @@ public class FailureClassCRUDService {
         return failureClasses;
     }
 
+    /**
+     * Adds new entry to failure table in database
+     * @param newEntry to be added to database
+     * @return added failuretable entry
+     */
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public FailureTable addNewEntry(FailureClass newEntry) {
+		service.addNewEntry(newEntry);
+		return newEntry;
+	}
 
 
 //    @GET

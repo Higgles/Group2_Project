@@ -105,4 +105,19 @@ public class JPAEventCauseDAO implements EventCauseDAO {
             e.printStackTrace();
         }   
     }
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		Query query = em.createQuery("from EventCause");
+		List<FailureTable> entries = query.getResultList(); 
+		if (!entries.contains(newEntry))
+			em.persist(newEntry);	
+	}
+	
+	@Override
+	public void clearAllEntries() {
+		Query query = em.createQuery("DELETE from EventCause");
+		query.executeUpdate();
+	}	
 }

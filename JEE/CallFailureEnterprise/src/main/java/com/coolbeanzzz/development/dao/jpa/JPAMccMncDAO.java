@@ -102,4 +102,19 @@ public class JPAMccMncDAO implements MccMncDAO {
             e.printStackTrace();
         }  
     }
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		Query query = em.createQuery("from MccMnc");
+		List<FailureTable> entries = query.getResultList(); 
+		if (!entries.contains(newEntry))
+			em.persist(newEntry);	
+	}	
+	
+	@Override
+	public void clearAllEntries() {
+		Query query = em.createQuery("DELETE from MccMnc");
+		query.executeUpdate();
+	}	
 }

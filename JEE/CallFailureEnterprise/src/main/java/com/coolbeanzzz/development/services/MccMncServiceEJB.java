@@ -70,4 +70,14 @@ public class MccMncServiceEJB implements MccMncService {
 	public Collection<Integer> getAllUniqueMCCs() {
 		return dao.getAllUniqueMCCs();
 	}
+
+	@Override
+	public void addNewEntry(FailureTable newEntry) {
+		dao.addNewEntry(newEntry);
+	}
+	
+	@Override
+	public void clearAllEntries() {
+		dao.clearAllEntries();
+	}
 }
