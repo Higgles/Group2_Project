@@ -155,7 +155,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		List basedata = query.getResultList();
 		basedata.add(0, new Object[]{"Count"});
 		return basedata;
-	}	
+	}
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");
