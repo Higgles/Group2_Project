@@ -39,14 +39,20 @@ Logger logger = Logger.getLogger("UsersEJB");
 		logger.info(em.toString());
 	}
 	
+	/**
+	 * Sets the attached DAO to the EJB service
+	 * @param dao new dao
+	 */
 	public void setDao(UsersDAO dao) {
 		this.dao = dao;
 	}
 	
+	@Override
 	public Collection<Users> getAllUsers() {
 		return dao.getAllUsers();  
 	}
 	
+	@Override
 	public void addUser(Users user){
 		dao.addUser(user);		
 	}

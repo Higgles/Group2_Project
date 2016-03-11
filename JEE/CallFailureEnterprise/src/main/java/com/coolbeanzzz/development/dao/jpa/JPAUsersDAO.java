@@ -13,7 +13,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Default;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -38,6 +37,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override	
 	public Collection<Users> getAllUsers() {
 		Query query = em.createQuery("from Users");
@@ -46,6 +46,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override	
 	public void addUser(Users user) {
 		Query query = em.createQuery("from Users");
@@ -55,6 +56,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		}        
     }
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Users removeUser(Users user) {
 		Query query = em.createQuery("from Users");
@@ -66,6 +68,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Users removeUser(int id) {
 		Query query = em.createQuery("from Users");
@@ -83,6 +86,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateUserUsingId(int id) {
 		Query query = em.createQuery("from Users");

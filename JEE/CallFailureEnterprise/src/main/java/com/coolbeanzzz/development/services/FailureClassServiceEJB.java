@@ -48,7 +48,6 @@ public class FailureClassServiceEJB implements FailureClassService {
 	 * @param dao new dao
 	 */
 	public void setDao(FailureClassDAO dao) {
-		// do something really important on injection
 		this.dao = dao;
 	}
 	

@@ -16,12 +16,20 @@ public interface BaseDataDAO extends FailureTableDAO{
 	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
 	
 	/**
+	 * Queries the underlying table for no of call failures and total duration for each
+	 * imsi value within a date period 
+	 * @param ueType input phone type code
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String fromDate, String toDate);
+
+	/**
 	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
 	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
-
+	
 	/**
 	 * As a Support Engineer I want to count, for a given model of phone, the number of call failures it 
 	 * has had during a given time period.
@@ -31,5 +39,4 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
 	Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
-	
 }

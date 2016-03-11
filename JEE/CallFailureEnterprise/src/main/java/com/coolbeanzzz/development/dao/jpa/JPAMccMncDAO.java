@@ -47,6 +47,7 @@ public class JPAMccMncDAO implements MccMncDAO {
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from MccMnc");
@@ -55,6 +56,7 @@ public class JPAMccMncDAO implements MccMncDAO {
 		return mccMncs;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getAllUniqueMNCs() {
 		Query query = em.createQuery("select m.mnc from MccMnc m GROUP BY m.mnc");
@@ -63,6 +65,7 @@ public class JPAMccMncDAO implements MccMncDAO {
 		return mncs;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getAllUniqueMCCs() {
 		Query query = em.createQuery("select m.mcc from MccMnc m GROUP BY m.mcc");

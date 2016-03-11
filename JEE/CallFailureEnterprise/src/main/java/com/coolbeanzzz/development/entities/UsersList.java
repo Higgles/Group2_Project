@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement 
 public class UsersList implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Collection<Users> usersCollection;
 	
 	/**

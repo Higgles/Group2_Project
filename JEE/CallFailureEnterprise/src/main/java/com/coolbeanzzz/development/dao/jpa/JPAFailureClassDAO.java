@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -47,6 +48,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		logger.info(em.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from FailureClass");
@@ -55,6 +57,7 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClasses;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getFailureClassCodes() {
 		Query query = em.createQuery("select f.failureClass from FailureClass f GROUP BY f.failureClass");

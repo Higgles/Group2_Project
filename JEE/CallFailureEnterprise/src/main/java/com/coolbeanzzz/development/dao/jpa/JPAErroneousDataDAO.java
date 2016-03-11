@@ -47,6 +47,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 		logger.info(em.toString());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<FailureTable> getAllTableRows() {
 		Query query = em.createQuery("from ErroneousData");
