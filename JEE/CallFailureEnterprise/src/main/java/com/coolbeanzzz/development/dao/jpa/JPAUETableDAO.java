@@ -112,5 +112,22 @@ public class JPAUETableDAO implements UETableDAO {
 	public void clearAllEntries() {
 		Query query = em.createQuery("DELETE from UETable");
 		query.executeUpdate();
+	}
+
+	@Override
+	public Collection<String> getAllManufacturers() {
+		Query query = em.createQuery("select distinct u.manufacturer from UETable u order by u.manufacturer");
+		List<String> ueTables = query.getResultList();
+		
+		return ueTables;
+	}
+
+	@Override
+	public Collection<String> getModelsForManufacturer(String manufacturer) {
+		Query query = em.createQuery("select u.marketingName from UETable u where u.manufacturer=:manufacturer");
+		query.setParameter("manufacturer", manufacturer);
+		List<String> ueTables = query.getResultList();
+		
+		return ueTables;
 	}	
 }

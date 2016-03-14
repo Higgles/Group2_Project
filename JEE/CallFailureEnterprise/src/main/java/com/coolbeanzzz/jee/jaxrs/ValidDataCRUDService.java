@@ -3,6 +3,8 @@
  */
 package com.coolbeanzzz.jee.jaxrs;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -87,7 +89,7 @@ public class ValidDataCRUDService {
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getCB6() {
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getFailCountByImsi(21060800, "2013-01-11 17:15:00", "2013-01-11 17:26:00"));
+    	baseData.setDataCollection(service.getFailCountByPhoneModel(21060800, "2013-01-11 17:15:00", "2013-01-11 17:26:00"));
         return baseData;
     }
     
@@ -103,5 +105,16 @@ public class ValidDataCRUDService {
 		service.addNewEntry(newEntry);
 		return newEntry;
 	}
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/imsis")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<String> getAllImsis() {
+        return service.getAllImsiValues();
+    }
 
 }

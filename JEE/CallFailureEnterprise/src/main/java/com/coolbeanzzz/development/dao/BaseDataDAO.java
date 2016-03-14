@@ -38,5 +38,11 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param dateEnd end date for time period
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
+	Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd);
+	
+	/**
+	 * Queries the database for all unique imsi values
+	 * @return a collection of imsi values
+	 */	
+	Collection<String> getAllImsiValues();
 }

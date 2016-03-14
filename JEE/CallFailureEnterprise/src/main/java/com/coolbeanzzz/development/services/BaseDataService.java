@@ -41,5 +41,11 @@ public interface BaseDataService extends FailureTableService{
 	 * @param dateEnd date to check to for time period
 	 * @return a collection of FailureTable results
 	 */
-	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd);
+	
+	/**
+	 * Gets all unique imsi values from database
+	 * @return a collection of unique imsi values
+	 */
+	public Collection<String> getAllImsiValues();
 }

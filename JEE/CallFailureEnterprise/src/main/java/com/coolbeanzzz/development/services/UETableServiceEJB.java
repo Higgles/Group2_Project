@@ -75,4 +75,14 @@ public class UETableServiceEJB implements UETableService {
 	public void clearAllEntries() {
 		dao.clearAllEntries();
 	}
+
+	@Override
+	public Collection<String> getAllManufacturers() {
+		return dao.getAllManufacturers();
+	}
+
+	@Override
+	public Collection<String> getModelsForManufacturer(String manufacturer) {
+		return dao.getModelsForManufacturer(manufacturer);
+	}
 }

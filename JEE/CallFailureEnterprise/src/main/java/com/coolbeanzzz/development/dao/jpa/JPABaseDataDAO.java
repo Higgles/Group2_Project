@@ -160,7 +160,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd) {
+	public Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd) {
 		Query query = em.createQuery(""
 		+"select count(bd.id) "
 		+"from BaseData bd where bd.ueTable.tac=:ueType "
@@ -186,7 +186,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	public void clearAllEntries() {
 		Query query = em.createQuery("DELETE from BaseData");
 		query.executeUpdate();
-	}	
+	}
+
+	@Override
+	public Collection<String> getAllImsiValues() {
+		Query query = em.createQuery("select distinct bd.imsi from BaseData bd");
+		List<String> basedata = query.getResultList();
+		return basedata;
+	}
 	
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

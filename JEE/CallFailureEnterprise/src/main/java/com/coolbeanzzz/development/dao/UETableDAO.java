@@ -11,4 +11,16 @@ public interface UETableDAO extends FailureTableDAO{
 	 * @return a collection of ue type integers from the underlying UETable
 	 */
 	Collection<Integer> getUETypes();
+	
+	/**
+	 * Gets all manufacturers from database
+	 * @return a collection of manufacturers from database
+	 */	
+	Collection<String> getAllManufacturers();
+	
+	/**
+	 * Gets all models for given manufacturer
+	 * @return a collection of models relating to the input manufacturer from database
+	 */	
+	Collection<String> getModelsForManufacturer(String manufacturer);
 }
