@@ -53,11 +53,13 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-7")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ2() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ7(String[] dates) {
+    	System.out.println(dates[0]);
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange("2013-01-11 00:00:00", "2013-01-11 23:59:00"));
+    	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange(dates[0], dates[1]));
         return baseData;
     }
 
