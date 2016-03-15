@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -22,39 +20,8 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
-import com.coolbeanzzz.development.tools.CompareData;
-import com.coolbeanzzz.development.tools.Convert;
-
 @Path("/file")
 public class FileUploadService {
-	
-	private Collection<Integer> uniqueEventIds;
-	private Collection<Integer> uniqueCauseCodes;
-	
-	private Collection<Integer> uniqueFailureCodes;
-	
-	private Collection<Integer> mccs;
-	private Collection<Integer> mncs;
-	
-	private Collection<Integer> ueTypes;
-	
-	@Inject
-	private FailureClassService failureClassService;
-	
-	@Inject
-	private EventCauseService eventCauseService;
-	
-	@Inject
-	private MccMncService mccMncService;
-	
-	@Inject
-	private UETableService ueTableService;
-	
-	@Inject
-	private BaseDataService baseDataService;
-	
-	@Inject
-	private ErroneousDataService erroneousDataService;
 	
 	/**
 	 * Upload the user's selected file to the server and return the file location and
