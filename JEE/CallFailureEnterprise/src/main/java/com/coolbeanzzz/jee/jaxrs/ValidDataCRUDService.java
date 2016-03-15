@@ -55,7 +55,6 @@ public class ValidDataCRUDService {
     @Produces(MediaType.APPLICATION_JSON)
     public ResultList getQ2() {
     	ResultList baseData = new ResultList();
-//    	BigInteger big = new BigInteger("344930000000011");
     	baseData.setDataCollection(service.getEventIdsCauseCodeForIMSI("240210000000013"));
         return baseData;
     }

@@ -128,6 +128,15 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
+	
+	/**
+	 * User Story 4
+	 * 
+	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
+	 * the Event ID and Cause Code for any / all failures affecting that IMSI
+	 * 
+	 */
+	
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
 		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.imsi "				//QUERY
