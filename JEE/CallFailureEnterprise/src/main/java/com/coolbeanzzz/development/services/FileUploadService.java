@@ -138,31 +138,6 @@ public class FileUploadService {
 		fileOutput.write(content);
 		fileOutput.flush();
 		fileOutput.close();
-		
-//		Convert convert = new Convert();
-//		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
-//		convert.convert();
-//		
-//		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-//		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-//		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-//		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
-//		
-//		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-//		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-//		
-//		uniqueFailureCodes = failureClassService.getFailureClassCodes();
-//		
-//		mccs = mccMncService.getAllUniqueMCCs();
-//		mncs = mccMncService.getAllUniqueMNCs();
-//		
-//		ueTypes = ueTableService.getUETypes();
-//		
-//		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-//		compare.compareData();
-//		
-//		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
-//		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 	}
 	
 }
