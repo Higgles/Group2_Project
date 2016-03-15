@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
@@ -17,6 +18,8 @@ import java.util.Collection;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import org.apache.commons.io.FileUtils;
 
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
@@ -82,16 +85,16 @@ public class FolderWatcher{
                 for (WatchEvent<?> watchEvent : key.pollEvents()) {
                     kind = watchEvent.kind();
                     if (ENTRY_CREATE == kind) {
-                        Path newPath = new File("/home/user1/testing2/" + watchEvent.context()).toPath();
+                        Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
                         if(newPath.getFileName().toString().endsWith(".xls")){
                         	Convert convert = new Convert();
                         	convert.setInputFile(newPath.toAbsolutePath().toString());
                         	convert.convert();
                         	
-                        	failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-                    		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-                    		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-                    		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
+                        	failureClassService.populateTable(new File("/home/user1/json/Failure Class Table.json"));
+                    		eventCauseService.populateTable(new File("/home/user1/json/Event-Cause Table.json"));
+                    		mccMncService.populateTable(new File("/home/user1/json/MCC - MNC Table.json"));
+                    		ueTableService.populateTable(new File("/home/user1/json/UE Table.json"));
                     		
                     		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
                     		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
@@ -106,10 +109,15 @@ public class FolderWatcher{
                     		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
                         	compare.compareData();
                         	
-                    		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
-                    		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));                        	
+                    		baseDataService.populateTable(new File("/home/user1/json/validData.json"));
+                    		erroneousDataService.populateTable(new File("/home/user1/json/erroneousData.json"));                        	
                     		
-                    		Files.copy(newPath, new File("/home/user1/software/jboss/bin/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
+                    		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
+                    		File jsonDir = new File("/home/user1/json");
+                    		File uploadDir = new File("/home/user1/datasets");
+                    		FileUtils.cleanDirectory(jsonDir);
+                    		FileUtils.cleanDirectory(uploadDir);
+                    		
                         }
                     }
                 }

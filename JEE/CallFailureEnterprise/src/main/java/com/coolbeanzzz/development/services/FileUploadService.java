@@ -79,7 +79,7 @@ public class FileUploadService {
 				String fileName = getFileName(header);
 				if(fileName.contains(".xls")){
 					InputStream inputStream = inputPart.getBody(InputStream.class, null);
-	
+					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
 					
 					writeFile(bytes, fileName);
@@ -129,7 +129,7 @@ public class FileUploadService {
 	 * @throws IOException
 	 */
 	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File(filename);
+		File file = new File("/home/user1/datasets/" + filename);
 		if (!file.exists()) {
 			System.out.println("not exist> " + file.getAbsolutePath());
 			file.createNewFile();
@@ -139,30 +139,30 @@ public class FileUploadService {
 		fileOutput.flush();
 		fileOutput.close();
 		
-		Convert convert = new Convert();
-		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
-		convert.convert();
-		
-		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
-		
-		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-		
-		uniqueFailureCodes = failureClassService.getFailureClassCodes();
-		
-		mccs = mccMncService.getAllUniqueMCCs();
-		mncs = mccMncService.getAllUniqueMNCs();
-		
-		ueTypes = ueTableService.getUETypes();
-		
-		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-		compare.compareData();
-		
-		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
-		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
+//		Convert convert = new Convert();
+//		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
+//		convert.convert();
+//		
+//		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
+//		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
+//		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
+//		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
+//		
+//		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+//		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+//		
+//		uniqueFailureCodes = failureClassService.getFailureClassCodes();
+//		
+//		mccs = mccMncService.getAllUniqueMCCs();
+//		mncs = mccMncService.getAllUniqueMNCs();
+//		
+//		ueTypes = ueTableService.getUETypes();
+//		
+//		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
+//		compare.compareData();
+//		
+//		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
+//		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 	}
 	
 }
