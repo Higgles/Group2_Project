@@ -61,6 +61,18 @@ public class UETableCRUDService {
     }
     
     /**
+	 * Gets a list of tac values relating to the entered manufacturer and model from the database
+	 * @return a list of integer tacs
+	 */
+    @POST
+    @Path("/uetypes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Collection<Integer> getUeTypes(String[] data) {
+    	return service.getUETypes(data[0], data[1]);
+    }
+    
+    /**
      * Adds new entry to failure table in database
      * @param newEntry to be added to database
      * @return added failuretable entry

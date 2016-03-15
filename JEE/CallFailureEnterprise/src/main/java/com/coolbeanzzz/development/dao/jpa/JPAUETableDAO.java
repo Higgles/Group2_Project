@@ -129,5 +129,15 @@ public class JPAUETableDAO implements UETableDAO {
 		List<String> ueTables = query.getResultList();
 		
 		return ueTables;
+	}
+
+	@Override
+	public Collection<Integer> getUETypes(String manufacturer, String model) {
+		Query query = em.createQuery("select u.tac from UETable u where u.manufacturer=:manufacturer and u.marketingName=:marketingName");
+		query.setParameter("manufacturer", manufacturer);
+		query.setParameter("marketingName", model);
+		List<Integer> ueTables = query.getResultList();
+		
+		return ueTables;
 	}	
 }

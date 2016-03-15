@@ -13,6 +13,12 @@ public interface UETableDAO extends FailureTableDAO{
 	Collection<Integer> getUETypes();
 	
 	/**
+	 * Retrieves all ue type values from the UETable
+	 * @return a collection of ue type integers from the underlying UETable
+	 */
+	Collection<Integer> getUETypes(String manufacturer, String model);
+	
+	/**
 	 * Gets all manufacturers from database
 	 * @return a collection of manufacturers from database
 	 */	

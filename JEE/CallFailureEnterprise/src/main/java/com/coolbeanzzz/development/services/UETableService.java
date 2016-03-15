@@ -17,6 +17,12 @@ public interface UETableService extends FailureTableService{
 	public Collection<Integer> getUETypes();
 	
 	/**
+	 * Gets all ue types from the UETable within the database
+	 * @return a collection of uetype values
+	 */
+	public Collection<Integer> getUETypes(String manufacturer, String model);
+	
+	/**
 	 * Gets all unique manufacturer values from database
 	 * @return a collection of unique manufacturer values
 	 */

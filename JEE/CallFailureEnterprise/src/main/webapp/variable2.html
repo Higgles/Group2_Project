@@ -12,15 +12,15 @@
 <link rel="stylesheet" type="text/css" href="resources/demo.css">
 <link rel="stylesheet" href="media/css/bootstrap-table.css">
 <link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="media/css/bootstrap-select.css">
+<link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
 <style type="text/css" class="init">
 </style>
 <script type="text/javascript" language="javascript"
 	src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript"
 	src="resources/syntax/shCore.js"></script>
-<script type="text/javascript" language="javascript"
-	src="resources/demo.js"></script>
+<!-- script type="text/javascript" language="javascript"
+	src="resources/demo.js"></script-->
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="media/js/bootstrap-table.js"></script>
 <script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
@@ -29,7 +29,7 @@
 <script type="text/javascript" src="media/js/collapse.js"></script>
 <script type="text/javascript" src="media/js/bootstrap-datetimepicker.min.js" ></script>
 <script type="text/javascript" language="javascript" class="init"></script>
-<script type="text/javascript" src="media/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="media/js/select2.full.js"></script>
 </head>
 
 <body>
@@ -40,12 +40,10 @@
 	<p>
 	<h2>Query Results</h2>
 	<br/>
-	<select class="selectpicker" data-style="btn-info">
-	  <option>Mustard</option>
-	  <option>Ketchup</option>
-	  <option>Relish</option>
-	</select>
-	
+	<button type="button" class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+  <div id="demo" class="collapse">
+    
+  
 	<br/>
 	<div class="container">
 	    <div class='col-md-5'>
@@ -90,11 +88,13 @@
 	    });
 	</script>
 	<br/>
-	<select id="dd1" class="selectpicker" data-style="btn-info">
-	  <option>Mustard</option>
-	  <option>Ketchup</option>
-	  <option>Relish</option>
+	<select id="dd1" class="js-example-responsive" style="width: 150px">
 	</select>
+	<select id="dd2" class="js-example-responsive" style="width: 150px">
+	</select>
+	<select id="dd3" class="js-example-responsive" style="width: 150px">
+	</select>
+	</div>
 	<br/>
 	<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
 	</table>
@@ -107,28 +107,71 @@
 	<script>
 		$(document).ready(function() {
 			$(function() {
+				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
 				popdd1();
 			});
 		});
 		
+		$("#dd1").on("change", function (e) {
+			var dd=document.getElementById("dd2");
+			$("#dd2").empty();
+			$.ajax({
+				type : 'GET',
+				url : 'rest/uetables/models/'+$("#dd1").select2('data')[0].text,//$("#title").val(),
+				success : function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#dd2").append(text);
+					}
+					//$("#dd2").select2();
+					var $example = $("#dd2").select2();
+					$example.val("0").trigger("change");
+				},
+			});
+		});
+		
+		$("#dd2").on("change", function (e) {
+			var dd=document.getElementById("dd3");
+			var dat=[];
+			dat.push($("#dd1").select2('data')[0].text);
+			dat.push($("#dd2").select2('data')[0].text);
+			$("#dd3").empty();
+			$.ajax({
+				type : 'POST',
+				url : 'rest/uetables/uetypes',
+				dataType: "json",
+				contentType: 'application/json',
+				data: JSON.stringify(dat),
+				success: function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#dd3").append(text);
+					}
+					//$("#dd3").select2();
+					var $example = $("#dd3").select2();
+					$example.val("0").trigger("change");
+				},
+			}); 
+		});
+		
 		function popdd1(){
 			var dd=document.getElementById("dd1");
-			
+			$("#dd1").empty();
 			$.ajax({
 				type : 'GET',
 				url : 'rest/uetables/manufacturers',//$("#title").val(),
 				success : function(data){
 					for(i=0;i<data.length;i++){
 						var opt = data[i];  
-			            var li = document.createElement("li");
-			            var link = document.createElement("a");             
-			            var text = document.createTextNode(opt);
-			            link.appendChild(text);
-			            link.href = "#";
-			            li.appendChild(link);
-			            dd.appendChild(li);
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#dd1").append(text);
 					}
+					//$("#dd1").select2();
+					var $example = $("#dd1").select2();
+					$example.val("0").trigger("change");
 				},
 			});
 		}
@@ -181,7 +224,9 @@
 		});
 		 
 		$("#empty").click(function clear(){
-			$('#dataTable').empty();
+			//$('#dataTable').empty();
+			var $example = $("#dd2").select2();
+			$example.val("3").trigger("change");
 		});
 	</script>
 </body>

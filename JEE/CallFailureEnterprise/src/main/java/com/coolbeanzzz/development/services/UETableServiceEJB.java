@@ -85,4 +85,9 @@ public class UETableServiceEJB implements UETableService {
 	public Collection<String> getModelsForManufacturer(String manufacturer) {
 		return dao.getModelsForManufacturer(manufacturer);
 	}
+
+	@Override
+	public Collection<Integer> getUETypes(String manufacturer, String model) {
+		return dao.getUETypes(manufacturer, model);
+	}
 }
