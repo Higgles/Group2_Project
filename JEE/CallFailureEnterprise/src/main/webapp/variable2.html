@@ -88,11 +88,11 @@
 	    });
 	</script>
 	<br/>
-	<select id="dd1" class="js-example-responsive" style="width: 150px">
+	<select id="manufacturerDropdown" class="js-example-responsive" style="width: 150px">
 	</select>
-	<select id="dd2" class="js-example-responsive" style="width: 150px">
+	<select id="modelDropdown" class="js-example-responsive" style="width: 150px">
 	</select>
-	<select id="dd3" class="js-example-responsive" style="width: 150px">
+	<select id="tacDropdown" class="js-example-responsive" style="width: 150px">
 	</select>
 	</div>
 	<br/>
@@ -109,68 +109,62 @@
 			$(function() {
 				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
-				popdd1();
+				populateManufacturerDropdown();
 			});
 		});
 		
-		$("#dd1").on("change", function (e) {
-			var dd=document.getElementById("dd2");
-			$("#dd2").empty();
+		$("#manufacturerDropdown").on("change", function (e) {
+			$("#modelDropdown").empty();
 			$.ajax({
 				type : 'GET',
-				url : 'rest/uetables/models/'+$("#dd1").select2('data')[0].text,//$("#title").val(),
+				url : 'rest/uetables/models/'+$("#manufacturerDropdown").select2('data')[0].text,
 				success : function(data){
 					for(i=0;i<data.length;i++){
 						var opt = data[i];  
 						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#dd2").append(text);
+						$("#modelDropdown").append(text);
 					}
-					//$("#dd2").select2();
-					var $example = $("#dd2").select2();
+					var $example = $("#modelDropdown").select2();
 					$example.val("0").trigger("change");
 				},
 			});
 		});
 		
-		$("#dd2").on("change", function (e) {
-			var dd=document.getElementById("dd3");
-			var dat=[];
-			dat.push($("#dd1").select2('data')[0].text);
-			dat.push($("#dd2").select2('data')[0].text);
-			$("#dd3").empty();
+		$("#modelDropdown").on("change", function (e) {
+			var inputdata=[];
+			inputdata.push($("#manufacturerDropdown").select2('data')[0].text);
+			inputdata.push($("#modelDropdown").select2('data')[0].text);
+			$("#tacDropdown").empty();
 			$.ajax({
 				type : 'POST',
 				url : 'rest/uetables/uetypes',
 				dataType: "json",
 				contentType: 'application/json',
-				data: JSON.stringify(dat),
+				data: JSON.stringify(inputdata),
 				success: function(data){
 					for(i=0;i<data.length;i++){
 						var opt = data[i];  
 						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#dd3").append(text);
+						$("#tacDropdown").append(text);
 					}
-					//$("#dd3").select2();
-					var $example = $("#dd3").select2();
+					var $example = $("#tacDropdown").select2();
 					$example.val("0").trigger("change");
 				},
 			}); 
 		});
 		
-		function popdd1(){
-			var dd=document.getElementById("dd1");
-			$("#dd1").empty();
+		function populateManufacturerDropdown(){
+			$("#manufacturerDropdown").empty();
 			$.ajax({
 				type : 'GET',
-				url : 'rest/uetables/manufacturers',//$("#title").val(),
+				url : 'rest/uetables/manufacturers',
 				success : function(data){
 					for(i=0;i<data.length;i++){
 						var opt = data[i];  
 						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#dd1").append(text);
+						$("#manufacturerDropdown").append(text);
 					}
-					//$("#dd1").select2();
-					var $example = $("#dd1").select2();
+					var $example = $("#manufacturerDropdown").select2();
 					$example.val("0").trigger("change");
 				},
 			});
@@ -185,7 +179,7 @@
 			alert(JSON.stringify(dates));
 	        $.ajax({
 				type : 'POST',
-				url : 'rest/validdata/CB-7',//$("#title").val(),
+				url : 'rest/validdata/CB-7',
 				dataType: "json",
 				contentType: 'application/json',
 				data: JSON.stringify(dates),
@@ -224,8 +218,7 @@
 		});
 		 
 		$("#empty").click(function clear(){
-			//$('#dataTable').empty();
-			var $example = $("#dd2").select2();
+			var $example = $("#modelDropdown").select2();
 			$example.val("3").trigger("change");
 		});
 	</script>
