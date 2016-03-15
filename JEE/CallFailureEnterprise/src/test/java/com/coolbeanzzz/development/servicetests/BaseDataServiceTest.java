@@ -30,6 +30,7 @@ public class BaseDataServiceTest {
 		bds.add(baseData2);
 		when(mockedBaseDataDao.getAllTableRows()).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(anyInt())).thenReturn(bds);
+		when(mockedBaseDataDao.getEventIdsCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
 		baseDataService=new BaseDataServiceEJB();
 		baseDataService.setDao(mockedBaseDataDao);
 	}
@@ -43,6 +44,12 @@ public class BaseDataServiceTest {
 	@Test
 	public void getUniqueEventIdsCauseCodeForPhoneTypetest() {
 		Collection<FailureTable> baseData = baseDataService.getUniqueEventIdsCauseCodeForPhoneType(1);
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getEventIdsCauseCodeForIMSItest() {
+		Collection<FailureTable> baseData = baseDataService.getEventIdsCauseCodeForIMSI("1");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 }

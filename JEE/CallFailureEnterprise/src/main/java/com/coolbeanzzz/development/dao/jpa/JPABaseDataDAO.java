@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -192,6 +193,26 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	public Collection<String> getAllImsiValues() {
 		Query query = em.createQuery("select distinct bd.imsi from BaseData bd");
 		List<String> basedata = query.getResultList();
+		return basedata;
+	}
+	
+	
+	/**
+	 * User Story 4
+	 * 
+	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
+	 * the Event ID and Cause Code for any / all failures affecting that IMSI
+	 * 
+	 */
+	
+	@Override
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.imsi "				//QUERY
+				+ " from BaseData bd where bd.imsi=:IMSI"
+				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
+		query.setParameter("IMSI", IMSI);
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"EventId", "CauseCode", "IMSI"});
 		return basedata;
 	}
 	

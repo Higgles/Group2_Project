@@ -59,9 +59,21 @@ public class ValidDataCRUDService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ResultList getQ7(String[] dates) {
-    	System.out.println(dates[0]);
     	ResultList baseData = new ResultList();
     	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange(dates[0], dates[1]));
+    	return baseData;
+    }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-4")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ4() {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getEventIdsCauseCodeForIMSI("240210000000013"));
         return baseData;
     }
 

@@ -3,6 +3,7 @@
  */
 package com.coolbeanzzz.development.services;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 import javax.ejb.Local;
@@ -48,4 +49,12 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of unique imsi values
 	 */
 	public Collection<String> getAllImsiValues();
+
+	 /** 
+	 * Gets event id's and cause code combinations for an input IMSI from the database
+	 * @param input IMSI
+	 * @return a collection of FailureTable results
+	 */
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
+
 }
