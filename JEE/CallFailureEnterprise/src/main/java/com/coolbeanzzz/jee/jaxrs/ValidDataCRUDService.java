@@ -70,13 +70,12 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-5")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ5() {
-    	String date1 = "2012-01-11 16:11:00";
-    	String date2 = "2013-01-11 17:17:45";
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ5(String[] dates) {    	
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getImsiListBetween2Dates(date1,date2));
+    	baseData.setDataCollection(service.getImsiListBetween2Dates(dates[0], dates[1]));
     	return baseData;
     }
     
