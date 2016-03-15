@@ -89,7 +89,7 @@ public class FileUploadService {
 
 	/**
 	 * Write file being uploaded to the server directory
-	 * Conversion of the xls file sheets to json files is then run
+	 * Conversion of the xls file sheets to json files is then run by the FolderWatcher
 	 * 
 	 * @param content the content of the file to be uploaded and written
 	 * @param filename name of the uploaded file

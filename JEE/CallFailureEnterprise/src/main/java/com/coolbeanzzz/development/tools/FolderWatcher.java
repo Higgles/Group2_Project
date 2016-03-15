@@ -68,7 +68,8 @@ public class FolderWatcher{
 	 * compared to base data to create valid data and erroneous data tables
 	 * which are then added to the database.
 	 * 
-	 * The dataset is then copied from the monitored directory to the upload
+	 * The dataset is copied to a savedDatasets directory. The dataset and json directories
+	 * are then cleared
 	 * directory
 	 * 
 	 * @param path Directory to monitor for changes
