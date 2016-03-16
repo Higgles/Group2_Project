@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -22,39 +20,8 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
-import com.coolbeanzzz.development.tools.CompareData;
-import com.coolbeanzzz.development.tools.Convert;
-
 @Path("/file")
 public class FileUploadService {
-	
-	private Collection<Integer> uniqueEventIds;
-	private Collection<Integer> uniqueCauseCodes;
-	
-	private Collection<Integer> uniqueFailureCodes;
-	
-	private Collection<Integer> mccs;
-	private Collection<Integer> mncs;
-	
-	private Collection<Integer> ueTypes;
-	
-	@Inject
-	private FailureClassService failureClassService;
-	
-	@Inject
-	private EventCauseService eventCauseService;
-	
-	@Inject
-	private MccMncService mccMncService;
-	
-	@Inject
-	private UETableService ueTableService;
-	
-	@Inject
-	private BaseDataService baseDataService;
-	
-	@Inject
-	private ErroneousDataService erroneousDataService;
 	
 	/**
 	 * Upload the user's selected file to the server and return the file location and
@@ -79,7 +46,7 @@ public class FileUploadService {
 				String fileName = getFileName(header);
 				if(fileName.contains(".xls")){
 					InputStream inputStream = inputPart.getBody(InputStream.class, null);
-	
+					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
 					
 					writeFile(bytes, fileName);
@@ -122,14 +89,14 @@ public class FileUploadService {
 
 	/**
 	 * Write file being uploaded to the server directory
-	 * Conversion of the xls file sheets to json files is then run
+	 * Conversion of the xls file sheets to json files is then run by the FolderWatcher
 	 * 
 	 * @param content the content of the file to be uploaded and written
 	 * @param filename name of the uploaded file
 	 * @throws IOException
 	 */
 	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File(filename);
+		File file = new File("/home/user1/datasets/" + filename);
 		if (!file.exists()) {
 			System.out.println("not exist> " + file.getAbsolutePath());
 			file.createNewFile();
@@ -138,31 +105,6 @@ public class FileUploadService {
 		fileOutput.write(content);
 		fileOutput.flush();
 		fileOutput.close();
-		
-		Convert convert = new Convert();
-		convert.setInputFile("/home/user1/software/jboss/bin/" + filename);
-		convert.convert();
-		
-		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/Failure Class Table.json"));
-		eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/Event-Cause Table.json"));
-		mccMncService.populateTable(new File("/home/user1/software/jboss/bin/MCC - MNC Table.json"));
-		ueTableService.populateTable(new File("/home/user1/software/jboss/bin/UE Table.json"));
-		
-		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-		
-		uniqueFailureCodes = failureClassService.getFailureClassCodes();
-		
-		mccs = mccMncService.getAllUniqueMCCs();
-		mncs = mccMncService.getAllUniqueMNCs();
-		
-		ueTypes = ueTableService.getUETypes();
-		
-		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-		compare.compareData();
-		
-		baseDataService.populateTable(new File("/home/user1/software/jboss/bin/validData.json"));
-		erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/erroneousData.json"));
 	}
 	
 }

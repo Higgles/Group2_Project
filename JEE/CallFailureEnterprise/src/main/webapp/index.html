@@ -18,11 +18,11 @@
 <body>
 	<section class="container login-form">
 		<section>
-			<form method="post" action="rest/users/login" role="login">
+			<form name="loginform" method="post" action="" role="login">
 				<h2 class="form-signin-heading">Cool Beanzzz</h2>
 
 				<div class="form-group">
-					<input type="username" name="username" required class="form-control" placeholder="Enter username" />
+					<input type="text" name="username" required class="form-control" placeholder="Enter username" />
 					<span class="glyphicon glyphicon-user"></span>
 				</div>
 				
@@ -31,7 +31,7 @@
 					<span class="glyphicon glyphicon-lock"></span>
 				</div>
 				
-				<button type="submit" name="go" class="btn btn-primary btn-block">Login</button>
+				<button type="submit" value='Login' name="login" class="btn btn-primary btn-block">Login</button>
 			</form>
 		</section>
 	</section>

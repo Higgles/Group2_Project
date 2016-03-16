@@ -63,11 +63,11 @@ public class CompareData {
 
 		try {
 
-			Object obj = parser.parse(new FileReader(new File("/home/user1/software/jboss/bin/Base Data.json")));
+			Object baseDataObj = parser.parse(new FileReader(new File("/home/user1/json/Base Data.json")));
 
-			JSONArray rows = (JSONArray) obj;
+			JSONArray baseDataRows = (JSONArray) baseDataObj;
 			
-			Iterator<?> iterator = rows.iterator();
+			Iterator<?> iterator = baseDataRows.iterator();
 			
 			while (iterator.hasNext()) {
 
@@ -94,7 +94,7 @@ public class CompareData {
 				}
 			}
 			
-			FileWriter fwValid = new FileWriter(new File("validData.json"));
+			FileWriter fwValid = new FileWriter(new File("/home/user1/json/validData.json"));
 			Iterator<?> iteratorValid = validData.iterator();
 			fwValid.write("[");
 			while (iteratorValid.hasNext()) {
@@ -104,7 +104,7 @@ public class CompareData {
 			fwValid.write("]");
 			fwValid.close();
 			
-			FileWriter fwErroneous = new FileWriter(new File("erroneousData.json"));
+			FileWriter fwErroneous = new FileWriter(new File("/home/user1/json/erroneousData.json"));
 			Iterator<?> iteratorErroneous = erroneousData.iterator();
 			fwErroneous.write("[");
 			while (iteratorErroneous.hasNext()) {

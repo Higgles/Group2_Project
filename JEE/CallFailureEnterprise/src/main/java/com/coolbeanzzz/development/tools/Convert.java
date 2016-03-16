@@ -35,7 +35,7 @@ public class Convert {
 	 */
 	public void convert() throws IOException  {
 		File inputWorkbook = new File(inputFile);
-		FileWriter jsonConvert = new FileWriter("convertedFile.json");
+		FileWriter jsonConvert = new FileWriter("/home/user1/json/convertedFile.json");
 		Workbook workbook;
 		ArrayList<String> labels = new ArrayList<String>();
 		
@@ -48,7 +48,7 @@ public class Convert {
 			workbook = Workbook.getWorkbook(inputWorkbook);
 			for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
 				sheet = workbook.getSheet(sheetNumber);
-				jsonConvert = new FileWriter(sheet.getName() + ".json");
+				jsonConvert = new FileWriter("/home/user1/json/" + sheet.getName() + ".json");
 				jsonConvert.append("[");
 				for (int row = 0; row < sheet.getRows(); row++){
 					if(row != 0){
