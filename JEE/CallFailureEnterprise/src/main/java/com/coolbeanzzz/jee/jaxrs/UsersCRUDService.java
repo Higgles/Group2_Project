@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
 import com.coolbeanzzz.development.entities.Users;
 import com.coolbeanzzz.development.entities.UsersList;
 import com.coolbeanzzz.development.services.UsersService;
@@ -33,14 +32,8 @@ public class UsersCRUDService {
         return users;
     }
     
-    @POST
-    @Path("/login")
-   	@Consumes(MediaType.APPLICATION_JSON)
-   	public String checkUser() {
-    	
-    	return "hello";
-   	}
-    
+  
+  
     @POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Users addUsers(Users user) {
@@ -49,6 +42,8 @@ public class UsersCRUDService {
 		return user;
 	}
 
+   
+    
 //    @DELETE
 //    @Path("/{id}")
 //	public void removeUser(@PathParam("id") Users user) {
