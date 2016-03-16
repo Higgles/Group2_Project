@@ -63,11 +63,11 @@ public class CompareData {
 
 		try {
 
-			Object obj = parser.parse(new FileReader(new File("/home/user1/json/Base Data.json")));
+			Object baseDataObj = parser.parse(new FileReader(new File("/home/user1/json/Base Data.json")));
 
-			JSONArray rows = (JSONArray) obj;
+			JSONArray baseDataRows = (JSONArray) baseDataObj;
 			
-			Iterator<?> iterator = rows.iterator();
+			Iterator<?> iterator = baseDataRows.iterator();
 			
 			while (iterator.hasNext()) {
 

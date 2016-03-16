@@ -32,7 +32,10 @@ public class UsersCRUDService {
 	@Inject
 	private UsersService service;
 	
-
+	/**
+	 * Get list of users
+	 * @return UsersList list of all users
+	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UsersList getUsers() {
@@ -41,14 +44,11 @@ public class UsersCRUDService {
         return users;
     }
     
-    @POST
-    @Path("/login")
-   	@Consumes(MediaType.APPLICATION_JSON)
-   	public String checkUser() {
-    	
-    	return "hello";
-   	}
-    
+    /**
+     * Check logged in user's role and return a response to the user page
+     * @return response user page
+     * @throws URISyntaxException
+     */
     @GET
     @Path("/userCheck")
     public Response checkRole() throws URISyntaxException{
@@ -63,6 +63,10 @@ public class UsersCRUDService {
     	return Response.temporaryRedirect(location).build();
     }
     
+    /**
+     * Get username and role of current logged in user
+     * @return collection with username and role
+     */
     @GET
     @Path("/currentUser")
     @Produces(MediaType.APPLICATION_JSON)
@@ -87,12 +91,15 @@ public class UsersCRUDService {
     	return user;
     }
     
+    /**
+     * Add user to system
+     * @param user
+     */
     @POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Users addUsers(Users user) {
-		user.setId(0); // make sure the ID is not set
+	public void addUser(Users user) {
+		user.setId(0);
 		service.addUser(user);
-		return user;
 	}
 
 //    @DELETE
@@ -101,6 +108,10 @@ public class UsersCRUDService {
 //		service.removeUser(user);
 //	}
     
+    /**
+     * Update user details
+     * @param updatedUser
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateUser(Users updatedUser) {

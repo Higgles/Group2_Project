@@ -26,32 +26,52 @@ public class RolesPermission implements Serializable {
 	@Column
 	private String roleName;
 
+	/**
+	 * Get ID
+	 * @return id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
+	/**
+	 * Set role ID
+	 * @param id
+	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get role permission
+	 * @return permission
+	 */
 	public String getPermission() {
 		return permission;
 	}
 
+	/**
+	 * Set role permission
+	 * @param permission
+	 */
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
 
+	/**
+	 * Get name of role
+	 * @return roleName
+	 */
 	public String getRoleName() {
 		return roleName;
 	}
 
+	/**
+	 * Set name of role
+	 * @param roleName
+	 */
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 	
 }
