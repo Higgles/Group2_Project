@@ -11,13 +11,13 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import com.coolbeanzzz.development.entities.UsersList;
+
 import static com.jayway.restassured.RestAssured.*;
 
 public class UserGetTest {
 
 	@Test
 	public void testGetUsers() {
-		
 //			given().
 //		        contentType("application/json").
 //		    when().
@@ -25,11 +25,11 @@ public class UserGetTest {
 //		    then().
 //		        statusCode(200);
 		
-		
-        expect().
-        	statusCode(200).
-        when().
-        	get("http://localhost:8080/CallFailureEnterprise/rest/users");
+		given().auth().basic("admin", "admin").when().get("http://localhost:8080/CallFailureEnterprise/rest/mccmncs").then().statusCode(200);
+//        expect().
+//        	statusCode(200).
+//        when().
+//        	get("http://localhost:8080/CallFailureEnterprise/rest/mccmncs");
 			
 	}
 	
