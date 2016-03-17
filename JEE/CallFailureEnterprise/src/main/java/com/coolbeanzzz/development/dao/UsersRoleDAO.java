@@ -13,8 +13,8 @@ public class UsersRoleDAO {
 	 * @param username
 	 * @return
 	 */
-	public static List<UserRole> getUserRolesByUsername(String username) {
-		return roles;
-	}
+//	public static List<UserRole> getUserRolesByUsername(String username) {
+//		return roles;
+//	}
 
 }

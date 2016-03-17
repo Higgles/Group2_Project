@@ -14,7 +14,7 @@ public class UserRole implements Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 8432414340180447723L;
+//  private static final long serialVersionUID = 1L;
  
   @Id
   @GeneratedValue

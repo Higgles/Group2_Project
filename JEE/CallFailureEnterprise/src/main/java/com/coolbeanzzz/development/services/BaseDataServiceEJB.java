@@ -4,6 +4,7 @@
 package com.coolbeanzzz.development.services;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -78,8 +79,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByImsi(int ueType, String dateStart, String dateEnd) {
-		return dao.getFailCountByImsi(ueType, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd) {
+		return dao.getFailCountByPhoneModel(ueType, dateStart, dateEnd);
 	}
 
 	@Override
@@ -90,5 +91,15 @@ public class BaseDataServiceEJB implements BaseDataService {
 	@Override
 	public void clearAllEntries() {
 		dao.clearAllEntries();
+	}
+
+	@Override
+	public Collection<String> getAllImsiValues() {
+		return dao.getAllImsiValues();
+	}
+	
+	@Override
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {																						//EJB
+		return dao.getEventIdsCauseCodeForIMSI(IMSI);
 	}
 }

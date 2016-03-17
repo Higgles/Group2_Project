@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+
+<title>Valid Data Table</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="resources/syntax/shCore.css">
+<link rel="stylesheet" type="text/css" href="resources/demo.css">
+<link rel="stylesheet" href="media/css/bootstrap-table.css">
+<link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
+<style type="text/css" class="init">
+</style>
+<script type="text/javascript" language="javascript"
+	src="media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript"
+	src="resources/syntax/shCore.js"></script>
+<!-- script type="text/javascript" language="javascript"
+	src="resources/demo.js"></script-->
+<script type="text/javascript" src="media/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="media/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="media/js/transition.js"></script>
+<script type="text/javascript" src="media/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="media/js/collapse.js"></script>
+<script type="text/javascript" src="media/js/bootstrap-datetimepicker.min.js" ></script>
+<script type="text/javascript" language="javascript" class="init"></script>
+<script type="text/javascript" src="media/js/select2.full.js"></script>
+</head>
+
+<body>
+	<h4>
+		<a href='http://localhost:8080/CallFailureEnterprise/upload.html'>Go
+			back to upload page</a>
+	</h4>
+	<p>
+	<h2>Query Results</h2>
+	<br/>
+	<button type="button" class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+  <div id="demo" class="collapse">
+    
+  
+	<br/>
+	<div class="container">
+	    <div class='col-md-5'>
+	        <div class="form-group">
+	            <div class='input-group date' id='datetimepicker6'>
+	                <input id="datefrom" type='text' class="form-control" />
+	                <span class="input-group-addon">
+	                    <span class="glyphicon glyphicon-calendar"></span>
+	                </span>
+	            </div>
+	        </div>
+	    </div>
+	    <div class='col-md-5'>
+	        <div class="form-group">
+	            <div class='input-group date' id='datetimepicker7'>
+	                <input id="dateto" type='text' class="form-control" />
+	                <span class="input-group-addon">
+	                    <span class="glyphicon glyphicon-calendar"></span>
+	                </span>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<script type="text/javascript">
+	    $(function () {
+	        $('#datetimepicker6').datetimepicker({
+	        	locale: 'en-gb'
+	        });
+	        $('#datetimepicker7').datetimepicker({
+	            useCurrent: false,
+	            locale: 'en-gb'
+	        });
+	        $('#datetimepicker6').data("DateTimePicker").date(new Date());
+	        $('#datetimepicker7').data("DateTimePicker").date(new Date());
+	        $("#datetimepicker6").on("dp.change", function (e) {
+	            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+	        });
+	        $("#datetimepicker7").on("dp.change", function (e) {
+	            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+	        });
+	    });
+	</script>
+	<br/>
+	<select id="manufacturerDropdown" class="js-example-responsive" style="width: 150px">
+	</select>
+	<select id="modelDropdown" class="js-example-responsive" style="width: 150px">
+	</select>
+	<select id="tacDropdown" class="js-example-responsive" style="width: 150px">
+	</select>
+	</div>
+	<br/>
+	<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
+	</table>
+	<br/>
+	<br/>
+	<p id="count">
+	</p>
+	<button id="query1" type="button" class="btn btn-primary">Run Query</button>
+	<button id="empty" type="button" class="btn btn-primary">Empty</button>
+	<script>
+		$(document).ready(function() {
+			$(function() {
+				$(".js-example-responsive").select2();
+				$("#dataTable").tablesorter();
+				populateManufacturerDropdown();
+			});
+		});
+		
+		$("#manufacturerDropdown").on("change", function (e) {
+			$("#modelDropdown").empty();
+			$.ajax({
+				type : 'GET',
+				url : 'rest/uetables/models/'+$("#manufacturerDropdown").select2('data')[0].text,
+				success : function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#modelDropdown").append(text);
+					}
+					var $example = $("#modelDropdown").select2();
+					$example.val("0").trigger("change");
+				},
+			});
+		});
+		
+		$("#modelDropdown").on("change", function (e) {
+			var inputdata=[];
+			inputdata.push($("#manufacturerDropdown").select2('data')[0].text);
+			inputdata.push($("#modelDropdown").select2('data')[0].text);
+			$("#tacDropdown").empty();
+			$.ajax({
+				type : 'POST',
+				url : 'rest/uetables/uetypes',
+				dataType: "json",
+				contentType: 'application/json',
+				data: JSON.stringify(inputdata),
+				success: function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#tacDropdown").append(text);
+					}
+					var $example = $("#tacDropdown").select2();
+					$example.val("0").trigger("change");
+				},
+			}); 
+		});
+		
+		function populateManufacturerDropdown(){
+			$("#manufacturerDropdown").empty();
+			$.ajax({
+				type : 'GET',
+				url : 'rest/uetables/manufacturers',
+				success : function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#manufacturerDropdown").append(text);
+					}
+					var $example = $("#manufacturerDropdown").select2();
+					$example.val("0").trigger("change");
+				},
+			});
+		}
+		
+		$("#query1").click(function getData() {
+			var fromdate = $("#datetimepicker6").data("DateTimePicker").date();
+			var todate = $("#datetimepicker7").data("DateTimePicker").date();
+			var dates = []
+			dates.push(fromdate.format("YYYY-MM-DD HH:mm"));
+			dates.push(todate.format("YYYY-MM-DD HH:mm"));
+			alert(JSON.stringify(dates));
+	        $.ajax({
+				type : 'POST',
+				url : 'rest/validdata/CB-7',
+				dataType: "json",
+				contentType: 'application/json',
+				data: JSON.stringify(dates),
+				success : function(data){
+					document.getElementById("count").innerHTML="Count ="+(data.dataCollection.length-1);
+					var columnTitles=[];
+					for(j=0;j<data.dataCollection[0].length;j++){
+						columnTitles.push({
+								title: ""+data.dataCollection[0][j],
+								field: ""+data.dataCollection[0][j],
+		                        align: 'center',
+		                        valign: 'middle',
+		                        sortable: true
+						});
+					}
+
+					$('#dataTable').bootstrapTable({			
+			            columns: columnTitles
+			        });
+					
+					var arr=[];
+					for(i=1;i<data.dataCollection.length;i++){
+						var rowData='{';
+						for(j=0;j<data.dataCollection[i].length-1;j++){
+							rowData+='"'+data.dataCollection[0][j]+'" : "'+data.dataCollection[i][j]+'",';
+						}
+						rowData+='"'+data.dataCollection[0][data.dataCollection[i].length-1]+'" : "'+data.dataCollection[i][data.dataCollection[i].length-1]+'"';
+						rowData+='}';
+						arr.push(JSON.parse(rowData));
+					}
+					$('#dataTable').bootstrapTable('load', arr);
+					$("#dataTable").trigger("update");
+				},
+			});
+			
+		});
+		 
+		$("#empty").click(function clear(){
+			var $example = $("#modelDropdown").select2();
+			$example.val("3").trigger("change");
+		});
+	</script>
+</body>
+</html>

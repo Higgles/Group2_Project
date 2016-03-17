@@ -8,7 +8,6 @@
 	<properties>
 		<version.jacoco>0.7.4.201502262128</version.jacoco>
 		<version.arquillian_jacoco>1.0.0.Alpha8</version.arquillian_jacoco>
-		<version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
 		<version.arquillian-bom>1.1.11.Final</version.arquillian-bom>
 		<version.jboss-as-arquillian-container-remote>7.1.1.Final</version.jboss-as-arquillian-container-remote>
 		<version.jboss-javaee-7.0>1.0.0.Final</version.jboss-javaee-7.0>
@@ -36,22 +35,6 @@
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
-<dependency>
-	<groupId>com.jayway.restassured</groupId>
-	<artifactId>rest-assured</artifactId>
-	<version>2.9.0</version>
-</dependency>
-<dependency>
-      <groupId>com.jayway.restassured</groupId>
-      <artifactId>json-schema-validator</artifactId>
-      <version>2.9.0</version>
-      <scope>test</scope>
-</dependency>
-<dependency>
-      <groupId>com.jayway.restassured</groupId>
-      <artifactId>json-path</artifactId>
-      <version>2.9.0</version>
-</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -130,13 +113,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.arquillian.extension</groupId>
-			<artifactId>arquillian-persistence-impl</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${version.mokito}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>2.9.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
