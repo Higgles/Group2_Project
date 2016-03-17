@@ -1,0 +1,48 @@
+body {
+	background: url(../media/images/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 140px;
+  padding-bottom: 40px;
+}
+
+.upload {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.upload-heading {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#upload-button{
+  margin-left: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+h4 { 
+	text-align: center;
+    display: block;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: regular;
+}
+
+a:link {
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+a:hover {
+    color: #337ab7;
+}
