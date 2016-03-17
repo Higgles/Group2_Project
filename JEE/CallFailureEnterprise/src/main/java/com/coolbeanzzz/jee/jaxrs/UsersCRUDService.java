@@ -130,7 +130,7 @@ public class UsersCRUDService {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateUser(Users updatedUser) {
-		service.updateUserUsingId(updatedUser.getId());  
+		service.updateUserUsingId(updatedUser.getId());
 	}
     
 }
