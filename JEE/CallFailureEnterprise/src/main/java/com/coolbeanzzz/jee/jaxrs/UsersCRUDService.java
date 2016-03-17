@@ -115,6 +115,8 @@ public class UsersCRUDService {
 		service.addUser(user);
 	}
 
+   
+    
 //    @DELETE
 //    @Path("/{id}")
 //	public void removeUser(@PathParam("id") Users user) {

@@ -52,7 +52,7 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 		Query query = em.createQuery("from Users");
 		List<Users> users = query.getResultList();
 		if (!users.contains(user)){
-			em.persist(user);
+			em.merge(user);
 		}        
     }
 	

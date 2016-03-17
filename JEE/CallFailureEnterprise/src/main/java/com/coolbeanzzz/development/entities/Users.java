@@ -34,6 +34,13 @@ private static final long serialVersionUID = 1L;
 		this.userType = userType;
 	}
 	
+	public Users(String username, String passkey, String userType) {
+		super();
+		this.username = username;
+		this.passkey = passkey;
+		this.userType = userType;
+	}
+	
 	/**
 	 * Retrieves user id
 	 * @return int id 
