@@ -55,11 +55,18 @@ public class UsersCRUDService {
     	java.net.URI location = null;
     	Subject currentUser = SecurityUtils.getSubject();
     	if(currentUser.hasRole("SysAd")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/upload.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.html");
+    	}
+    	else if(currentUser.hasRole("NetManEng")){
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/netman/queries.html");
     	}
     	else if(currentUser.hasRole("SupEng")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/variable.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/supeng/queries.html");
     	}
+    	else if(currentUser.hasRole("CSR")){
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/custser/queries.html");
+    	}
+    	
     	return Response.temporaryRedirect(location).build();
     }
     
@@ -81,8 +88,14 @@ public class UsersCRUDService {
     	if(currentUser.hasRole("SysAd")){
     		role = "System Administrator";
     	}
+    	else if(currentUser.hasRole("NetManEng")){
+    		role = "Network Management Engineer";
+    	}
     	else if(currentUser.hasRole("SupEng")){
     		role = "Support Engineer";
+    	}
+    	else if(currentUser.hasRole("CSR")){
+    		role = "Customer Support Representative";
     	}
     	
     	user.add(username);
