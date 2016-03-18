@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
@@ -118,7 +117,7 @@ public class FolderWatcher{
                     		File uploadDir = new File("/home/user1/datasets");
                     		FileUtils.cleanDirectory(jsonDir);
                     		FileUtils.cleanDirectory(uploadDir);
-                    		
+                    		System.out.println(("DONE"));
                         }
                     }
                 }
@@ -126,7 +125,7 @@ public class FolderWatcher{
                 Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
         			public void run(){
         				try{
-        					folderWatchService.close();  
+        					folderWatchService.close();
         				}catch (IOException e){
         					System.out.println("IOEXception: " + e.toString()); 
         				}  
