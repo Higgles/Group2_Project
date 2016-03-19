@@ -26,6 +26,12 @@ body {
   z-index: 2;
 }
 
+#logout{
+  margin-left: 100px;
+  position: relative;
+  z-index: 2;
+}
+
 h4 { 
 	text-align: center;
     display: block;
