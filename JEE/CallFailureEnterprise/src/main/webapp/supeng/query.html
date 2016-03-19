@@ -5,44 +5,33 @@
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
 
 <title>Valid Data Table</title>
-<link rel="stylesheet"
-	href="media/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/syntax/shCore.css">
-<link rel="stylesheet" type="text/css" href="resources/demo.css">
-<link rel="stylesheet" href="media/css/bootstrap-table.css">
-<link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
-<link rel="stylesheet" type="text/css" href="mainPage.css">
-<!-- link rel="stylesheet" type="text/css" href="media/css/freelancer.css" -->
-<style type="text/css" class="init">
-</style>
-<script type="text/javascript" language="javascript"
-	src="media/js/jquery.js"></script>
-<script type="text/javascript" language="javascript"
-	src="resources/syntax/shCore.js"></script>
-<!-- script type="text/javascript" language="javascript"
-	src="resources/demo.js"></script-->
-<script type="text/javascript" src="media/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="media/js/transition.js"></script>
-<script type="text/javascript" src="media/js/moment-with-locales.js"></script>
-<script type="text/javascript" src="media/js/collapse.js"></script>
-<script type="text/javascript"
-	src="media/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="../media/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../resources/syntax/shCore.css">
+<link rel="stylesheet" type="text/css" href="../resources/demo.css">
+<link rel="stylesheet" href="../media/css/bootstrap-table.css">
+<link href="../media/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../media/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="../media/css/mainPage.css">
+<style type="text/css" class="init"></style>
+<script type="text/javascript" language="javascript" src="../media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="../resources/syntax/shCore.js"></script>
+<script type="text/javascript" src="../media/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../media/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="../media/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="../media/js/transition.js"></script>
+<script type="text/javascript" src="../media/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="../media/js/collapse.js"></script>
+<script type="text/javascript" src="../media/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" language="javascript" class="init"></script>
-<script type="text/javascript" src="media/js/select2.full.js"></script>
+<script type="text/javascript" src="../media/js/select2.full.js"></script>
 </head>
 
 <body>
-	<br />
+	<br/>
 	<div class="container">
-		<div class="jumbotron" style="background: #337AB7; font-family:"
-			HelveticaNeue",Helvetica,Arial,sans-serif">
+		<div class="jumbotron" style="background: #337AB7; font-family: HelveticaNeue,Helvetica,Arial,sans-serif">
 			<header>
 				<h1>CoolBeanzzz</h1>
-				<!-- img src="coolBeanzzz.jpg" style="width: 50%; height: 200px;"></img-->
 			</header>
 		</div>
 	</div>
@@ -51,23 +40,22 @@
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<!-- li class="active"><a href="#">Home</a></li>
-	        <li><a href="#">Page 1</a></li>
-	        <li><a href="#">Page 2</a></li> 
-	        <li><a href="#">Page 3</a></li-->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li style="font-size: 1.8em;"><a href="#" id="logintype"
-						class="navbar-brand"><span></span> Hello</a></li>
-					<li style="font-size: 1.8em;"><a href="#"><span
-							class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
+					<li style="font-size: 1.8em;">
+						<a href="../logout">
+							<span class="glyphicon glyphicon-log-out"></span> Logout
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -80,8 +68,8 @@
 			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event ID and CauseCodes for given IMSI</a></li>
 			<li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li>
 			<li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li>
-			<li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li>
-			<li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li>
+			<!-- li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li-->
+			<!-- li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li-->
 		</ul>
 	</div>
 	<br>
@@ -96,22 +84,22 @@
 					<div class="container" id="datetimepickers">
 						<div class='col-md-6'>
 							<div class="form-group">
-								<label for="datetimepicker6">From:</label>
-								<div class='input-group date' id='datetimepicker6'>
-									<input id="datefrom" type='text' class="form-control" /> <span
-										class="input-group-addon"> <span
-										class="glyphicon glyphicon-calendar"></span>
+								<label for="fromdatetimepicker">From:</label>
+								<div class='input-group date' id='fromdatetimepicker'>
+									<input id="datefrom" type='text' class="form-control" /> 
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
 								</div>
 							</div>
 						</div>
 						<div class='col-md-6'>
 							<div class="form-group">
-								<label for="datetimepicker7">To:</label>
-								<div class='input-group date' id='datetimepicker7'>
-									<input id="dateto" type='text' class="form-control" /> <span
-										class="input-group-addon"> <span
-										class="glyphicon glyphicon-calendar"></span>
+								<label for="todatetimepicker">To:</label>
+								<div class='input-group date' id='todatetimepicker'>
+									<input id="dateto" type='text' class="form-control" /> 
+									<span class="input-group-addon"> 
+										<span class="glyphicon glyphicon-calendar"></span>
 									</span>
 								</div>
 							</div>
@@ -146,7 +134,6 @@
 				<h4>Query Results</h4>
 			</div>
 			<div id="collapseTwo" class="collapse">
-				<!-- "panel-collapse collapse in"-->
 				<div class="panel-body" style="font-size: 15px;">
 					<div id="resultsDiv"
 						style="overflow: auto; height: 10px max-height: 300px; display: none;">
@@ -178,27 +165,28 @@
 		});
 
 		$(function() {
-			$('#datetimepicker6').datetimepicker({
+			$('#fromdatetimepicker').datetimepicker({
 				locale : 'en-gb'
 			});
-			$('#datetimepicker7').datetimepicker({
+			$('#todatetimepicker').datetimepicker({
 				useCurrent : false,
 				locale : 'en-gb'
 			});
-			$('#datetimepicker6').data("DateTimePicker").date(new Date());
-			$('#datetimepicker7').data("DateTimePicker").date(new Date());
-			$("#datetimepicker6").on("dp.change", function(e) {
-				$('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+			
+			$("#fromdatetimepicker").on("dp.change", function(e) {
+				$('#todatetimepicker').data("DateTimePicker").minDate(e.date);
 			});
-			$("#datetimepicker7").on("dp.change", function(e) {
-				$('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+			$("#todatetimepicker").on("dp.change", function(e) {
+				$('#fromdatetimepicker').data("DateTimePicker").maxDate(e.date);
 			});
+			$('#fromdatetimepicker').data("DateTimePicker").date(new Date());
+			$('#todatetimepicker').data("DateTimePicker").date(new Date());
 		});
 
 		function setUserDetails() {
 			$.ajax({
 				type : 'GET',
-				url : 'rest/users/currentUser',
+				url : '../rest/users/currentUser',
 				success : function(data) {
 					var userBar = document.getElementById("userBar");
 					userBar.innerHTML = "Priviledge type: " + data[1];
@@ -213,7 +201,7 @@
 			$("#modelDropdown").empty();
 			$.ajax({
 					type : 'GET',
-					url : 'rest/uetables/models/'
+					url : '../rest/uetables/models/'
 							+ $("#manufacturerDropdown").select2(
 									'data')[0].text,
 					success : function(data) {
@@ -234,7 +222,7 @@
 			$("#manufacturerDropdown").empty();
 			$.ajax({
 				type : 'GET',
-				url : 'rest/uetables/manufacturers',
+				url : '../rest/uetables/manufacturers',
 				success : function(data) {
 					for (i = 0; i < data.length; i++) {
 						var opt = data[i];
@@ -256,10 +244,10 @@
 
 		
 		function getData() {
-			var fromdate = $("#datetimepicker6").data("DateTimePicker").date();
-			var todate = $("#datetimepicker7").data("DateTimePicker").date();
+			var fromdate = $("#fromdatetimepicker").data("DateTimePicker").date();
+			var todate = $("#todatetimepicker").data("DateTimePicker").date();
 			var dates = [];
-			var queryUrl='rest/validdata/CB-'+(selectedQuery+3);
+			var queryUrl='../rest/validdata/CB-'+(selectedQuery+3);
 			var inputData=[];
 			
 			var ajaxDetails={

@@ -58,13 +58,13 @@ public class UsersCRUDService {
     		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.html");
     	}
     	else if(currentUser.hasRole("SupEng")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/variable.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/supeng/query.html");
     	}
     	else if(currentUser.hasRole("CSR")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/variable.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/csr/query.html");
     	}
     	else if(currentUser.hasRole("NetManEng")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/variable.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/netmaneng/query.html");
     	}
     	return Response.temporaryRedirect(location).build();
     }
