@@ -121,6 +121,11 @@
 							</div>
 						</div>
 					</div>
+					<div class="container" id="imsiPicker">
+						<label for="imsiDropdown">Choose IMSI:</label> 
+						<select id="imsiDropdown" class="js-example-responsive" style="width: 400px">
+						</select>
+					</div>
 					<button id="query1" type="button" class="btn btn-primary">Run Query</button>
 				</div>
 			</div>
@@ -136,9 +141,8 @@
 			<div id="collapseTwo" class="collapse">
 				<div class="panel-body" style="font-size: 15px;">
 					<div id="resultsDiv"
-						style="overflow: auto; height: 10px max-height: 300px; display: none;">
-						<table id="dataTable"
-							class="table tablesorter tablesorter-default table-striped table-bordered">
+						style="overflow: auto; height: auto; max-height: 300px; display: none;">
+						<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
 						</table>
 					</div>
 				</div>
@@ -160,6 +164,7 @@
 				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
 				populateManufacturerDropdown();
+				populateImsiDropdown();
 				setUserDetails();
 			});
 		});
@@ -235,6 +240,23 @@
 				},
 			});
 		}
+		
+		function populateImsiDropdown(){
+			$("#imsiDropdown").empty();
+			$.ajax({
+				type : 'GET',
+				url : '../rest/validdata/imsis',
+				success : function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#imsiDropdown").append(text);
+					}
+					var $example = $("#imsiDropdown").select2();
+					$example.val("0").trigger("change");
+				},
+			});
+		}
 
 		$("#query1").click(function() {
 			$('#collapseOne').collapse("hide");
@@ -260,7 +282,7 @@
 			
 			switch(selectedQuery){
 			case 1:
-				
+				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 2:
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
@@ -357,24 +379,36 @@
 		function selectQuery(i){
 			var dateTimePickers=document.getElementById("datetimepickers");
 			var tacPickers=document.getElementById("tacPicker");
+			var imsiPickers=document.getElementById("imsiPicker");
 			selectedQuery=i;
 			document.getElementById("selectedquery").innerHTML=document.getElementById("availQuery"+selectedQuery).innerHTML;
 			
-			if(selectedQuery == 2 || selectedQuery == 3 || selectedQuery == 4 ){
+			tacPickers.style.display="none";
+			dateTimePickers.style.display="none";
+			imsiPickers.style.display="none";
+			
+			switch(selectedQuery){
+			case 1:
+				queryType="GET";
+				imsiPickers.style.display="block";
+				break;
+			case 2:
 				dateTimePickers.style.display="block";
 				queryType="POST";
-			}
-			else{
-				dateTimePickers.style.display="none";
-				queryType="GET";
-			}
-			
-			if(selectedQuery == 3 ||selectedQuery == 5){
+				break;
+			case 3:
 				queryType="POST";
-				tacPickers.style.display="block";
-			}
-			else{
-				tacPickers.style.display="none";
+				dateTimePickers.style.display="block";
+				tacPickers.style.display="block"
+				break;
+			case 4:
+				dateTimePickers.style.display="block";
+				queryType="POST";
+				break;
+			case 5:
+				queryType="POST";
+				tacPickers.style.display="block"
+				break;
 			}
 		}
 	</script>
