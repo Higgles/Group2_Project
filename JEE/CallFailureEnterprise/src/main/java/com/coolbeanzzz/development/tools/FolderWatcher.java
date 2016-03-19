@@ -92,10 +92,14 @@ public class FolderWatcher{
                         	convert.convert();
                         	
                         	failureClassService.populateTable(new File("/home/user1/json/Failure Class Table.json"));
-                    		eventCauseService.populateTable(new File("/home/user1/json/Event-Cause Table.json"));
-                    		mccMncService.populateTable(new File("/home/user1/json/MCC - MNC Table.json"));
-                    		ueTableService.populateTable(new File("/home/user1/json/UE Table.json"));
-                    		
+                    		System.out.println("1/6 tables complete");
+                        	eventCauseService.populateTable(new File("/home/user1/json/Event-Cause Table.json"));
+                        	System.out.println("2/6 tables complete");
+                        	mccMncService.populateTable(new File("/home/user1/json/MCC - MNC Table.json"));
+                        	System.out.println("3/6 tables complete");
+                        	ueTableService.populateTable(new File("/home/user1/json/UE Table.json"));
+                        	System.out.println("4/6 tables complete");
+                        	
                     		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
                     		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
                     		
@@ -110,7 +114,9 @@ public class FolderWatcher{
                         	compare.compareData();
                         	
                     		baseDataService.populateTable(new File("/home/user1/json/validData.json"));
+                    		System.out.println("5/6 tables complete");
                     		erroneousDataService.populateTable(new File("/home/user1/json/erroneousData.json"));                        	
+                    		System.out.println("6/6 tables complete");
                     		
                     		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
                     		File jsonDir = new File("/home/user1/json");
