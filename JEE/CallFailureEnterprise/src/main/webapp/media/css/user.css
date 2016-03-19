@@ -15,6 +15,10 @@ body {
     background-size: cover;
 }
 
+h4 {
+	text-align: center;
+}
+
 .form-signin-heading{
 	color: #ffffff;
 }
