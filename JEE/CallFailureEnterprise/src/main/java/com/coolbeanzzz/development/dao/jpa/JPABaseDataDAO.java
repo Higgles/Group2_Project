@@ -44,7 +44,7 @@ import com.coolbeanzzz.development.entities.UETable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"EventId", "CauseCode", "UEType", "Total", "Manufacturer", "MarketingName"};
+			new String[]{"EventId", "CauseCode", "UEType", "Occurrences", "Manufacturer", "MarketingName"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -119,11 +119,12 @@ public class JPABaseDataDAO implements BaseDataDAO {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
 		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.ueTable.tac, count(bd.id), bd.ueTable.manufacturer, bd.ueTable.marketingName"
-				+ " from BaseData bd where bd.ueTable.tac=:ueType"
+				+ " from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
-		query.setParameter("ueType", ueType);
+		query.setParameter("manufacturer", manufacturer);
+		query.setParameter("marketingName", model);
 		List basedata = query.getResultList();
 		basedata.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 		return basedata;
@@ -161,16 +162,22 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd) {
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
 		Query query = em.createQuery(""
-		+"select count(bd.id) "
-		+"from BaseData bd where bd.ueTable.tac=:ueType "
+		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id) "
+		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName "
 		+"and bd.dateTime >=:dateStart and bd.dateTime <:dateEnd ");
-		query.setParameter("ueType", ueType);
+		query.setParameter("manufacturer", manufacturer);
+		query.setParameter("marketingName", model);
 		query.setParameter("dateStart", dateStart);
 		query.setParameter("dateEnd", dateEnd);
-		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"Count"});
+		List<Object[]> results = query.getResultList();
+		if(results.get(0)[0]==null){
+			results.set(0, new Object[]{manufacturer,model, 0});
+		}
+		List basedata = results;
+		basedata.add(0, new Object[]{"Manufacturer", "Model","Occurrences"});
+		
 		return basedata;
 	}
 

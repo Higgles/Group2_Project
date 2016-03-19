@@ -11,10 +11,11 @@ import com.coolbeanzzz.development.entities.FailureTable;
 public interface BaseDataDAO extends FailureTableDAO{
 	/**
 	 * Queries the underlying table for unique event id and cause code combinations for an input phone type
-	 * @param ueType input phone type code
+	 * @param manufacturer phone manufacturer to be checked
+	 * @param model phone model to be checked
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType);
+	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model);
 	
 	/**
 	 * Queries the underlying table for no of call failures and total duration for each
@@ -34,12 +35,13 @@ public interface BaseDataDAO extends FailureTableDAO{
 	/**
 	 * As a Support Engineer I want to count, for a given model of phone, the number of call failures it 
 	 * has had during a given time period.
-	 * @param ueType phone model to be checked
+	 * @param manufacturer phone manufacturer to be checked
+	 * @param model phone model to be checked
 	 * @param dateStart start date for time period
 	 * @param dateEnd end date for time period
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd);
+	Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd);
 	
 	/**
 	 * Queries the database for all unique imsi values

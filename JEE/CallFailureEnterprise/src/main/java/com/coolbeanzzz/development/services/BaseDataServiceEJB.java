@@ -63,13 +63,12 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 
 	@Override
-	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(int ueType) {
-		return dao.getUniqueEventIdsCauseCodeForPhoneType(ueType);
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
+		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model);
 	}
 
 	@Override
-	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
-			String date1, String date2) {
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2) {
 		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2);
 	}
 
@@ -79,8 +78,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(int ueType, String dateStart, String dateEnd) {
-		return dao.getFailCountByPhoneModel(ueType, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
+		return dao.getFailCountByPhoneModel(manufacturer, model, dateStart, dateEnd);
 	}
 
 	@Override

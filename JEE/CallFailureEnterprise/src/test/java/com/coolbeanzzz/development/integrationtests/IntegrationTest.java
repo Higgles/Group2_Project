@@ -2,6 +2,7 @@ package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import com.coolbeanzzz.development.entities.EventCause;
 import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.entities.UETable;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
@@ -69,8 +71,6 @@ public class IntegrationTest {
 				ArchivePaths.create("beans.xml"))
 				.addPackage(JSONArray.class.getPackage())
 				.addPackage(ParseException.class.getPackage());
-		System.out.println(jar.toString(true));
-
 		return jar;
 	}
 
@@ -240,6 +240,65 @@ public class IntegrationTest {
 	
 	@Test
 	@InSequence(12)
+	public void getEventIdsCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getEventIdsCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
+	
+	@Test
+	@InSequence(13)
+	public void getFailCountByPhoneModelTest() {
+		Collection<?> res=baseDataService.getFailCountByPhoneModel("S.A.R.L. B  & B International", "VEA3", "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(2,res.size());
+	}
+	
+	@Test
+	@InSequence(14)
+	public void getImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
+	
+	@Test
+	@InSequence(15)
+	public void getNoOfCallFailuresAndDurationForImsiInDateRangeTest() {
+		Collection<?> res=baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
+	
+	@Test
+	@InSequence(16)
+	public void getUniqueEventIdsCauseCodeForPhoneTypeTest() {
+		Collection<?> res=baseDataService.getUniqueEventIdsCauseCodeForPhoneType("S.A.R.L. B  & B International", "VEA3");
+		assertEquals(1,res.size());
+	}
+	
+	
+	
+	@Test @InSequence(17)
+	public void uploadFailureClassFromFile() {		 
+		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
+	    Collection<FailureTable> failureClasses=failureClassService.getCatalog();
+	    assert(failureClasses.size()>0); 
+	    eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/test_Event-Cause Table.json"));
+		Collection<FailureTable> eventCauses=eventCauseService.getCatalog();
+		assert(eventCauses.size()>0); 
+	    mccmncService.populateTable(new File("/home/user1/software/jboss/bin/test_MCC - MNC Table.json"));
+	    Collection<FailureTable> mccmncs=mccmncService.getCatalog();
+	    assert(mccmncs.size()>0);
+	    ueTableService.populateTable(new File("/home/user1/software/jboss/bin/test_UE Table.json"));
+	    Collection<FailureTable> ueTables=ueTableService.getCatalog();
+	    assert(ueTables.size()>0);
+	    baseDataService.populateTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
+	    Collection<FailureTable> baseDatas=baseDataService.getCatalog();
+	    assert(baseDatas.size()>0);
+	    erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
+	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
+	    assert(erroneousData.size()>0); 
+	}
+	 
+	@Test
+	@InSequence(23)
 	public void tablesEndEmptyTest() {
 		Collection<FailureTable> failureClassResults = failureClassService.getCatalog();
 		Collection<FailureTable> baseDataResults = baseDataService.getCatalog();
