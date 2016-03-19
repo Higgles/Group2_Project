@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+
 * {
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
@@ -7,7 +8,7 @@
 	outline: none;
 }
 body {
-	background: url(../images/bg.jpg) no-repeat center center fixed;
+	background: url() no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -18,12 +19,11 @@ body {
 	color: #ffffff;
 }
 
-
-.login-form {
+.form-control {
 	text-align: center;
 	margin: 0 auto;
-	margin-top: 100px;
-	margin-bottom: 100px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	max-width: 460px;
 }
 	.login-form > section {

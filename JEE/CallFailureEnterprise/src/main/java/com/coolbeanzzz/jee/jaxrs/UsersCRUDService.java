@@ -1,8 +1,5 @@
 package com.coolbeanzzz.jee.jaxrs;
 
-
-
-import java.awt.List;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -102,6 +99,8 @@ public class UsersCRUDService {
 		service.addUser(user);
 	}
 
+   
+    
 //    @DELETE
 //    @Path("/{id}")
 //	public void removeUser(@PathParam("id") Users user) {
@@ -115,7 +114,7 @@ public class UsersCRUDService {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateUser(Users updatedUser) {
-		service.updateUserUsingId(updatedUser.getId());  
+		service.updateUserUsingId(updatedUser.getId());
 	}
     
 }

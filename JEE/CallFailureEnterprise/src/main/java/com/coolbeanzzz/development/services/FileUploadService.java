@@ -44,6 +44,7 @@ public class FileUploadService {
 			try {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				String fileName = getFileName(header);
+				
 				if(fileName.contains(".xls")){
 					InputStream inputStream = inputPart.getBody(InputStream.class, null);
 					
@@ -51,7 +52,8 @@ public class FileUploadService {
 					
 					writeFile(bytes, fileName);
 					
-					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/uploadComplete.html");
+					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
+					
 					return Response.temporaryRedirect(location).build();
 				}
 				else{
@@ -98,7 +100,7 @@ public class FileUploadService {
 	private void writeFile(byte[] content, String filename) throws IOException {
 		File file = new File("/home/user1/datasets/" + filename);
 		if (!file.exists()) {
-			System.out.println("not exist> " + file.getAbsolutePath());
+			System.out.println("Creating file " + file.getAbsolutePath());
 			file.createNewFile();
 		}
 		FileOutputStream fileOutput = new FileOutputStream(file);
