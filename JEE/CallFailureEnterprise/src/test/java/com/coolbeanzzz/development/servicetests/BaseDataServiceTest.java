@@ -29,8 +29,13 @@ public class BaseDataServiceTest {
 		bds.add(baseData1);
 		bds.add(baseData2);
 		when(mockedBaseDataDao.getAllTableRows()).thenReturn(bds);
-		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(anyInt())).thenReturn(bds);
+		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class),isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getEventIdsCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getAllImsiValues()).thenReturn(new ArrayList<String>());
+		when(mockedBaseDataDao.getFailCountByPhoneModel(isA(String.class), isA(String.class), isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getNoOfCallFailuresAndDurationForImsiInDateRange(isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class), isA(String.class))).thenReturn(bds);
 		baseDataService=new BaseDataServiceEJB();
 		baseDataService.setDao(mockedBaseDataDao);
 	}
@@ -43,13 +48,37 @@ public class BaseDataServiceTest {
 	
 	@Test
 	public void getUniqueEventIdsCauseCodeForPhoneTypetest() {
-		Collection<FailureTable> baseData = baseDataService.getUniqueEventIdsCauseCodeForPhoneType(1);
+		Collection<FailureTable> baseData = baseDataService.getUniqueEventIdsCauseCodeForPhoneType("", "");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 	
 	@Test
 	public void getEventIdsCauseCodeForIMSItest() {
 		Collection<FailureTable> baseData = baseDataService.getEventIdsCauseCodeForIMSI("1");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getAllImsiValuestest() {
+		Collection<String> allImsiValues = baseDataService.getAllImsiValues();
+		assert(allImsiValues.size()==0);
+	}
+	
+	@Test
+	public void getFailCountByPhoneModeltest() {
+		Collection<FailureTable> baseData = baseDataService.getFailCountByPhoneModel("", "", "", "");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getImsiListBetween2Dates() {
+		Collection<FailureTable> baseData = baseDataService.getImsiListBetween2Dates("", "");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getNoOfCallFailuresAndDurationForImsiInDateRangetest() {
+		Collection<FailureTable> baseData = baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange("","");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 }

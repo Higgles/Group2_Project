@@ -10,6 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -42,11 +43,11 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-8")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ1() {
+    public ResultList getQ1(String[] input) {
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getUniqueEventIdsCauseCodeForPhoneType(21060800));
+    	baseData.setDataCollection(service.getUniqueEventIdsCauseCodeForPhoneType(input[0], input[1]));
         return baseData;
     }
     
@@ -68,12 +69,12 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-4")
+    @Path("/CB-4/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ4() {
+    public ResultList getQ4(@PathParam("imsi") String imsi) {
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getEventIdsCauseCodeForIMSI("240210000000013"));
+    	baseData.setDataCollection(service.getEventIdsCauseCodeForIMSI(imsi));
         return baseData;
     }
 
@@ -96,11 +97,12 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-6")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getCB6() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getCB6(String[] data) {
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getFailCountByPhoneModel(21060800, "2013-01-11 17:15:00", "2013-01-11 17:26:00"));
+    	baseData.setDataCollection(service.getFailCountByPhoneModel(data[0], data[1], data[2], data[3]));
         return baseData;
     }
     
