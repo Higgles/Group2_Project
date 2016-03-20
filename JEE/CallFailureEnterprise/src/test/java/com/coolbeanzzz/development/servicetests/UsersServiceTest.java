@@ -29,8 +29,7 @@ public class UsersServiceTest {
 		
 	
 		when(mockedUsersDao.getAllUsers()).thenReturn(bds);
-		when(mockedUsersDao.removeUser(users1)).thenReturn(users1);
-		when(mockedUsersDao.removeUser(0)).thenReturn(users1);
+		when(mockedUsersDao.removeUser("")).thenReturn(users1);
 		UsersService=new UsersServiceEJB();
 		UsersService.setDao(mockedUsersDao);
 	}
@@ -44,10 +43,8 @@ public class UsersServiceTest {
 	
 	@Test
 	public void removeUsersTest() {
-		Users user = UsersService.removeUser(users1);
-		Users user_2 = UsersService.removeUser(0);
+		Users user = UsersService.removeUser("");
 		assertEquals(users1,user);
-		assertEquals(users1,user_2);
 	}
 	
 //	@Test

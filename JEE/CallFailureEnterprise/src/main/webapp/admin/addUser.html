@@ -8,7 +8,9 @@
 
 	<link href="http://fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="../media/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../resources/syntax/shCore.css">
 	<link rel="stylesheet" type="text/css" href="../media/css/user.css" />
+	<link rel="stylesheet" type="text/css" href="../media/css/select2.min.css">
 <!--
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -20,17 +22,14 @@
  -->
 
 </style>
-<script type="text/javascript" language="javascript"
-	src="../media/js/jquery.js"></script>
-<script type="text/javascript" language="javascript"
-	src="../resources/syntax/shCore.js"></script>
-<script type="text/javascript" language="javascript"
-	src="../resources/demo.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script src="../media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="../media/js/jquery.tablesorter.js"></script>
-<script type="text/javascript" language="javascript" class="init">
+<script type="text/javascript" language="javascript" src="../media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="../resources/syntax/shCore.js"></script>
+<script type="text/javascript" src="../media/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../media/js/transition.js"></script>
+<script type="text/javascript" src="../media/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="../media/js/collapse.js"></script>
+<script type="text/javascript" language="javascript" class="init"></script>
+<script type="text/javascript" src="../media/js/select2.full.js"></script>
 	
 </script>
 </head>
@@ -44,8 +43,18 @@
 	<p>
 	<h2>Cool Beanzzz</h2>
 	<br/>
-	<label for="uName">Username</label>
-	<input type="text" class="form-control" id="uName">
+	<form action="" id="add/editUser">
+	    <input type="radio" onclick="swapType(1)" name="add/editUser" value="addUser" checked> Add User
+	    <input type="radio" onclick="swapType(2)" name="add/editUser" value="editUser"> Edit Existing User
+	</form>
+	<div id="uNameDiv">
+		<label for="uName">Username</label>
+		<input type="text" class="form-control" id="uName">
+	</div>
+	<div id="uNameDropdownDiv">
+		<label for="uNameDropdown">Username</label><br>
+		<select id="uNameDropdown" class="js-example-responsive" style="width: 450px;"></select>
+	</div>
 	<br/>
 	<br/>
 	<label for="pWord">Password</label>
@@ -59,17 +68,23 @@
 	<br/>
 	<div>
 	<form action="" id="userType">
-    <input type="radio" name="userType" value="SysAd"> System Administrator <br>
-    <input type="radio" name="userType" value="NetManEng"> Network Manager<br>
-    <input type="radio" name="userType" value="SupEng"> Support Engineer <br>
-    <input type="radio" name="userType" value="CSR" checked> Customer Service Representative
+	    <input type="radio" name="userType" value="SysAd"> System Administrator <br>
+	    <input type="radio" name="userType" value="NetManEng"> Network Manager<br>
+	    <input type="radio" name="userType" value="SupEng"> Support Engineer <br>
+	    <input type="radio" name="userType" value="CSR" checked> Customer Service Representative
 	</form>
 	</div>
 	
 	<p id="count">
-	</p>
-	<button id="addUser" type="button" class="btn btn-primary" onclick="addUser()">Add User</button>
-	<a href="../logout" id="logout" class="btn btn-primary">Logout</a>
+	</p>			
+		
+		  <div id="addUserDiv" class="btn-group" role="group" aria-label="First group">
+		    <button id="addUser" type="button" class="btn btn-primary" onclick="addUser()">Add User</button>	
+		    <button id="editUser" type="button" class="btn btn-primary" onclick="editUser()">Edit User</button>	
+		    <button id="removeUser" type="button" class="btn btn-primary" onclick="removeUser()">remove User</button>
+		    <a href="../logout" id="logout" class="btn btn-primary">Logout</a>
+		  </div>
+		
 	</div>
 	
 	<script>
@@ -82,12 +97,31 @@ function Users(userName,passWord,userType) {
 	this.userType = userType;
 }
 
+function swapType(i){
+	switch(i){
+	case 1:
+		document.getElementById("uNameDropdownDiv").style.display="none";
+		document.getElementById("uNameDiv").style.display="block";
+		document.getElementById("addUser").style.display="block";
+		document.getElementById("editUser").style.display="none";
+		document.getElementById("removeUser").style.display="none";
+		break;
+	case 2:
+		document.getElementById("uNameDiv").style.display="none";
+		document.getElementById("uNameDropdownDiv").style.display="block";
+		document.getElementById("addUser").style.display="none";
+		document.getElementById("editUser").style.display="block";
+		document.getElementById("removeUser").style.display="block";
+		break;
+	}
+}
+
 //Get input from page
 function addUser() {
 	
 	var radios = document.getElementsByName("userType");
-
-	for (var i = 0, length = radios.length; i < length; i++) {
+	var uType="none";
+	for (var i = 0; i < radios.length; i++) {
     	if (radios[i].checked) {
 	        var uType = radios[i].value;
 	        // only one radio can be logically checked, don't check the rest
@@ -117,6 +151,62 @@ function addUser() {
 
 }
 
+//Get input from page
+function editUser() {
+	
+	var radios = document.getElementsByName("userType");
+	var uType="none";
+	for (var i = 0; i < radios.length; i++) {
+    	if (radios[i].checked) {
+	        var uType = radios[i].value;
+	        // only one radio can be logically checked, don't check the rest
+	        break;
+    	}
+	}//radio loop
+	
+	var uName = $("#uNameDropdown").select2('data')[0].text;
+
+	var pWord0 = $("#pWord").val();
+
+	var pWord1 = $("#pWordConf").val();
+	
+	
+	if(uName.length==0){
+		alert("Choose a longer user name");
+	}else{
+		if(pWord0==pWord1){
+			var pWord = pWord0;
+			var user = new Users(uName, pWord, uType);
+			$.ajax({
+				type : 'PUT',
+				url : '../rest/users',
+				dataType: "json",
+				contentType: 'application/json',
+				data: JSON.stringify(user),
+				success: function(){
+					alert(" User Edited ");
+				},
+			}); 
+		}else{
+			alert("Passwords do not match");
+		}
+	
+	}
+
+}
+
+function removeUser(){
+	alert($("#uNameDropdown").select2('data')[0].text);
+	$.ajax({
+		type : 'DELETE',
+		url : '../rest/users/'+$("#uNameDropdown").select2('data')[0].text,
+		success: function(){
+			alert(" User Deleted ");
+		},
+	}); 
+	
+}
+
 
 function handlePost() {
 
@@ -127,7 +217,7 @@ function call(user){
 	
 	$.ajax({
 		type : 'POST',
-		url : 'rest/users',
+		url : '../rest/users',
 		dataType: "json",
 		contentType: 'application/json',
 		data: JSON.stringify(user),
@@ -138,9 +228,27 @@ function call(user){
 }
 
 $(document).ready(function() {
-
+	populateUsernameDropdown();
+	swapType(1);
 });		
 
+function populateUsernameDropdown() {
+	$("#uNameDropdown").empty();
+	$.ajax({
+		type : 'GET',
+		url : '../rest/users',
+		success : function(data) {
+			for (i = 0; i < data.usersCollection.length; i++) {
+				var opt = data.usersCollection[i].username;
+				var text = "<option value=\""+i+"\">" + opt
+						+ "</option>";
+				$("#uNameDropdown").append(text);
+			}
+			var $example = $("#uNameDropdown").select2();
+			$example.val("0").trigger("change");
+		},
+	});
+}
 	
 	
 		 

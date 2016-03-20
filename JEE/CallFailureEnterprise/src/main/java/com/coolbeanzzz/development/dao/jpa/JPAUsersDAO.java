@@ -58,43 +58,33 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Users removeUser(Users user) {
-		Query query = em.createQuery("from Users");
+	public Users removeUser(String username) {
+		logger.info(username);
+		Query query = em.createQuery("from Users us where us.username=:username");
+		query.setParameter("username", username);
 		List<Users> users = query.getResultList();
-		if (users.contains(user)){
-			em.remove(user);	
-			return user;
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Users removeUser(int id) {
-		Query query = em.createQuery("from Users");
-		List<Users> users = query.getResultList();
-		Users userById=null;
-		for(Users user:users){
-			if(user.getId()==id){
-				userById=user;
+		Users chosenUser=null;
+		for(Users u:users){
+			if(u.getUsername().equals(username)){
+				chosenUser=u;
+				break;
 			}
 		}
-		if (userById!=null){
-			em.remove(userById);
-			return userById;
-		}
-		return null;
+		em.remove(chosenUser);
+		return chosenUser;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void updateUserUsingId(int id) {
+	public void updateUser(Users user) {
 		Query query = em.createQuery("from Users");
 		List<Users> users = query.getResultList();
-		Users user=null;
+		Users existinguser=null;
 		for(Users thisUser:users){
-			if(thisUser.getId()==id){
-				user=thisUser;
+			if(thisUser.getUsername().equals(user.getUsername())){
+				existinguser=thisUser;
+				user.setId(existinguser.getId());
+				
 			}
 		}
 		em.merge(user);

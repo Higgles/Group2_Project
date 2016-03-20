@@ -14,8 +14,7 @@ public interface UsersService {
 	
 	public void addUser(Users user);
 	public Collection<Users> getAllUsers();
-	public Users removeUser(Users user);
-	public Users removeUser(int id);
-	public void updateUserUsingId(int id);
+	public Users removeUser(String username);
+	public void updateUser(Users user);
 	 
 }

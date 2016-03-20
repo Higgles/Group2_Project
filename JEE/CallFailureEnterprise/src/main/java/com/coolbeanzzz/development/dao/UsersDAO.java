@@ -26,20 +26,13 @@ public interface UsersDAO {
 	 * @param User object
 	 * @return Users object
 	 */
-	Users removeUser(Users user);
-	
-	/**
-	 * Deletes a row from UsersTable
-	 * @param int of user id
-	 * @return Users object
-	 */
-	Users removeUser(int id);
+	Users removeUser(String username);
 	
 	/**
 	 * Edit a row in UsersTable
-	 * @param int of user id
+	 * @param user to be updated
 	 */
-	void updateUserUsingId(int id);
+	void updateUser(Users user);
 	
 	
 	

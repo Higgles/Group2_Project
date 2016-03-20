@@ -58,20 +58,14 @@ Logger logger = Logger.getLogger("UsersEJB");
 	}
 
 	@Override
-	public Users removeUser(Users user) {
-		return dao.removeUser(user);
+	public Users removeUser(String username) {
+		return dao.removeUser(username);
 				
 	}
 
 	@Override
-	public Users removeUser(int id) {
-		return dao.removeUser(id);
-		
-	}
-
-	@Override
-	public void updateUserUsingId(int id) {
-		dao.updateUserUsingId(id);
+	public void updateUser(Users user) {
+		dao.updateUser(user);
 		
 	}
 	
