@@ -88,7 +88,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				baseRow = (JSONObject) iteratorFile.next();
 				
 				object = new BaseData(
-						j,
+						0,
 						baseRow.get("Date / Time").toString(),
 						baseRow.get("Cell Id").toString(),
 						baseRow.get("Duration").toString(),
