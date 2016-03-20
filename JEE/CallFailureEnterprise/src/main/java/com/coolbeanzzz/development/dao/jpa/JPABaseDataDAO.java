@@ -136,7 +136,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			String fromDate, String toDate) {
 		Query query = em.createQuery("select bd.dateTime, bd.imsi, count(bd.id), sum(duration) "
 				+ "from BaseData bd "
-				+ "where bd.dateTime>=:date1 and bd.dateTime<:date2 "
+				+ "where bd.dateTime>=:date1 and bd.dateTime<=:date2 "
 				+ "group by bd.imsi");
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
@@ -151,7 +151,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery(""
 		+"select bd.id, bd.imsi, bd.dateTime, bd.cellId, bd.neVersion "
 		+"from BaseData bd "
-		+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
+		+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
 		+"group by bd.imsi");
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
@@ -166,7 +166,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery(""
 		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id) "
 		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName "
-		+"and bd.dateTime >=:dateStart and bd.dateTime <:dateEnd ");
+		+"and bd.dateTime >=:dateStart and bd.dateTime <=:dateEnd ");
 		query.setParameter("manufacturer", manufacturer);
 		query.setParameter("marketingName", model);
 		query.setParameter("dateStart", dateStart);

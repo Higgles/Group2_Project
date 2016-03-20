@@ -1,8 +1,12 @@
 html,body{
 	
-	background-image: url("squares.jpg");
-	/*background-repeat: no-repeat;
-	background-size: 100% 100%;*/
+	background-image: url("../../bright.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  	background-size: cover;
+	background-repeat: no-repeat;
+	/*background-size: 100% 100%;*/
 	width: auto;
    	min-width: 1000px; 
 }

@@ -2,11 +2,15 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:100);
 
 body {
-	font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Arial, Helvetica, sans-serif;
+	
 	margin: 0;
 	padding: 0;
 	color: #333;
 	background-color: #fff;
+}
+
+nav{
+	font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Arial, Helvetica, sans-serif;
 }
 
 
