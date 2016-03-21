@@ -109,14 +109,14 @@
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="manufacturerDropdown">Choose Manufacturer:</label> 
-								<select id="manufacturerDropdown" style="width: 300px">
+								<select id="manufacturerDropdown" class="js-example-responsive" style="width: 300px">
 								</select>
 							</div>
 						</div>
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="modelDropdown">Choose Model:</label> 
-								<select id="modelDropdown"style="width: 300px">
+								<select id="modelDropdown" class="js-example-responsive" style="width: 300px">
 								</select>
 							</div>
 						</div>
@@ -165,6 +165,7 @@
 				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
 				populateManufacturerDropdown();
+				
 				populateImsiDropdown();
 				setUserDetails();
 			});
@@ -205,23 +206,25 @@
 
 		$("#manufacturerDropdown").on("change",function(e) {
 			$("#modelDropdown").empty();
-			$.ajax({
-					type : 'GET',
-					url : '../rest/uetables/models/'
-							+ $("#manufacturerDropdown").select2(
-									'data')[0].text,
-					success : function(data) {
-						for (i = 0; i < data.length; i++) {
-							var opt = data[i];
-							var text = "<option value=\""+i+"\">"
-									+ opt + "</option>";
-							$("#modelDropdown").append(text);
-						}
-						var $example = $("#modelDropdown")
-								.select2();
-						$example.val("0").trigger("change");
-					},
-				});
+			if($("#manufacturerDropdown").select2('data').length>0){
+				$.ajax({
+						type : 'GET',
+						url : '../rest/uetables/models/'
+								+ $("#manufacturerDropdown").select2(
+										'data')[0].text,
+						success : function(data) {
+							for (i = 0; i < data.length; i++) {
+								var opt = data[i];
+								var text = "<option value=\""+i+"\">"
+										+ opt + "</option>";
+								$("#modelDropdown").append(text);
+							}
+							var $example = $("#modelDropdown")
+									.select2();
+							$example.val("0").trigger("change");
+						},
+					});
+			}
 		});
 
 		function populateManufacturerDropdown() {
@@ -290,8 +293,18 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				if($("#manufacturerDropdown").select2('data').length>0){
+					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
+				if($("#modelDropdown").select2('data').length>0){
+					inputData.push($("#modelDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
@@ -300,8 +313,18 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				if($("#manufacturerDropdown").select2('data').length>0){
+					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
+				if($("#modelDropdown").select2('data').length>0){
+					inputData.push($("#modelDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
 				break;
 			}
 			if(queryType=="POST"){

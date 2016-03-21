@@ -44,7 +44,7 @@ import com.coolbeanzzz.development.entities.UETable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"EventId", "CauseCode", "UEType", "Occurrences", "Manufacturer", "MarketingName"};
+			new String[]{"EventId", "CauseCode", "Occurrences", "UEType", "Manufacturer", "MarketingName"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -120,7 +120,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.ueTable.tac, count(bd.id), bd.ueTable.manufacturer, bd.ueTable.marketingName"
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, count(bd.id), bd.ueTable.tac, bd.ueTable.manufacturer, bd.ueTable.marketingName"
 				+ " from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("manufacturer", manufacturer);
@@ -141,7 +141,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
 		List basedata = query.getResultList();
-		basedata.add(0,new Object[]{"DateTime", "IMSI", "Occurrences", "TotalCallDuration"});
+		basedata.add(0,new Object[]{"DateTime", "IMSI", "No. of Failures", "TotalCallDuration"});
 		return basedata;
 	}
 
@@ -164,7 +164,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
 		Query query = em.createQuery(""
-		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id) "
+		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id), sum(bd.duration) "
 		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName "
 		+"and bd.dateTime >=:dateStart and bd.dateTime <=:dateEnd ");
 		query.setParameter("manufacturer", manufacturer);
@@ -173,10 +173,10 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("dateEnd", dateEnd);
 		List<Object[]> results = query.getResultList();
 		if(results.get(0)[0]==null){
-			results.set(0, new Object[]{manufacturer,model, 0});
+			results.set(0, new Object[]{manufacturer,model, 0, 0});
 		}
 		List basedata = results;
-		basedata.add(0, new Object[]{"Manufacturer", "Model","Occurrences"});
+		basedata.add(0, new Object[]{"Manufacturer", "Model","No. Of Failures", "Total Duration"});
 		
 		return basedata;
 	}
@@ -214,12 +214,12 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.imsi "				//QUERY
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, bd.imsi "				//QUERY
 				+ " from BaseData bd where bd.imsi=:IMSI"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"EventId", "CauseCode", "IMSI"});
+		basedata.add(0, new Object[]{"EventId", "CauseCode", "Description", "IMSI"});
 		return basedata;
 	}
 	
