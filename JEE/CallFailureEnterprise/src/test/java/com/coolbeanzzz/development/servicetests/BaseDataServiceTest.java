@@ -36,6 +36,7 @@ public class BaseDataServiceTest {
 		when(mockedBaseDataDao.getImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getNoOfCallFailuresAndDurationForImsiInDateRange(isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getUniqueCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
 		baseDataService=new BaseDataServiceEJB();
 		baseDataService.setDao(mockedBaseDataDao);
 	}
@@ -79,6 +80,12 @@ public class BaseDataServiceTest {
 	@Test
 	public void getNoOfCallFailuresAndDurationForImsiInDateRangetest() {
 		Collection<FailureTable> baseData = baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange("","");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getUniqueCauseCodeForIMSI() {
+		Collection<FailureTable> baseData = baseDataService.getUniqueCauseCodeForIMSI("1");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 }

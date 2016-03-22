@@ -314,4 +314,11 @@ public class IntegrationTest {
 		assert(mccmncResults.isEmpty()==true);
 		assert(ueTableResults.isEmpty()==true);
 	}
+	
+	@Test
+	@InSequence(24)
+	public void getUniqueCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
 }

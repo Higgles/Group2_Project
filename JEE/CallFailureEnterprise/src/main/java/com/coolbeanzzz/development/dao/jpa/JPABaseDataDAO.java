@@ -45,6 +45,8 @@ import com.coolbeanzzz.development.entities.UETable;
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
 			new String[]{"EventId", "CauseCode", "Occurrences", "UEType", "Manufacturer", "MarketingName"};
+	private static final String[] uniqueCauseCodeForImsis=
+			new String[]{"CauseCode", "Occurrences"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -220,6 +222,18 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
 		basedata.add(0, new Object[]{"EventId", "CauseCode", "Description", "IMSI"});
+		return basedata;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
+		Query query = em.createQuery(" select bd.eventCause.causeCode, count(bd.eventCause.causeCode) "
+				+ " from BaseData bd where bd.imsi=:IMSI"
+				+ " group by bd.eventCause.causeCode");
+		query.setParameter("IMSI", IMSI);
+		List basedata = query.getResultList();
+		basedata.add(0,uniqueCauseCodeForImsis);
 		return basedata;
 	}
 	

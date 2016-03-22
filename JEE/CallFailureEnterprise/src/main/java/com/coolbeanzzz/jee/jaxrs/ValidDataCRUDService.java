@@ -129,5 +129,18 @@ public class ValidDataCRUDService {
     public Collection<String> getAllImsis() {
         return service.getAllImsiValues();
     }
-
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-17/{imsi}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ17(@PathParam("imsi") String imsi) {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getUniqueCauseCodeForIMSI(imsi));
+        return baseData;
+    }
+    
 }
