@@ -58,5 +58,17 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
+	
+	//************************* MIKE G ****************************** 22/3/16
+	/**
+	 * As a Customer Service Rep, I want to count, for a given IMSI, 
+     * the number of failures they have had during a given time period.
+	 * @param imsi to be checked
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
+	
 
 }

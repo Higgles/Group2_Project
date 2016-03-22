@@ -107,6 +107,29 @@ public class ValidDataCRUDService {
     }
     
     /**
+	 * As a Customer Service Rep, I want to count, for a given IMSI, 
+     * the number of failures they have had during a given time period.
+	 * @param imsi to be checked
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+    @Path("/CB-12")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ12(String[] dates) {    	
+    	ResultList baseData = new ResultList();
+    	//the next line is used for testing
+   	baseData.setDataCollection(service.getFailCountByImsiAndDate("344930000000011",
+    			"2013-01-10 17:11:00",
+    		"2013-01-15 17:11:00"));
+    	//baseData.setDataCollection(service.getImsiListBetween2Dates(data[0], data[1], data[2]));
+    	return baseData;
+    }
+    
+    
+    /**
      * Adds new entry to failure table in database
      * @param newEntry to be added to database
      * @return added failuretable entry

@@ -1,6 +1,7 @@
 package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.isA;
 
 import java.io.File;
 import java.util.Collection;
@@ -273,9 +274,14 @@ public class IntegrationTest {
 		assertEquals(1,res.size());
 	}
 	
+	@Test
+	@InSequence(17)
+	public void getFailCountByImsiAndDate() {
+		Collection<?> res=baseDataService.getFailCountByImsiAndDate("344930000000011","2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(2,res.size());
+	}
 	
-	
-	@Test @InSequence(17)
+	@Test @InSequence(18)
 	public void uploadFailureClassFromFile() {		 
 		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
 	    Collection<FailureTable> failureClasses=failureClassService.getCatalog();

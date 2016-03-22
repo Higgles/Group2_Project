@@ -160,6 +160,24 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}	
 	
+	//************************* MIKE G ****************************** 22/3/16
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2){
+		Query query = em.createQuery(""
+				+"select count(bd.id), sum(duration) "
+				+"from BaseData bd "
+				+"where bd.imsi=:imsi "
+				+"and bd.dateTime >=:date1 and bd.dateTime <:date2 ");
+
+		query.setParameter("imsi", imsi);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"Count", "Total Duration"});
+		return basedata;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
@@ -205,13 +223,13 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	
 	/**
-	 * User Story 4
+	 * 
 	 * 
 	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
 	 * the Event ID and Cause Code for any / all failures affecting that IMSI
 	 * 
 	 */
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
 		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, bd.imsi "				//QUERY
