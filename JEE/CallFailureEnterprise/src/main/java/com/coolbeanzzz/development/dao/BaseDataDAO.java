@@ -43,7 +43,7 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 */	
 	Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd);
 	
-	//************************* MIKE G ****************************** 22/3/16
+	//************************* MIKE G ****************************** Tues 22/3/16
 	/**
 	 * As a Customer Service Rep, I want to count, for a given IMSI, 
      * the number of failures they have had during a given time period.
@@ -54,6 +54,15 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 */	
 	Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
 	
+	//************************* MIKE G ****************************** Weds 23/3/16
+	/**
+	 * Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+		
 	/**
 	 * Queries the database for all unique imsi values
 	 * @return a collection of imsi values

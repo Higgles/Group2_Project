@@ -70,5 +70,14 @@ public interface BaseDataService extends FailureTableService{
 	 */	
 	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
 	
+	//************************* MIKE G ****************************** 23/3/16
+	/**
+	 * Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+	
 
 }

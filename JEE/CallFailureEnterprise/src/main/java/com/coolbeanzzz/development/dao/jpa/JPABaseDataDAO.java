@@ -178,6 +178,24 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
+	//************************* MIKE G ****************************** 23/3/16
+	//Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd){
+		Query query = em.createQuery(""
+				+"select bd.mccmnc.country, bd.mccmnc.operator, bd.cellId, count(bd.id) "  
+				+"from BaseData bd "
+				+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
+				+"group by bd.mccmnc.country, bd.mccmnc.operator, bd.cellId "						
+				+"order by count(bd.id) desc ");
+		query.setParameter("date1", dateStart);
+		query.setParameter("date2", dateEnd);
+		List basedata = query.setMaxResults(10).getResultList();
+		basedata.add(0, new Object[]{"Market", "Operator","Cell Id","Count"});
+		return basedata;	
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
@@ -223,8 +241,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	
 	/**
-	 * 
-	 * 
 	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
 	 * the Event ID and Cause Code for any / all failures affecting that IMSI
 	 * 
