@@ -6,6 +6,8 @@ package com.coolbeanzzz.development.dao;
 import java.io.File;
 import java.util.Collection;
 
+import org.json.simple.JSONArray;
+
 import com.coolbeanzzz.development.entities.FailureTable;
 
 public interface FailureTableDAO {
@@ -19,7 +21,7 @@ public interface FailureTableDAO {
 	 * Populates Failure table with json data from file
 	 * @param filename input json filename
 	 */
-	void populateTable(File filename);
+	void populateTable(JSONArray objectArray);
 	
 	/**
 	 * Adds Failure table record to database

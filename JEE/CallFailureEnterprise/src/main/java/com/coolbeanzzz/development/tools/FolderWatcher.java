@@ -20,6 +20,8 @@ import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import jxl.read.biff.BiffException;
+
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -77,9 +79,10 @@ public class FolderWatcher{
 	 * are then cleared
 	 * 
 	 * @param path Directory to monitor for changes
+	 * @throws BiffException 
 	 */
 	@Asynchronous
-	public void watchDirectoryPath(Path path){
+	public void watchDirectoryPath(Path path) throws BiffException{
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_CREATE);
@@ -94,15 +97,15 @@ public class FolderWatcher{
                         if(newPath.getFileName().toString().endsWith(".xls")){
                         	Convert convert = new Convert();
                         	convert.setInputFile(newPath.toAbsolutePath().toString());
-                        	JSONArray baseDataArray = convert.convert();
+                        	ArrayList<JSONArray> datasetArray = convert.convert();
                         	
-                        	failureClassService.populateTable(new File("/home/user1/json/2.json"));
+                        	failureClassService.populateTable(datasetArray.get(2));
                     		System.out.println("1/6 tables complete");
-                        	eventCauseService.populateTable(new File("/home/user1/json/1.json"));
+                        	eventCauseService.populateTable(datasetArray.get(1));
                         	System.out.println("2/6 tables complete");
-                        	mccMncService.populateTable(new File("/home/user1/json/4.json"));
+                        	mccMncService.populateTable(datasetArray.get(4));
                         	System.out.println("3/6 tables complete");
-                        	ueTableService.populateTable(new File("/home/user1/json/3.json"));
+                        	ueTableService.populateTable(datasetArray.get(3));
                         	System.out.println("4/6 tables complete");
                         	
                     		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
@@ -117,7 +120,7 @@ public class FolderWatcher{
                     		
                     		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
                         	
-                    		ArrayList<JSONArray> baseData = compare.compareData(baseDataArray);
+                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
                         	
                         	JSONArray validData = baseData.get(0);
                         	baseDataService.populateTableObject(validData);

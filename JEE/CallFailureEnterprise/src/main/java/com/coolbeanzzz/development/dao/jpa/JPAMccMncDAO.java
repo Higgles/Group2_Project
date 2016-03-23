@@ -3,10 +3,6 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +20,6 @@ import javax.persistence.Query;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -75,36 +69,23 @@ public class JPAMccMncDAO implements MccMncDAO {
 	}
 	
 	@Override
-	public void populateTable(File jsonFile) {           
-        JSONParser parser = new JSONParser();
- 
-        try {
- 
-            Object obj = parser.parse(new FileReader(jsonFile));
-            
-            JSONArray rows = (JSONArray) obj;
-            Iterator<?> iterator = rows.iterator();
-            
-            while (iterator.hasNext()) {  
-                JSONObject mccMnc = (JSONObject) iterator.next();
-                String mnc = mccMnc.keySet().toArray()[1].toString();
-                String mcc = mccMnc.keySet().toArray()[2].toString();
-                String country = mccMnc.keySet().toArray()[0].toString();
-                String operator = mccMnc.keySet().toArray()[3].toString();
-                MccMnc object = new MccMnc(
-                		Integer.parseInt(mccMnc.get(mnc).toString()),
-                		Integer.parseInt(mccMnc.get(mcc).toString()),
-                		mccMnc.get(country).toString(),
-                		mccMnc.get(operator).toString());
-        		em.merge(object);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }  
+	public void populateTable(JSONArray mccMncRows) {
+		
+		Iterator<?> iterator = mccMncRows.iterator();
+
+		while (iterator.hasNext()) {
+			JSONObject mccMnc = (JSONObject) iterator.next();
+			String mnc = mccMnc.keySet().toArray()[1].toString();
+			String mcc = mccMnc.keySet().toArray()[2].toString();
+			String country = mccMnc.keySet().toArray()[0].toString();
+			String operator = mccMnc.keySet().toArray()[3].toString();
+			MccMnc object = new MccMnc(
+					Integer.parseInt(mccMnc.get(mnc).toString()),
+					Integer.parseInt(mccMnc.get(mcc).toString()),
+					mccMnc.get(country).toString(),
+					mccMnc.get(operator).toString());
+			em.merge(object);
+		}
     }
 	
 	@SuppressWarnings("unchecked")

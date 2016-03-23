@@ -58,6 +58,4 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI);
-
-	void populateTableObject(JSONArray validObj); 
 }

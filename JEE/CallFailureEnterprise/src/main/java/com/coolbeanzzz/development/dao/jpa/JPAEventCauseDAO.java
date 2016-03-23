@@ -3,10 +3,6 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +20,6 @@ import javax.persistence.Query;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.EventCauseDAO;
 import com.coolbeanzzz.development.entities.EventCause;
@@ -75,38 +69,22 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 	}
 	
 	@Override
-	public void populateTable(File jsonFile) {
-           
-        JSONParser parser = new JSONParser();
- 
-        try {
- 
-            Object obj = parser.parse(new FileReader(jsonFile));
-            
-            JSONArray rows = (JSONArray) obj;
-            Iterator<?> iterator = rows.iterator();
-            
-            while (iterator.hasNext()) {
-              
-                JSONObject eventCause = (JSONObject) iterator.next();
-                String causeCode = eventCause.keySet().toArray()[2].toString();
-                String eventId = eventCause.keySet().toArray()[0].toString();
-                String description = eventCause.keySet().toArray()[1].toString();
-                EventCause object = new EventCause(
-                		Integer.parseInt(eventCause.get(causeCode).toString()),
-                		Integer.parseInt(eventCause.get(eventId).toString()),
-                		eventCause.get(description).toString());
-        		em.merge(object);
-            }
-           
- 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }   
+	public void populateTable(JSONArray eventCauseRows) {
+
+		Iterator<?> iterator = eventCauseRows.iterator();
+
+		while (iterator.hasNext()) {
+
+			JSONObject eventCause = (JSONObject) iterator.next();
+			String causeCode = eventCause.keySet().toArray()[2].toString();
+			String eventId = eventCause.keySet().toArray()[0].toString();
+			String description = eventCause.keySet().toArray()[1].toString();
+			EventCause object = new EventCause(
+					Integer.parseInt(eventCause.get(causeCode).toString()),
+					Integer.parseInt(eventCause.get(eventId).toString()),
+					eventCause.get(description).toString());
+			em.merge(object);
+		}
     }
 	
 	@SuppressWarnings("unchecked")
