@@ -94,8 +94,8 @@ public class FolderWatcher{
                         Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
                         if(newPath.getFileName().toString().endsWith(".xls")){
                         	Convert convert = new Convert();
-                        	convert.setInputFile(newPath.toAbsolutePath().toString());
-                        	ArrayList<JSONArray> datasetArray = convert.convert();
+                        	String inputFile = newPath.toAbsolutePath().toString();
+                        	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);
                         	
                         	failureClassService.populateTable(datasetArray.get(2));
                     		System.out.println("1/6 tables complete");
@@ -154,8 +154,6 @@ public class FolderWatcher{
 			System.out.println("IOEXception: " + e.toString());
 		}catch (InterruptedException e){
 			System.out.println("InterruptException: " + e.toString());
-		}catch (BiffException e){
-			System.out.println("BiffException: " + e.toString());
 		}
 	}
 	
