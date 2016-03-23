@@ -127,10 +127,10 @@ public class FolderWatcher{
                         	JSONArray erroneousData = baseData.get(1);
                         	erroneousDataService.populateTable(erroneousData);
                         	System.out.println("6/6 tables complete");
-                    		
+//                    		
                     		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
                     		File uploadDir = new File("/home/user1/datasets");
-                    		FileUtils.cleanDirectory(uploadDir);
+//                    		FileUtils.cleanDirectory(uploadDir);
                     		System.out.println(("DONE"));
                         }
                     }

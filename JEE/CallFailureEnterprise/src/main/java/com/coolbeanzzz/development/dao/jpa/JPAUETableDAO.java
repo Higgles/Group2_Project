@@ -67,15 +67,15 @@ public class JPAUETableDAO implements UETableDAO {
 		
 		while (iterator.hasNext()) {
 			ueTable = (JSONObject) iterator.next();
-			String tac = ueTable.keySet().toArray()[2].toString();
-			String marketingName = ueTable.keySet().toArray()[0].toString();
-			String manufacturer = ueTable.keySet().toArray()[6].toString();
-			String accessCapability = ueTable.keySet().toArray()[7].toString();
-			String model = ueTable.keySet().toArray()[4].toString();
-			String vendorName = ueTable.keySet().toArray()[3].toString();
-			String ueType = ueTable.keySet().toArray()[1].toString();
-			String os = ueTable.keySet().toArray()[5].toString();
-			String inputMode = ueTable.keySet().toArray()[8].toString();
+			String tac = "TAC";
+			String marketingName = "Marketing Name";
+			String manufacturer = "Manufacturer";
+			String accessCapability = "Access Capability";
+			String model = "Model";
+			String vendorName = "Vendor Name";
+			String ueType = "UE Type";
+			String os = "OS";
+			String inputMode = "Input Mode";
 			UETable object = new UETable(
 					Integer.parseInt(ueTable.get(tac).toString()),
 					ueTable.get(marketingName).toString(),

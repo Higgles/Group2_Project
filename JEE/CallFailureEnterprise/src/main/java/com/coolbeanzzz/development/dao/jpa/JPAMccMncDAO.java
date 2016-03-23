@@ -76,14 +76,14 @@ public class JPAMccMncDAO implements MccMncDAO {
 		
 		while (iterator.hasNext()) {
 			mccMnc = (JSONObject) iterator.next();
-			String mnc = mccMnc.keySet().toArray()[1].toString();
-			String mcc = mccMnc.keySet().toArray()[2].toString();
-			String country = mccMnc.keySet().toArray()[0].toString();
-			String operator = mccMnc.keySet().toArray()[3].toString();
+			String mcc = "MCC";
+			String mnc = "MNC";
+			String country = "Country";
+			String operator = "Operator";
 			
 			MccMnc object = new MccMnc(
-					Integer.parseInt(mccMnc.get(mnc).toString()),
 					Integer.parseInt(mccMnc.get(mcc).toString()),
+					Integer.parseInt(mccMnc.get(mnc).toString()),
 					mccMnc.get(country).toString(),
 					mccMnc.get(operator).toString());
 			em.merge(object);

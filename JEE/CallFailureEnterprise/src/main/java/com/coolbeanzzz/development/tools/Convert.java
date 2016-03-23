@@ -42,12 +42,26 @@ public class Convert {
 		File inputWorkbook = new File(inputFile);
 		Workbook workbook;
 		
-		ArrayList<String> labels = new ArrayList<String>();
+		ArrayList<String[]> labelList = new ArrayList<String[]>();
+		
+		String[] baseDataLabels = {"Date / Time", "Event Id", "Failure Class", "UE Type", "Market",
+				 "Operator", "Cell Id", "Duration", "Cause Code", "NE Version", "IMSI", 
+				 "HIER3_ID", "HIER32_ID", "HIER321_ID"};
+		String[] eventCauseLabels = {"Cause Code", "Event Id", "Description"};
+		String[] failureClassLabels = {"Failure Class", "Description"};
+		String[] ueTableLabels = {"TAC", "Marketing Name", "Manufacturer", "Access Capability", "Model", "Vendor Name", "UE Type", "OS", "Input Mode"};
+		String[] mccMncLabels = {"MCC", "MNC", "Country", "Operator"};
+		
+		labelList.add(baseDataLabels);
+		labelList.add(eventCauseLabels);
+		labelList.add(failureClassLabels);
+		labelList.add(ueTableLabels);
+		labelList.add(mccMncLabels);
 		
 		Sheet sheet;
 		Cell cell;
-		CellType type;
-		String cellType;
+		CellType cellType;
+		String cellTypeName;
 		
 		ArrayList<JSONArray> datasetTables = new ArrayList<JSONArray>();
 		JSONArray baseData = new JSONArray();
@@ -59,25 +73,22 @@ public class Convert {
 		workbook = Workbook.getWorkbook(inputWorkbook);
 		for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
 			sheet = workbook.getSheet(sheetNumber);
+			String[] sheetLabels = labelList.get(sheetNumber);
 			JSONObject datasetRow = new JSONObject();
 			for (int row = 0; row < sheet.getRows(); row++){
 				for (int column = 0; column < sheet.getColumns(); column++) {
-					if(row == 0){
+					if(row != 0){
 						cell = sheet.getCell(column, row);
-						labels.add(cell.getContents());
-					}
-					else{
-						cell = sheet.getCell(column, row);
-						type = cell.getType();
-						cellType = type.toString();
-						if(cell.getType() == CellType.DATE){
+						cellType = cell.getType();
+						cellTypeName = cellType.toString();
+						if(cellType == CellType.DATE){
 							DateCell dateCell = (DateCell) cell;
 							Date date = dateCell.getDate();
 							SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-							datasetRow.put(labels.get(column), formatter.format(date));
+							datasetRow.put(sheetLabels[column], formatter.format(date));
 						}
 						else{
-							datasetRow.put(labels.get(column), cell.getContents());
+							datasetRow.put(sheetLabels[column], cell.getContents());
 						}
 					}
 				}
@@ -98,7 +109,6 @@ public class Convert {
 				}
 				datasetRow = new JSONObject();
 			}
-			labels.clear();
 		}
 		datasetTables.add(baseData);
 		datasetTables.add(eventCauseTable);
