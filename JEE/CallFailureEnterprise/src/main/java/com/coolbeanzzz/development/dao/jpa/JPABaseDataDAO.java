@@ -68,8 +68,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	@Override
-	public void populateTableObject(JSONArray validData){
-		Iterator<?> iteratorValid = validData.iterator();
+	public void populateTable(JSONArray objectArray){
+		Iterator<?> iteratorValid = objectArray.iterator();
 		BaseData baseDataObject;
 		while(iteratorValid.hasNext()){
 			JSONObject validObj = (JSONObject) iteratorValid.next();
@@ -92,56 +92,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			em.merge(baseDataObject);
 		}
 	}
-	
-	@Override
-	public void populateTable(File filename) {	
-		JSONObject baseRow;
-		BaseData object;
-		
-		int j = 0;
-
-		JSONParser parser = new JSONParser();
-		try{
-			Object obj = parser.parse(new FileReader(filename));
-
-			JSONArray rows = (JSONArray) obj;
-
-			Iterator<?> iteratorFile = rows.iterator();
-			
-			while(iteratorFile.hasNext()){
-				j++;
-				
-				baseRow = (JSONObject) iteratorFile.next();
-				
-				object = new BaseData(
-						0,
-						baseRow.get("Date / Time").toString(),
-						baseRow.get("Cell Id").toString(),
-						baseRow.get("Duration").toString(),
-						baseRow.get("NE Version").toString(),
-						baseRow.get("IMSI").toString(),
-						baseRow.get("HIER3_ID").toString(),
-						baseRow.get("HIER32_ID").toString(),
-						baseRow.get("HIER321_ID").toString(),
-						em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
-						em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
-						em.find(UETable.class, Integer.parseInt(baseRow.get("UE Type").toString())),
-						em.find(FailureClass.class, Integer.parseInt(baseRow.get("Failure Class").toString()))
-						);
-				
-				em.merge(object);
-
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
