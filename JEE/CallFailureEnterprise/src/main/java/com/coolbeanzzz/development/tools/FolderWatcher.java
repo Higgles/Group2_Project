@@ -69,12 +69,12 @@ public class FolderWatcher{
 	 * Once an excel file is added to the directory it is converted.
 	 * 
 	 * The comparison tables are added to the database and this data is
-	 * compared to base data to create valid data and erroneous data tables
-	 * which are then added to the database.
+	 * compared to the base data JSON array that gets returns from the convert operation.
+	 * This is used to create valid data and erroneous data tables which are then
+	 * added to the database.
 	 * 
 	 * The dataset is copied to a savedDatasets directory. The dataset and json directories
 	 * are then cleared
-	 * directory
 	 * 
 	 * @param path Directory to monitor for changes
 	 */

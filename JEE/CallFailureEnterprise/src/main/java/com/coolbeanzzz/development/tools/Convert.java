@@ -35,6 +35,7 @@ public class Convert {
 	
 	/**
 	 * Creates a json file from each sheet in a provided xls file
+	 * Creates and returns a JSON array for the base data sheet to be used for consistency checking
 	 */
 	public JSONArray convert() throws IOException  {
 		File inputWorkbook = new File(inputFile);
