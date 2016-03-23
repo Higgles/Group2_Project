@@ -7,6 +7,8 @@ import java.util.Collection;
 
 import javax.ejb.Local;
 
+import org.json.simple.JSONArray;
+
 @Local
 public interface EventCauseService extends FailureTableService{
 	
@@ -21,4 +23,6 @@ public interface EventCauseService extends FailureTableService{
 	 * @return a collection of unique cause code value 
 	 */
 	public Collection<Integer> getAllUniqueCauseCodes();
+
+	void populateTable(JSONArray eventCauseArray);
 }

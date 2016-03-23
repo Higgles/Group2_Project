@@ -6,6 +6,8 @@ package com.coolbeanzzz.development.services;
 import java.io.File;
 import java.util.Collection;
 
+import org.json.simple.JSONArray;
+
 import com.coolbeanzzz.development.entities.FailureTable;
 
 public interface FailureTableService {
@@ -18,9 +20,9 @@ public interface FailureTableService {
 	
 	/**
 	 * Populates the FailureTable with the input json file
-	 * @param filename input json filename
+	 * @param jsonArray input json filename
 	 */
-	public void populateTable(File filename);
+	public void populateTable(JSONArray jsonArray);
 	
 	/**
 	 * Adds Failure table record to database
