@@ -53,9 +53,9 @@ public class UsersCRUDService {
     	java.net.URI location = null;
     	Subject currentUser = SecurityUtils.getSubject();
     	if(currentUser.hasRole("SysAd")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.jsp");
     	}
-    	else if(currentUser.hasRole("SupEng")||currentUser.hasRole("CSR")||currentUser.hasRole("NetManEng")){
+    	else{
     		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/query.jsp");
     	}    	
     	
