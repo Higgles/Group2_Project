@@ -121,11 +121,11 @@ public class FolderWatcher{
                     		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
                         	
                         	JSONArray validData = baseData.get(0);
-                        	baseDataService.populateTableObject(validData);
+                        	baseDataService.populateTable(validData);
                         	System.out.println("5/6 tables complete");
                         	
                         	JSONArray erroneousData = baseData.get(1);
-                        	erroneousDataService.populateTableObject(erroneousData);
+                        	erroneousDataService.populateTable(erroneousData);
                         	System.out.println("6/6 tables complete");
                     		
                     		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
