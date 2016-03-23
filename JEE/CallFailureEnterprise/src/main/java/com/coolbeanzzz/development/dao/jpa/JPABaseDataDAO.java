@@ -68,6 +68,32 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	@Override
+	public void populateTableObject(JSONArray validData){
+		Iterator<?> iteratorValid = validData.iterator();
+		BaseData baseDataObject;
+		while(iteratorValid.hasNext()){
+			JSONObject validObj = (JSONObject) iteratorValid.next();
+			baseDataObject = new BaseData(
+					0,
+					validObj.get("Date / Time").toString(),
+					validObj.get("Cell Id").toString(),
+					validObj.get("Duration").toString(),
+					validObj.get("NE Version").toString(),
+					validObj.get("IMSI").toString(),
+					validObj.get("HIER3_ID").toString(),
+					validObj.get("HIER32_ID").toString(),
+					validObj.get("HIER321_ID").toString(),
+					em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(validObj.get("Event Id").toString()), Integer.parseInt(validObj.get("Cause Code").toString()))),
+					em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(validObj.get("Market").toString()),Integer.parseInt(validObj.get("Operator").toString()))),
+					em.find(UETable.class, Integer.parseInt(validObj.get("UE Type").toString())),
+					em.find(FailureClass.class, Integer.parseInt(validObj.get("Failure Class").toString()))
+					);
+			
+			em.merge(baseDataObject);
+		}
+	}
+	
+	@Override
 	public void populateTable(File filename) {	
 		JSONObject baseRow;
 		BaseData object;

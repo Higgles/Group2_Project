@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.json.simple.JSONArray;
+
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
 
@@ -59,6 +61,11 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	@Override
 	public void populateTable(File filename){
 		dao.populateTable(filename);
+	}
+	
+	@Override
+	public void populateTableObject(JSONArray erroneousObj){
+		dao.populateTableObject(erroneousObj);
 	}
 
 	@Override

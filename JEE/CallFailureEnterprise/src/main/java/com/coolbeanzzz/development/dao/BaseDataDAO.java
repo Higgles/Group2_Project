@@ -6,6 +6,9 @@ package com.coolbeanzzz.development.dao;
 import java.math.BigInteger;
 import java.util.Collection;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.coolbeanzzz.development.entities.FailureTable;
 
 public interface BaseDataDAO extends FailureTableDAO{
@@ -54,5 +57,7 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param input IMSI
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
+	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI);
+
+	void populateTableObject(JSONArray validObj); 
 }

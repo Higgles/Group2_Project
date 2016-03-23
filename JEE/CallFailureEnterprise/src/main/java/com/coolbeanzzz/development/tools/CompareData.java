@@ -1,11 +1,7 @@
 package com.coolbeanzzz.development.tools;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -13,10 +9,9 @@ import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class CompareData {
+	
 	private JSONArray erroneousData = new JSONArray();
 	private JSONArray validData = new JSONArray();
 	
@@ -48,9 +43,7 @@ public class CompareData {
 	 * Compare imported base data table against the reference tables
 	 * to split it into erroneous data and valid data.
 	 */
-	public void compareData(){
-		
-		JSONParser parser = new JSONParser();
+	public ArrayList<JSONArray> compareData(JSONArray baseDataRows){
 		
 		int eventId;
 		int causeCode;
@@ -60,67 +53,62 @@ public class CompareData {
 		int ueType;
 		
 		String dateTime;
+		ArrayList<JSONArray> baseDataList = new ArrayList<JSONArray>();
 
-		try {
+		Iterator<?> iterator = baseDataRows.iterator();
+		baseData = (JSONObject) iterator.next();
 
-			Object baseDataObj = parser.parse(new FileReader(new File("/home/user1/json/Base Data.json")));
+		while (iterator.hasNext()) {
 
-			JSONArray baseDataRows = (JSONArray) baseDataObj;
-			
-			Iterator<?> iterator = baseDataRows.iterator();
-			
-			while (iterator.hasNext()) {
+			baseData = (JSONObject) iterator.next();
 
-				baseData = (JSONObject) iterator.next();
-				
-				dateTime = baseData.get("Date / Time").toString();
-				
-				dateFormatter(dateTime);
-				
-				eventId = checkInt(baseData.get("Event Id").toString());
-				causeCode = checkInt(baseData.get("Cause Code").toString());
-				failureCode = checkInt(baseData.get("Failure Class").toString());
-				mcc = checkInt(baseData.get("Market").toString());
-				mnc = checkInt(baseData.get("Operator").toString());
-				ueType = checkInt(baseData.get("UE Type").toString());
-				
-				if(!uniqueEventIds.contains(eventId) || !uniqueCauseCodes.contains(causeCode) ||
-						!uniqueFailureCodes.contains(failureCode) || !mccs.contains(mcc) || !mncs.contains(mnc)||
-						!ueTypes.contains(ueType) || dateCheck == false){
-					erroneousData.add(baseData);
-				}
-				else{
-					validData.add(baseData);
-				}
+			dateTime = baseData.get("Date / Time").toString();
+
+			dateFormatter(dateTime);
+
+			eventId = checkInt(baseData.get("Event Id").toString());
+			causeCode = checkInt(baseData.get("Cause Code").toString());
+			//				failureCode = checkInt(baseData.get("Failure Class").toString());
+			try{
+				failureCode = Integer.parseInt(baseData.get("Failure Class").toString());
 			}
-			
-			FileWriter fwValid = new FileWriter(new File("/home/user1/json/validData.json"));
-			Iterator<?> iteratorValid = validData.iterator();
-			fwValid.write("[");
-			while (iteratorValid.hasNext()) {
-				JSONObject validObject = (JSONObject) iteratorValid.next();
-				fwValid.write(validObject.toJSONString() + ",");
+			catch(NumberFormatException e){
+				failureCode = -1;
 			}
-			fwValid.write("]");
-			fwValid.close();
-			
-			FileWriter fwErroneous = new FileWriter(new File("/home/user1/json/erroneousData.json"));
-			Iterator<?> iteratorErroneous = erroneousData.iterator();
-			fwErroneous.write("[");
-			while (iteratorErroneous.hasNext()) {
-				JSONObject erroneousObject = (JSONObject) iteratorErroneous.next();
-				fwErroneous.write(erroneousObject.toJSONString() + ",");
+			mcc = checkInt(baseData.get("Market").toString());
+			mnc = checkInt(baseData.get("Operator").toString());
+			ueType = checkInt(baseData.get("UE Type").toString());
+
+			if(!uniqueEventIds.contains(eventId)){
+				erroneousData.add(baseData);
 			}
-			fwErroneous.write("]");
-			fwErroneous.close();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			System.out.println("IOException: " + e.toString());
-		} catch (ParseException e) {
-			System.out.println("ParseException: " +e.toString());
+			else if(!uniqueCauseCodes.contains(causeCode)){
+				erroneousData.add(baseData);
+			}
+			else if(!mccs.contains(mcc)){
+				erroneousData.add(baseData);
+			}
+			else if(!mncs.contains(mnc)){
+				erroneousData.add(baseData);
+			}
+			else if(!ueTypes.contains(ueType)){
+				erroneousData.add(baseData);
+			}
+			else if(!uniqueFailureCodes.contains(failureCode)){
+				erroneousData.add(baseData);
+			}
+			else if(dateCheck == false){
+				erroneousData.add(baseData);
+			}
+			else{
+				validData.add(baseData);
+			}
 		}
+
+		baseDataList.add(validData);
+		baseDataList.add(erroneousData);
+		
+		return baseDataList;
 	}
 	
 	/**
@@ -163,7 +151,7 @@ public class CompareData {
 	 * @return
 	 */
 	private int checkInt(String intCheck){
-		if(intCheck.contains("null")){
+		if(intCheck.equals("(null)")){
 			return -1;
 		}
 		else{

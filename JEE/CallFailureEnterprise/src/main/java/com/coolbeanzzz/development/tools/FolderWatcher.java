@@ -12,14 +12,19 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
 import com.coolbeanzzz.development.services.EventCauseService;
@@ -89,7 +94,7 @@ public class FolderWatcher{
                         if(newPath.getFileName().toString().endsWith(".xls")){
                         	Convert convert = new Convert();
                         	convert.setInputFile(newPath.toAbsolutePath().toString());
-                        	convert.convert();
+                        	JSONArray baseDataArray = convert.convert();
                         	
                         	failureClassService.populateTable(new File("/home/user1/json/Failure Class Table.json"));
                     		System.out.println("1/6 tables complete");
@@ -111,12 +116,16 @@ public class FolderWatcher{
                     		ueTypes = ueTableService.getUETypes();
                     		
                     		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-                        	compare.compareData();
                         	
-                    		baseDataService.populateTable(new File("/home/user1/json/validData.json"));
-                    		System.out.println("5/6 tables complete");
-                    		erroneousDataService.populateTable(new File("/home/user1/json/erroneousData.json"));                        	
-                    		System.out.println("6/6 tables complete");
+                    		ArrayList<JSONArray> baseData = compare.compareData(baseDataArray);
+                        	
+                        	JSONArray validData = baseData.get(0);
+                        	baseDataService.populateTableObject(validData);
+                        	System.out.println("5/6 tables complete");
+                        	
+                        	JSONArray erroneousData = baseData.get(1);
+                        	erroneousDataService.populateTableObject(erroneousData);
+                        	System.out.println("6/6 tables complete");
                     		
                     		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
                     		File jsonDir = new File("/home/user1/json");

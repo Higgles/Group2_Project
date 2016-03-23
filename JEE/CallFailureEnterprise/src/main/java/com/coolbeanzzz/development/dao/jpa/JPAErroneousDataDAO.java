@@ -28,8 +28,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
+import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.entities.ErroneousData;
+import com.coolbeanzzz.development.entities.EventCause;
+import com.coolbeanzzz.development.entities.EventCausePrimaryKey;
+import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.entities.MccMnc;
+import com.coolbeanzzz.development.entities.MccMncPrimaryKey;
+import com.coolbeanzzz.development.entities.UETable;
 
 @Default
 @Stateless
@@ -54,6 +61,54 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 		List<FailureTable> erroneousData = query.getResultList();
 
 		return erroneousData;
+	}
+	
+	@Override
+	public void populateTableObject(JSONArray erroneousData){
+		Iterator<?> iteratorErroneous = erroneousData.iterator();
+		ErroneousData erroneousObj;
+		
+		String failureClass;
+		String causeCode;
+		
+		JSONObject erroneousRow;
+		while(iteratorErroneous.hasNext()){
+			erroneousRow =  (JSONObject) iteratorErroneous.next();
+			
+			if(erroneousRow.get("Failure Class").toString().contains("null")){
+				failureClass = "NULL";
+			}
+			else{
+				failureClass = erroneousRow.get("Failure Class").toString();
+			}
+			
+			if(erroneousRow.get("Cause Code").toString().contains("null")){
+				causeCode = "NULL";
+			}
+			else{
+				causeCode = erroneousRow.get("Cause Code").toString();
+			}
+			
+			erroneousObj = new ErroneousData(
+					0,
+					erroneousRow.get("Date / Time").toString(),
+					Integer.parseInt(erroneousRow.get("Event Id").toString()),
+					failureClass,
+					Integer.parseInt(erroneousRow.get("UE Type").toString()),
+					Integer.parseInt(erroneousRow.get("Market").toString()),
+					Integer.parseInt(erroneousRow.get("Operator").toString()),
+					erroneousRow.get("Cell Id").toString(),
+					erroneousRow.get("Duration").toString(),
+					causeCode,
+					erroneousRow.get("NE Version").toString(),
+					erroneousRow.get("IMSI").toString(),
+					erroneousRow.get("HIER3_ID").toString(),
+					erroneousRow.get("HIER32_ID").toString(),
+					erroneousRow.get("HIER321_ID").toString()
+					);
+			
+			em.merge(erroneousObj);
+		}
 	}
 
 	@Override
