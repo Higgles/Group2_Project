@@ -59,13 +59,8 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	}
 	
 	@Override
-	public void populateTable(File filename){
-		dao.populateTable(filename);
-	}
-	
-	@Override
-	public void populateTableObject(JSONArray erroneousObj){
-		dao.populateTableObject(erroneousObj);
+	public void populateTable(JSONArray erroneousObj){
+		dao.populateTable(erroneousObj);
 	}
 
 	@Override

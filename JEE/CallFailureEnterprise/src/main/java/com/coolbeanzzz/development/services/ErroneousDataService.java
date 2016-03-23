@@ -9,5 +9,5 @@ import org.json.simple.JSONArray;
 
 @Local
 public interface ErroneousDataService extends FailureTableService{
-	void populateTableObject(JSONArray erroneousObj);
+	
 }
