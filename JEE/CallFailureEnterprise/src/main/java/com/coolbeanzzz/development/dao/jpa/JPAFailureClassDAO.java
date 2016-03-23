@@ -66,6 +66,10 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClassIds;
 	}
 	
+	/**
+	 * Populate database table for failure class. Send to Failure Class entity using column names
+	 * used in dataset by getting keyset
+	 */
 	@Override
     public void populateTable(File jsonFile) {
            
@@ -81,15 +85,17 @@ public class JPAFailureClassDAO implements FailureClassDAO {
             
             while (iterator.hasNext()) {
                 JSONObject failureClass = (JSONObject) iterator.next();
-                FailureClass object = new FailureClass(Integer.parseInt(failureClass.get("Failure Class").toString()), failureClass.get("Description").toString());
-                	em.merge(object);
+                String failureCode = failureClass.keySet().toArray()[0].toString();
+                String description = failureClass.keySet().toArray()[1].toString();
+                FailureClass object = new FailureClass(Integer.parseInt(failureClass.get(failureCode).toString()), failureClass.get(description).toString());
+                em.merge(object);
             } 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("FileNotFoundException: " + e);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IOException: " + e);
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("ParseException: " + e);
         }    
     }
 	

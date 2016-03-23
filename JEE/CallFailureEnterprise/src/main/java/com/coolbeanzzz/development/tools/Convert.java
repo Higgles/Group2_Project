@@ -82,7 +82,7 @@ public class Convert {
 				}
 				else{
 					sheet = workbook.getSheet(sheetNumber);
-					jsonConvert = new FileWriter("/home/user1/json/" + sheet.getName() + ".json");
+					jsonConvert = new FileWriter("/home/user1/json/" + sheetNumber + ".json");
 					jsonConvert.append("[");
 					for (int row = 0; row < sheet.getRows(); row++){
 						if(row != 0){

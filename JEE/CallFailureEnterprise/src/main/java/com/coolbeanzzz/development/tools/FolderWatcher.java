@@ -96,13 +96,13 @@ public class FolderWatcher{
                         	convert.setInputFile(newPath.toAbsolutePath().toString());
                         	JSONArray baseDataArray = convert.convert();
                         	
-                        	failureClassService.populateTable(new File("/home/user1/json/Failure Class Table.json"));
+                        	failureClassService.populateTable(new File("/home/user1/json/2.json"));
                     		System.out.println("1/6 tables complete");
-                        	eventCauseService.populateTable(new File("/home/user1/json/Event-Cause Table.json"));
+                        	eventCauseService.populateTable(new File("/home/user1/json/1.json"));
                         	System.out.println("2/6 tables complete");
-                        	mccMncService.populateTable(new File("/home/user1/json/MCC - MNC Table.json"));
+                        	mccMncService.populateTable(new File("/home/user1/json/4.json"));
                         	System.out.println("3/6 tables complete");
-                        	ueTableService.populateTable(new File("/home/user1/json/UE Table.json"));
+                        	ueTableService.populateTable(new File("/home/user1/json/3.json"));
                         	System.out.println("4/6 tables complete");
                         	
                     		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
