@@ -40,8 +40,9 @@ public class CompareData {
 	}
 	
 	/**
-	 * Compare imported base data table against the reference tables
-	 * to split it into erroneous data and valid data.
+	 * Compare imported base data JSON array against the reference tables
+	 * to split it into erroneous data and valid data JSON arrays.
+	 * Return a list of JSON arrays for importing to the database.
 	 */
 	public ArrayList<JSONArray> compareData(JSONArray baseDataRows){
 		
@@ -68,7 +69,7 @@ public class CompareData {
 
 			eventId = checkInt(baseData.get("Event Id").toString());
 			causeCode = checkInt(baseData.get("Cause Code").toString());
-			//				failureCode = checkInt(baseData.get("Failure Class").toString());
+//			failureCode = checkInt(baseData.get("Failure Class").toString());
 			try{
 				failureCode = Integer.parseInt(baseData.get("Failure Class").toString());
 			}
