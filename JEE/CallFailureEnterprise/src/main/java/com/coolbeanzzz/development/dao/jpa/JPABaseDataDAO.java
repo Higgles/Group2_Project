@@ -196,6 +196,24 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;	
 	}
 	
+	//************************* MIKE G ****************************** 24/3/16
+	//As a Support Engineer I want to display, for a given failure Cause Class, the IMSIs that were affected.
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
+			Query query = em.createQuery(""
+					+"select bd.imsi, count(bd.id) "  
+					+"from BaseData bd "
+					+"where bd.failureClass.description =:failureClass "
+					+"group by bd.imsi ");
+			query.setParameter("failureClass",failureClass);
+			List basedata = query.getResultList();
+			basedata.add(0, new Object[]{"IMSIs","Count"});
+			return basedata;	
+		}
+	
+	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {

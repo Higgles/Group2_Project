@@ -147,6 +147,24 @@ public class ValidDataCRUDService {
     }
     
     /**
+  	 * As a Support Engineer I want to display, for a given failure Cause Class, the IMSIs that were affected.
+  	 * @param Failure Class
+  	 * @return a collection of IMSI rows from underlying table
+  	 */
+    @Path("/CB-19")
+    @GET
+ 	@Produces(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
+ 	public ResultList getQ19(String[] data) {    	
+ 	   	ResultList baseData = new ResultList();
+ 	    	//the next line has hard coded values used for testing
+ 	   	baseData.setDataCollection(service.getIMSIsforFailureClass("MT ACCESS"));
+ 	    	//baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(data[0]));
+ 	    	return baseData;
+ 		
+ 	}
+     
+    /**
      * Adds new entry to failure table in database
      * @param newEntry to be added to database
      * @return added failuretable entry
@@ -158,6 +176,8 @@ public class ValidDataCRUDService {
 		service.addNewEntry(newEntry);
 		return newEntry;
 	}
+    
+ 
     
     /**
      * Gets a list of results from a query

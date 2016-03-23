@@ -78,6 +78,14 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+
+	//************************* MIKE G ****************************** Thurs 24/3/16
+	/**
+	 * As a Support Engineer I want to display, for a given failure Cause Class, the IMSIs that were affected.
+	 * @param Failure Class
+	 * @return a collection of IMSI rows from underlying table
+	 */
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
 	
 
 }

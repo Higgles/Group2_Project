@@ -276,19 +276,27 @@ public class IntegrationTest {
 	
 	@Test
 	@InSequence(17)
-	public void getFailCountByImsiAndDate() {
+	public void getFailCountByImsiAndDateTest() {
 		Collection<?> res=baseDataService.getFailCountByImsiAndDate("344930000000011","2000-01-11 17:15:00", "2015-01-11 17:15:00");
 		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(18)
-	public void getTop10MarketOperatorCellBetween2Dates() {
+	public void getTop10MarketOperatorCellBetween2DatesTest() {
 		Collection<?> res=baseDataService.getTop10MarketOperatorCellBetween2Dates("2000-01-11 17:15:00", "2015-01-11 17:15:00");
 		assertEquals(1,res.size());
 	}
 	
-	@Test @InSequence(19)
+	@Test
+	@InSequence(19)
+	public void getIMSIsforFailureClassTest() {
+		Collection<?> res=baseDataService.getIMSIsforFailureClass("HIGH PRIORITY ACCESS");
+		assertEquals(1,res.size());
+	}
+	
+	
+	@Test @InSequence(20)
 	public void uploadFailureClassFromFile() {		 
 		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
 	    Collection<FailureTable> failureClasses=failureClassService.getCatalog();
