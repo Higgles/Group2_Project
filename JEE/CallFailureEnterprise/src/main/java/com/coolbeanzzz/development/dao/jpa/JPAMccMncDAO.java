@@ -72,13 +72,15 @@ public class JPAMccMncDAO implements MccMncDAO {
 	public void populateTable(JSONArray mccMncRows) {
 		
 		Iterator<?> iterator = mccMncRows.iterator();
-
+		JSONObject mccMnc = (JSONObject) iterator.next();
+		
 		while (iterator.hasNext()) {
-			JSONObject mccMnc = (JSONObject) iterator.next();
+			mccMnc = (JSONObject) iterator.next();
 			String mnc = mccMnc.keySet().toArray()[1].toString();
 			String mcc = mccMnc.keySet().toArray()[2].toString();
 			String country = mccMnc.keySet().toArray()[0].toString();
 			String operator = mccMnc.keySet().toArray()[3].toString();
+			
 			MccMnc object = new MccMnc(
 					Integer.parseInt(mccMnc.get(mnc).toString()),
 					Integer.parseInt(mccMnc.get(mcc).toString()),

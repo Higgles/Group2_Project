@@ -72,10 +72,9 @@ public class JPAEventCauseDAO implements EventCauseDAO {
 	public void populateTable(JSONArray eventCauseRows) {
 
 		Iterator<?> iterator = eventCauseRows.iterator();
-
+		JSONObject eventCause = (JSONObject) iterator.next();
 		while (iterator.hasNext()) {
-
-			JSONObject eventCause = (JSONObject) iterator.next();
+			eventCause = (JSONObject) iterator.next();
 			String causeCode = eventCause.keySet().toArray()[2].toString();
 			String eventId = eventCause.keySet().toArray()[0].toString();
 			String description = eventCause.keySet().toArray()[1].toString();

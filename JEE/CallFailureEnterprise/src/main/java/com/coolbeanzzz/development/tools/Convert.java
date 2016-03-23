@@ -59,7 +59,7 @@ public class Convert {
 		workbook = Workbook.getWorkbook(inputWorkbook);
 		for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
 			sheet = workbook.getSheet(sheetNumber);
-			JSONObject obj = new JSONObject();
+			JSONObject datasetRow = new JSONObject();
 			for (int row = 0; row < sheet.getRows(); row++){
 				for (int column = 0; column < sheet.getColumns(); column++) {
 					if(row == 0){
@@ -74,29 +74,29 @@ public class Convert {
 							DateCell dateCell = (DateCell) cell;
 							Date date = dateCell.getDate();
 							SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-							obj.put(labels.get(column), formatter.format(date));
+							datasetRow.put(labels.get(column), formatter.format(date));
 						}
 						else{
-							obj.put(labels.get(column), cell.getContents());
+							datasetRow.put(labels.get(column), cell.getContents());
 						}
 					}
 				}
 				if(sheetNumber == 0){
-					baseData.add(obj);
+					baseData.add(datasetRow);
 				}
 				else if(sheetNumber == 1){
-					eventCauseTable.add(obj);
+					eventCauseTable.add(datasetRow);
 				}
 				else if(sheetNumber == 2){
-					failureClassTable.add(obj);
+					failureClassTable.add(datasetRow);
 				}
 				else if(sheetNumber == 3){
-					ueTable.add(obj);
+					ueTable.add(datasetRow);
 				}
-				else if(sheetNumber == 3){
-					mccMncTable.add(obj);
+				else if(sheetNumber == 4){
+					mccMncTable.add(datasetRow);
 				}
-				obj = new JSONObject();
+				datasetRow = new JSONObject();
 			}
 			labels.clear();
 		}

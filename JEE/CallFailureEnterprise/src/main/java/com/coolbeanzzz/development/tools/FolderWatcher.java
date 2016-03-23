@@ -80,7 +80,7 @@ public class FolderWatcher{
 	 * @throws BiffException 
 	 */
 	@Asynchronous
-	public void watchDirectoryPath(Path path) throws BiffException{
+	public void watchDirectoryPath(Path path){
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_CREATE);
@@ -129,9 +129,7 @@ public class FolderWatcher{
                         	System.out.println("6/6 tables complete");
                     		
                     		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
-                    		File jsonDir = new File("/home/user1/json");
                     		File uploadDir = new File("/home/user1/datasets");
-                    		FileUtils.cleanDirectory(jsonDir);
                     		FileUtils.cleanDirectory(uploadDir);
                     		System.out.println(("DONE"));
                         }
@@ -156,6 +154,8 @@ public class FolderWatcher{
 			System.out.println("IOEXception: " + e.toString());
 		}catch (InterruptedException e){
 			System.out.println("InterruptException: " + e.toString());
+		}catch (BiffException e){
+			System.out.println("BiffException: " + e.toString());
 		}
 	}
 	
