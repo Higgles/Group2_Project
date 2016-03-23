@@ -78,16 +78,25 @@ public class JPAUETableDAO implements UETableDAO {
             while (iterator.hasNext()) {
               
                 JSONObject ueTable = (JSONObject) iterator.next();
+                String tac = ueTable.keySet().toArray()[2].toString();
+                String marketingName = ueTable.keySet().toArray()[0].toString();
+                String manufacturer = ueTable.keySet().toArray()[6].toString();
+                String accessCapability = ueTable.keySet().toArray()[7].toString();
+                String model = ueTable.keySet().toArray()[4].toString();
+                String vendorName = ueTable.keySet().toArray()[3].toString();
+                String ueType = ueTable.keySet().toArray()[1].toString();
+                String os = ueTable.keySet().toArray()[5].toString();
+                String inputMode = ueTable.keySet().toArray()[8].toString();
                 UETable object = new UETable(
-                		Integer.parseInt(ueTable.get("TAC").toString()),
-                		ueTable.get("MARKETING NAME").toString(),
-                		ueTable.get("MANUFACTURER").toString(),
-                		ueTable.get("ACCESS CAPABILITY").toString(),
-                		ueTable.get("MODEL").toString(),
-                		ueTable.get("VENDOR NAME").toString(),
-                		ueTable.get("UE TYPE").toString(),
-                		ueTable.get("OS").toString(), 
-                		ueTable.get("INPUT_MODE").toString());
+                		Integer.parseInt(ueTable.get(tac).toString()),
+                		ueTable.get(marketingName).toString(),
+                		ueTable.get(manufacturer).toString(),
+                		ueTable.get(accessCapability).toString(),
+                		ueTable.get(model).toString(),
+                		ueTable.get(vendorName).toString(),
+                		ueTable.get(ueType).toString(),
+                		ueTable.get(os).toString(), 
+                		ueTable.get(inputMode).toString());
         		em.merge(object);
             }
         } catch (FileNotFoundException e) {
