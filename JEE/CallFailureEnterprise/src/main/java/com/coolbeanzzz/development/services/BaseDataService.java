@@ -62,8 +62,4 @@ public interface BaseDataService extends FailureTableService{
 	 */
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI);
 
-//	void populateTableObject(JSONObject validObj);
-
-	void populateTableObject(JSONArray validObj); 
-
 }

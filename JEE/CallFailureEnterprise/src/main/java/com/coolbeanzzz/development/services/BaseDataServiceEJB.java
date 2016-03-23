@@ -59,15 +59,10 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
-	
-	@Override
-	public void populateTable(File filename) {
-		dao.populateTable(filename);
-	}
 
 	@Override
-	public void populateTableObject(JSONArray validObj) {
-		dao.populateTableObject(validObj);
+	public void populateTable(JSONArray validObj) {
+		dao.populateTable(validObj);
 	}
 	
 	@Override
