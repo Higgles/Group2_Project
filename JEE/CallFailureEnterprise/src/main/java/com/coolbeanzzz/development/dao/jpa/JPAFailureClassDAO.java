@@ -85,8 +85,8 @@ public class JPAFailureClassDAO implements FailureClassDAO {
             
             while (iterator.hasNext()) {
                 JSONObject failureClass = (JSONObject) iterator.next();
-                String failureCode = failureClass.keySet().toArray()[0].toString();
-                String description = failureClass.keySet().toArray()[1].toString();
+                String failureCode = failureClass.keySet().toArray()[1].toString();
+                String description = failureClass.keySet().toArray()[0].toString();
                 FailureClass object = new FailureClass(Integer.parseInt(failureClass.get(failureCode).toString()), failureClass.get(description).toString());
                 em.merge(object);
             } 

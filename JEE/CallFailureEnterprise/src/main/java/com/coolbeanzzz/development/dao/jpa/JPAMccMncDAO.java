@@ -87,11 +87,15 @@ public class JPAMccMncDAO implements MccMncDAO {
             
             while (iterator.hasNext()) {  
                 JSONObject mccMnc = (JSONObject) iterator.next();
+                String mnc = mccMnc.keySet().toArray()[1].toString();
+                String mcc = mccMnc.keySet().toArray()[2].toString();
+                String country = mccMnc.keySet().toArray()[0].toString();
+                String operator = mccMnc.keySet().toArray()[3].toString();
                 MccMnc object = new MccMnc(
-                		Integer.parseInt(mccMnc.get("MCC").toString()),
-                		Integer.parseInt(mccMnc.get("MNC").toString()),
-                		mccMnc.get("COUNTRY").toString(),
-                		mccMnc.get("OPERATOR").toString());
+                		Integer.parseInt(mccMnc.get(mnc).toString()),
+                		Integer.parseInt(mccMnc.get(mcc).toString()),
+                		mccMnc.get(country).toString(),
+                		mccMnc.get(operator).toString());
         		em.merge(object);
             }
         } catch (FileNotFoundException e) {
