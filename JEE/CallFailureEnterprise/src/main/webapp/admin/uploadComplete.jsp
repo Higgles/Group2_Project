@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -78,14 +79,29 @@
 					
 				</form>
 			</div>
+			<h4 id="tableCount" align="center"></h4>
 		</div>
 	</div>
 	<script>
 		$(document).ready(function() {
 			$(function() {
 				setUserDetails();
+				setTimeout(uploadCompleted, 15000);
+				setInterval(tableCount, 2500);
 			});
 		});
+		
+		function uploadCompleted(){
+			alert("Upload Complete");
+		}
+		
+		var count = 0;
+		function tableCount(){
+			if(count < 6){
+				count = count + 1;
+				document.getElementById("tableCount").innerHTML=(count + "/6 tables added to database")
+			}	
+		}
 		
 		function setUserDetails() {
 			$.ajax({
