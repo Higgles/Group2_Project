@@ -3,10 +3,6 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +20,6 @@ import javax.persistence.Query;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.MccMncDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -75,32 +69,24 @@ public class JPAMccMncDAO implements MccMncDAO {
 	}
 	
 	@Override
-	public void populateTable(File jsonFile) {           
-        JSONParser parser = new JSONParser();
- 
-        try {
- 
-            Object obj = parser.parse(new FileReader(jsonFile));
-            
-            JSONArray rows = (JSONArray) obj;
-            Iterator<?> iterator = rows.iterator();
-            
-            while (iterator.hasNext()) {  
-                JSONObject mccMnc = (JSONObject) iterator.next();
-                MccMnc object = new MccMnc(
-                		Integer.parseInt(mccMnc.get("MCC").toString()),
-                		Integer.parseInt(mccMnc.get("MNC").toString()),
-                		mccMnc.get("COUNTRY").toString(),
-                		mccMnc.get("OPERATOR").toString());
-        		em.merge(object);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }  
+	public void populateTable(JSONArray mccMncRows) {
+		
+		Iterator<?> iterator = mccMncRows.iterator();
+		
+		while (iterator.hasNext()) {
+			JSONObject mccMnc = (JSONObject) iterator.next();
+			String mcc = "MCC";
+			String mnc = "MNC";
+			String country = "Country";
+			String operator = "Operator";
+			
+			MccMnc object = new MccMnc(
+					Integer.parseInt(mccMnc.get(mcc).toString()),
+					Integer.parseInt(mccMnc.get(mnc).toString()),
+					mccMnc.get(country).toString(),
+					mccMnc.get(operator).toString());
+			em.merge(object);
+		}
     }
 	
 	@SuppressWarnings("unchecked")

@@ -6,6 +6,9 @@ package com.coolbeanzzz.development.dao;
 import java.math.BigInteger;
 import java.util.Collection;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.coolbeanzzz.development.entities.FailureTable;
 
 public interface BaseDataDAO extends FailureTableDAO{
