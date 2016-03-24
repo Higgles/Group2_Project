@@ -62,4 +62,12 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */
 	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	
+	/**
+	 * As a Network Management Engineer I want to see a list of the top 10 IMSIs with call failures during a given time period
+	 * @param start date, end date 
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
+	
 }

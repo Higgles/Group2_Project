@@ -321,4 +321,11 @@ public class IntegrationTest {
 		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
 		assertEquals(res.size(),1);
 	}
+	
+	@Test
+	@InSequence(25)
+	public void getTop10ImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
 }

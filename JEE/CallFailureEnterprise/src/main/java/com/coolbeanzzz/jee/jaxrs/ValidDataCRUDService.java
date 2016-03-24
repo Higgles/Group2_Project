@@ -143,4 +143,18 @@ public class ValidDataCRUDService {
         return baseData;
     }
     
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-18")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ18(String[] dates) {    	
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getTop10ImsiListBetween2Dates(dates[0], dates[1]));
+    	return baseData;
+    }
+        
 }

@@ -65,5 +65,12 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	
+	/**
+	 * As a Network Management Engineer I want to see a list of the top 10 IMSIs with call failures during a given time period
+	 * @param start date, end date 
+	 * @return a collection of FailureTable results
+	 */	
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
 }
 

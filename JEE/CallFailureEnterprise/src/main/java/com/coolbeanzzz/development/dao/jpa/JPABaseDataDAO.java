@@ -46,7 +46,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
 			new String[]{"EventId", "CauseCode", "Occurrences", "UEType", "Manufacturer", "MarketingName"};
 	private static final String[] uniqueCauseCodeForImsis=
-			new String[]{"CauseCode", "Occurrences"};
+			new String[]{"EventId", "CauseCode", "Description", "Occurrences"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -228,15 +228,46 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.eventCause.causeCode, count(bd.eventCause.causeCode) "
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, count(bd.eventCause.causeCode) "
 				+ " from BaseData bd where bd.imsi=:IMSI"
-				+ " group by bd.eventCause.causeCode");
+				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
 		basedata.add(0,uniqueCauseCodeForImsis);
 		return basedata;
 	}
 	
+	/*
+	 * 
+	 * 
+	 * @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
+		Query query = em.createQuery(" select bd.failureClass.failureClass, bd.failureClass.description, count(bd.failureClass.failureClass) "
+				+ " from BaseData bd where bd.imsi=:IMSI"
+				+ " group by bd.failureClass.failureClass");
+		query.setParameter("IMSI", IMSI);
+		List basedata = query.getResultList();
+		basedata.add(0,uniqueCauseCodeForImsis);
+		return basedata;
+	}*/
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
+		Query query = em.createQuery(""
+				+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, count(bd.imsi) "
+				+"from BaseData bd "
+				+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
+				+"group by bd.imsi "
+				+"order by count(bd.imsi) desc ");
+				query.setParameter("date1", date1);
+				query.setParameter("date2", date2);
+				List basedata = query.setMaxResults(10).getResultList();
+				basedata.add(0, new Object[]{"Imsi", "Market", "Operator", "Number of Occurences"});
+				return basedata;
+	}	
+		
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");
 
