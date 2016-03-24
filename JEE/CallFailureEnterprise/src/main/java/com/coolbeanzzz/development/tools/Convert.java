@@ -67,18 +67,16 @@ public class Convert {
 				JSONObject datasetRow = new JSONObject();
 				for (int row = 1; row < sheet.getRows(); row++){
 					for (int column = 0; column < sheet.getColumns(); column++) {
-						if(row != 0){
-							cell = sheet.getCell(column, row);
-							cellType = cell.getType();
-							if(cellType == CellType.DATE){
-								DateCell dateCell = (DateCell) cell;
-								Date date = dateCell.getDate();
-								SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-								datasetRow.put(sheetLabels[column], formatter.format(date));
-							}
-							else{
-								datasetRow.put(sheetLabels[column], cell.getContents());
-							}
+						cell = sheet.getCell(column, row);
+						cellType = cell.getType();
+						if(cellType == CellType.DATE){
+							DateCell dateCell = (DateCell) cell;
+							Date date = dateCell.getDate();
+							SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+							datasetRow.put(sheetLabels[column], formatter.format(date));
+						}
+						else{
+							datasetRow.put(sheetLabels[column], cell.getContents());
 						}
 					}
 					if(sheetNumber == 0){
