@@ -68,54 +68,31 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	@Override
-	public void populateTable(File filename) {	
-		JSONObject baseRow;
-		BaseData object;
+	public void populateTable(JSONArray objectArray){
+		Iterator<?> iteratorValid = objectArray.iterator();
 		
-		int j = 0;
-
-		JSONParser parser = new JSONParser();
-		try{
-			Object obj = parser.parse(new FileReader(filename));
-
-			JSONArray rows = (JSONArray) obj;
-
-			Iterator<?> iteratorFile = rows.iterator();
+		while(iteratorValid.hasNext()){
+			JSONObject validObj = (JSONObject) iteratorValid.next();
 			
-			while(iteratorFile.hasNext()){
-				j++;
-				
-				baseRow = (JSONObject) iteratorFile.next();
-				
-				object = new BaseData(
-						0,
-						baseRow.get("Date / Time").toString(),
-						baseRow.get("Cell Id").toString(),
-						baseRow.get("Duration").toString(),
-						baseRow.get("NE Version").toString(),
-						baseRow.get("IMSI").toString(),
-						baseRow.get("HIER3_ID").toString(),
-						baseRow.get("HIER32_ID").toString(),
-						baseRow.get("HIER321_ID").toString(),
-						em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
-						em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
-						em.find(UETable.class, Integer.parseInt(baseRow.get("UE Type").toString())),
-						em.find(FailureClass.class, Integer.parseInt(baseRow.get("Failure Class").toString()))
-						);
-				
-				em.merge(object);
-
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
+			BaseData baseDataObject = new BaseData(
+					0,
+					validObj.get("Date / Time").toString(),
+					validObj.get("Cell Id").toString(),
+					validObj.get("Duration").toString(),
+					validObj.get("NE Version").toString(),
+					validObj.get("IMSI").toString(),
+					validObj.get("HIER3_ID").toString(),
+					validObj.get("HIER32_ID").toString(),
+					validObj.get("HIER321_ID").toString(),
+					em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(validObj.get("Event Id").toString()), Integer.parseInt(validObj.get("Cause Code").toString()))),
+					em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(validObj.get("Market").toString()),Integer.parseInt(validObj.get("Operator").toString()))),
+					em.find(UETable.class, Integer.parseInt(validObj.get("UE Type").toString())),
+					em.find(FailureClass.class, Integer.parseInt(validObj.get("Failure Class").toString()))
+					);
+			
+			em.merge(baseDataObject);
 		}
 	}
-
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

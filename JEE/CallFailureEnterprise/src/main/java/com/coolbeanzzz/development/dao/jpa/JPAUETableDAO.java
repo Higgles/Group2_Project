@@ -3,10 +3,6 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +20,6 @@ import javax.persistence.Query;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.UETableDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -66,37 +60,33 @@ public class JPAUETableDAO implements UETableDAO {
 	}
 	
 	@Override
-	public void populateTable(File jsonFile) {           
-        JSONParser parser = new JSONParser();
- 
-        try {
-            Object obj = parser.parse(new FileReader(jsonFile));
-            
-            JSONArray rows = (JSONArray) obj;
-            Iterator<?> iterator = rows.iterator();
-            
-            while (iterator.hasNext()) {
-              
-                JSONObject ueTable = (JSONObject) iterator.next();
-                UETable object = new UETable(
-                		Integer.parseInt(ueTable.get("TAC").toString()),
-                		ueTable.get("MARKETING NAME").toString(),
-                		ueTable.get("MANUFACTURER").toString(),
-                		ueTable.get("ACCESS CAPABILITY").toString(),
-                		ueTable.get("MODEL").toString(),
-                		ueTable.get("VENDOR NAME").toString(),
-                		ueTable.get("UE TYPE").toString(),
-                		ueTable.get("OS").toString(), 
-                		ueTable.get("INPUT_MODE").toString());
-        		em.merge(object);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+	public void populateTable(JSONArray ueRows) {
+
+		Iterator<?> iterator = ueRows.iterator();
+		
+		while (iterator.hasNext()) {
+			JSONObject ueTable = (JSONObject) iterator.next();
+			String tac = "TAC";
+			String marketingName = "Marketing Name";
+			String manufacturer = "Manufacturer";
+			String accessCapability = "Access Capability";
+			String model = "Model";
+			String vendorName = "Vendor Name";
+			String ueType = "UE Type";
+			String os = "OS";
+			String inputMode = "Input Mode";
+			UETable object = new UETable(
+					Integer.parseInt(ueTable.get(tac).toString()),
+					ueTable.get(marketingName).toString(),
+					ueTable.get(manufacturer).toString(),
+					ueTable.get(accessCapability).toString(),
+					ueTable.get(model).toString(),
+					ueTable.get(vendorName).toString(),
+					ueTable.get(ueType).toString(),
+					ueTable.get(os).toString(), 
+					ueTable.get(inputMode).toString());
+			em.merge(object);
+		}
     }
 	
 	@SuppressWarnings("unchecked")

@@ -3,7 +3,6 @@
  */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -17,6 +16,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.dao.FailureClassDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -57,8 +58,8 @@ public class FailureClassServiceEJB implements FailureClassService {
 	}
 	
 	@Override
-	public void populateTable(File jsonFile){
-		dao.populateTable(jsonFile);
+	public void populateTable(JSONArray failureClassArray){
+		dao.populateTable(failureClassArray);
 	}
 	
 	@Override
