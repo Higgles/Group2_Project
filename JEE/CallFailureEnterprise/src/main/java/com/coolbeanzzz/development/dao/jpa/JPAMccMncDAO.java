@@ -72,10 +72,9 @@ public class JPAMccMncDAO implements MccMncDAO {
 	public void populateTable(JSONArray mccMncRows) {
 		
 		Iterator<?> iterator = mccMncRows.iterator();
-		JSONObject mccMnc = (JSONObject) iterator.next();
 		
 		while (iterator.hasNext()) {
-			mccMnc = (JSONObject) iterator.next();
+			JSONObject mccMnc = (JSONObject) iterator.next();
 			String mcc = "MCC";
 			String mnc = "MNC";
 			String country = "Country";

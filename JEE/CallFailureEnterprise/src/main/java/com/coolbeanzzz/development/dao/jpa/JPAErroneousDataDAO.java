@@ -66,14 +66,12 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 	@Override
 	public void populateTable(JSONArray erroneousData){
 		Iterator<?> iteratorErroneous = erroneousData.iterator();
-		ErroneousData erroneousObj;
 		
 		String failureClass;
 		String causeCode;
 		
-		JSONObject erroneousRow;
 		while(iteratorErroneous.hasNext()){
-			erroneousRow =  (JSONObject) iteratorErroneous.next();
+			JSONObject erroneousRow = (JSONObject) iteratorErroneous.next();
 			
 			if(erroneousRow.get("Failure Class").toString().contains("null")){
 				failureClass = "NULL";
@@ -89,7 +87,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 				causeCode = erroneousRow.get("Cause Code").toString();
 			}
 			
-			erroneousObj = new ErroneousData(
+			ErroneousData erroneousObj = new ErroneousData(
 					0,
 					erroneousRow.get("Date / Time").toString(),
 					Integer.parseInt(erroneousRow.get("Event Id").toString()),

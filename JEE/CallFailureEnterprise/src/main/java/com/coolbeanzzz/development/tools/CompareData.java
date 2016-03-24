@@ -57,7 +57,6 @@ public class CompareData {
 		ArrayList<JSONArray> baseDataList = new ArrayList<JSONArray>();
 
 		Iterator<?> iterator = baseDataRows.iterator();
-		baseData = (JSONObject) iterator.next();
 
 		while (iterator.hasNext()) {
 

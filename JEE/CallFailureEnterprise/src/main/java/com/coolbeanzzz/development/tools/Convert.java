@@ -65,7 +65,7 @@ public class Convert {
 				sheet = workbook.getSheet(sheetNumber);
 				String[] sheetLabels = labelList.get(sheetNumber);
 				JSONObject datasetRow = new JSONObject();
-				for (int row = 0; row < sheet.getRows(); row++){
+				for (int row = 1; row < sheet.getRows(); row++){
 					for (int column = 0; column < sheet.getColumns(); column++) {
 						if(row != 0){
 							cell = sheet.getCell(column, row);

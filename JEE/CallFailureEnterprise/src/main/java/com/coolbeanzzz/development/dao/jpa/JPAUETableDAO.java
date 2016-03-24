@@ -63,10 +63,9 @@ public class JPAUETableDAO implements UETableDAO {
 	public void populateTable(JSONArray ueRows) {
 
 		Iterator<?> iterator = ueRows.iterator();
-		JSONObject ueTable = (JSONObject) iterator.next();
 		
 		while (iterator.hasNext()) {
-			ueTable = (JSONObject) iterator.next();
+			JSONObject ueTable = (JSONObject) iterator.next();
 			String tac = "TAC";
 			String marketingName = "Marketing Name";
 			String manufacturer = "Manufacturer";

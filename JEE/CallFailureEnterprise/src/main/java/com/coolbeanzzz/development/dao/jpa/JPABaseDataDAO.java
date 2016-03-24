@@ -70,10 +70,11 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public void populateTable(JSONArray objectArray){
 		Iterator<?> iteratorValid = objectArray.iterator();
-		BaseData baseDataObject;
+		
 		while(iteratorValid.hasNext()){
 			JSONObject validObj = (JSONObject) iteratorValid.next();
-			baseDataObject = new BaseData(
+			
+			BaseData baseDataObject = new BaseData(
 					0,
 					validObj.get("Date / Time").toString(),
 					validObj.get("Cell Id").toString(),
