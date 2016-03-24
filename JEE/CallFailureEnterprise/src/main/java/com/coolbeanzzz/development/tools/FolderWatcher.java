@@ -1,12 +1,10 @@
 package com.coolbeanzzz.development.tools;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardCopyOption.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
@@ -14,7 +12,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
@@ -22,7 +19,6 @@ import javax.inject.Inject;
 
 import jxl.read.biff.BiffException;
 
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.services.BaseDataService;
@@ -93,7 +89,6 @@ public class FolderWatcher{
                     if (ENTRY_CREATE == kind) {
                         Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
                         if(newPath.getFileName().toString().endsWith(".xls")){
-                        	Convert convert = new Convert();
                         	String inputFile = newPath.toAbsolutePath().toString();
                         	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);
                         	
@@ -127,11 +122,8 @@ public class FolderWatcher{
                         	JSONArray erroneousData = baseData.get(1);
                         	erroneousDataService.populateTable(erroneousData);
                         	System.out.println("6/6 tables complete");
-//                    		
-                    		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
-                    		File uploadDir = new File("/home/user1/datasets");
-//                    		FileUtils.cleanDirectory(uploadDir);
-                    		System.out.println(("DONE"));
+                        	
+                    		System.out.println("Dataset import complete");
                         }
                     }
                 }

@@ -4,7 +4,6 @@
 package com.coolbeanzzz.development.tools;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 public class Convert {
-
-	private String inputFile;
 	
 	/**
 	 * Creates a json file from each sheet in a provided xls file
@@ -54,7 +51,6 @@ public class Convert {
 		Sheet sheet;
 		Cell cell;
 		CellType cellType;
-		String cellTypeName;
 		
 		ArrayList<JSONArray> datasetTables = new ArrayList<JSONArray>();
 		JSONArray baseData = new JSONArray();
@@ -74,7 +70,6 @@ public class Convert {
 						if(row != 0){
 							cell = sheet.getCell(column, row);
 							cellType = cell.getType();
-							cellTypeName = cellType.toString();
 							if(cellType == CellType.DATE){
 								DateCell dateCell = (DateCell) cell;
 								Date date = dateCell.getDate();
