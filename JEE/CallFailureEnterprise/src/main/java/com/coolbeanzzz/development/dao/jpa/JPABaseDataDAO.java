@@ -44,9 +44,19 @@ import com.coolbeanzzz.development.entities.UETable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"EventId", "CauseCode", "Occurrences", "UEType", "Manufacturer", "MarketingName"};
-	private static final String[] uniqueCauseCodeForImsis=
-			new String[]{"EventId", "CauseCode", "Description", "Occurrences"};
+			new String[]{"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Marketing Name"};
+	private static final String[] getImsiListBetween2DatesHeadings=
+			new String[]{"IMSI", "Market", "Operator", "Total Duration"};
+	private static final String[] noOfCallFailuresAndDurationForImsiInDateRangeHeadings=
+			new String[]{"IMSI", "Number of Failures", "Total Duration"};
+	private static final String[] failCountByPhoneModelHeadings=
+			new String[]{"Manufacturer", "Model","Number of Failures", "Total Duration"};
+	private static final String[] uniqueCauseCodeForImsiHeadings=
+			new String[]{"Event Id", "Cause Code", "Description", "Number of Occurences"};
+	private static final String[] allEventIdsCauseCodeForImsiHeadings=
+			new String[]{"Date/Time","Event Id", "Cause Code", "Description"};
+	private static final String[] top10ImsiListBetween2DatesHeadings=
+			new String[]{"IMSI", "Market", "Operator", "Number of Occurences"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -113,14 +123,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
 			String fromDate, String toDate) {
-		Query query = em.createQuery("select bd.dateTime, bd.imsi, count(bd.id), sum(duration) "
+		Query query = em.createQuery("select bd.imsi, count(bd.id), sum(duration) "
 				+ "from BaseData bd "
 				+ "where bd.dateTime>=:date1 and bd.dateTime<=:date2 "
 				+ "group by bd.imsi");
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
 		List basedata = query.getResultList();
-		basedata.add(0,new Object[]{"DateTime", "IMSI", "No. of Failures", "TotalCallDuration"});
+		basedata.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 		return basedata;
 	}
 
@@ -128,14 +138,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
 		Query query = em.createQuery(""
-		+"select bd.imsi, bd.mccmnc.mcc, bd.mccmnc.mnc, sum(bd.duration) "
+		+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, sum(bd.duration) "
 		+"from BaseData bd "
 		+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
 		+"group by bd.imsi");
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"Imsi", "Market", "Operator", "Total Duration"});
+		basedata.add(0, getImsiListBetween2DatesHeadings);
 		return basedata;
 	}	
 	
@@ -155,7 +165,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			results.set(0, new Object[]{manufacturer,model, 0, 0});
 		}
 		List basedata = results;
-		basedata.add(0, new Object[]{"Manufacturer", "Model","No. Of Failures", "Total Duration"});
+		basedata.add(0, failCountByPhoneModelHeadings);
 		
 		return basedata;
 	}
@@ -190,15 +200,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	 * the Event ID and Cause Code for any / all failures affecting that IMSI
 	 * 
 	 */
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, bd.imsi "				//QUERY
-				+ " from BaseData bd where bd.imsi=:IMSI"
-				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
+		Query query = em.createQuery(" select bd.dateTime, bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description "				//QUERY
+				+ " from BaseData bd where bd.imsi=:IMSI");
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"EventId", "CauseCode", "Description", "IMSI"});
+		basedata.add(0, allEventIdsCauseCodeForImsiHeadings);
 		return basedata;
 	}
 	
@@ -210,7 +219,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
-		basedata.add(0,uniqueCauseCodeForImsis);
+		basedata.add(0,uniqueCauseCodeForImsiHeadings);
 		return basedata;
 	}
 	
@@ -241,7 +250,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				query.setParameter("date1", date1);
 				query.setParameter("date2", date2);
 				List basedata = query.setMaxResults(10).getResultList();
-				basedata.add(0, new Object[]{"Imsi", "Market", "Operator", "Number of Occurences"});
+				basedata.add(0, top10ImsiListBetween2DatesHeadings);
 				return basedata;
 	}	
 		
