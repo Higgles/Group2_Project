@@ -12,7 +12,7 @@ public class MccMncGetTest {
 		given().
 			auth().basic("admin", "admin").
 		when().
-			get("http://localhost:8080/CallFailureEnterprise/rest/mccmncs").
+			get("CallFailureEnterprise/rest/mccmncs").
 		then().
 			statusCode(200);
 	}

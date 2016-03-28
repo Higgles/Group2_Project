@@ -12,7 +12,7 @@ public class UETableGetTest {
 	given().
 		auth().basic("admin", "admin").
 	when().
-		get("http://localhost:8080/CallFailureEnterprise/rest/uetables").
+		get("CallFailureEnterprise/rest/uetables").
 	then().
 		statusCode(200);
 	}

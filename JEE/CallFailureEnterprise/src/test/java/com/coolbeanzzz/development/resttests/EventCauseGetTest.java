@@ -11,7 +11,7 @@ public class EventCauseGetTest {
 		given().
 			auth().basic("admin", "admin").
 		when().
-			get("http://localhost:8080/CallFailureEnterprise/rest/eventcauses").
+			get("CallFailureEnterprise/rest/eventcauses").
 		then().
 			statusCode(200);
 	}
