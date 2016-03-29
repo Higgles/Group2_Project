@@ -67,12 +67,14 @@
 		</button>
 		<ul class="dropdown-menu">
 			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event ID and CauseCodes for given IMSI</a></li>
+			<li><a id="availQuery14" onClick=selectQuery(14)>Display Unique CauseCodes for given IMSI</a></li>
 			<shiro:hasAnyRoles name="SupEng, NetManEng">
 			<li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li>
 			<li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li>
 			<shiro:hasRole name="NetManEng">
 			<li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li>
 			<li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li>
+			<li><a id="availQuery15" onClick=selectQuery(15)>Display top 10 IMSIs with call failures during a time period</a></li>
 			</shiro:hasRole>
 			</shiro:hasAnyRoles>
 		</ul>
@@ -369,6 +371,13 @@
 					inputData.push(" ");
 				}
 				break;
+			case 14:
+				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
+				break;
+			case 15:
+				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				break;
 			}
 			if(queryType=="POST"){
 				ajaxDetails.data=JSON.stringify(inputData);
@@ -475,6 +484,14 @@
 			case 5:
 				queryType="POST";
 				tacPickers.style.display="block"
+				break;
+			case 14:
+				queryType="GET";
+				imsiPickers.style.display="block";
+				break;
+			case 15:
+				dateTimePickers.style.display="block";
+				queryType="POST";
 				break;
 			}
 		}

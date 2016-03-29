@@ -308,7 +308,7 @@ public class IntegrationTest {
 	
 	
 	@Test @InSequence(17)
-	public void uploadFailureClassFromFile() {
+	public void uploadFromFileTest() {
 		ArrayList<JSONArray> datasetArray;
 		try {
 			datasetArray = Convert.convert("test_data.xls");
@@ -355,6 +355,20 @@ public class IntegrationTest {
 		} catch (BiffException e) {
 			fail("Unable to parse test file");
 		}
+	}
+	
+	@Test
+	@InSequence(18)
+	public void getUniqueCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
+	
+	@Test
+	@InSequence(19)
+	public void getTop10ImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
 	}
 	 
 	@Test
