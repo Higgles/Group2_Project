@@ -308,7 +308,7 @@ public class IntegrationTest {
 	
 	
 	@Test @InSequence(17)
-	public void uploadFailureClassFromFile() {
+	public void uploadFromFileTest() {
 		ArrayList<JSONArray> datasetArray;
 		try {
 			datasetArray = Convert.convert("test_data.xls");
