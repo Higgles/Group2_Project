@@ -89,6 +89,7 @@ public class FolderWatcher{
                     if (ENTRY_CREATE == kind) {
                         Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
                         if(newPath.getFileName().toString().endsWith(".xls")){
+                        	long startTime = System.currentTimeMillis();
                         	String inputFile = newPath.toAbsolutePath().toString();
                         	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);
                         	
@@ -124,6 +125,8 @@ public class FolderWatcher{
                         	System.out.println("6/6 tables complete");
                         	
                     		System.out.println("Dataset import complete");
+                    		
+                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
                         }
                     }
                 }
