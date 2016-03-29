@@ -296,6 +296,20 @@ public class IntegrationTest {
 	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
 	    assert(erroneousData.size()>0); 
 	}
+	
+	@Test
+	@InSequence(18)
+	public void getUniqueCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
+	
+	@Test
+	@InSequence(19)
+	public void getTop10ImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
 	 
 	@Test
 	@InSequence(23)
@@ -313,19 +327,5 @@ public class IntegrationTest {
 		assert(eventCauseResults.isEmpty()==true);
 		assert(mccmncResults.isEmpty()==true);
 		assert(ueTableResults.isEmpty()==true);
-	}
-	
-	@Test
-	@InSequence(24)
-	public void getUniqueCauseCodeForIMSITest() {
-		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
-		assertEquals(res.size(),1);
-	}
-	
-	@Test
-	@InSequence(25)
-	public void getTop10ImsiListBetween2DatesTest() {
-		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
 	}
 }

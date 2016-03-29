@@ -223,21 +223,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
-	/*
-	 * 
-	 * 
-	 * @SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.failureClass.failureClass, bd.failureClass.description, count(bd.failureClass.failureClass) "
-				+ " from BaseData bd where bd.imsi=:IMSI"
-				+ " group by bd.failureClass.failureClass");
-		query.setParameter("IMSI", IMSI);
-		List basedata = query.getResultList();
-		basedata.add(0,uniqueCauseCodeForImsis);
-		return basedata;
-	}*/
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
