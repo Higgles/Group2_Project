@@ -128,7 +128,7 @@
 					</div>
 					<div class="container" id="imsiPicker">
 						<label for="imsiDropdown">Choose IMSI:</label> 
-						<select id="imsiDropdown" class="js-example-responsive" style="width: 400px">
+						<select id="imsiDropdown" class="js-data-example-ajax" style="width: 400px">
 						</select>
 					</div>
 					<button id="query1" type="button" class="btn btn-primary">Run Query</button>
@@ -170,11 +170,50 @@
 				$("#dataTable").tablesorter();
 				populateManufacturerDropdown();
 				
-				populateImsiDropdown();
+				//populateImsiDropdown();
 				setUserDetails();
 			});
 		});
+		
+		$("#imsiDropdown").select2({
+			ajax: {
+				type : 'GET',
+				url: 'rest/validdata/imsis',
+				//dataType: 'json',
+				//delay: 250,
+				data: function(params){
+					return{
+						q: params.term,
+						page: params.page
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more: (params.page * 30) < data.length
+						}
+					};
+				}
+			}
+		});
 
+		function formatRepoSelection(repo){
+			return repo.text;
+		}
+		
+		function formatRepo (repo){
+			return repo.text;
+		}
+		
 		$(function() {
 			$('#fromdatetimepicker').datetimepicker({
 				locale : 'en-gb'
