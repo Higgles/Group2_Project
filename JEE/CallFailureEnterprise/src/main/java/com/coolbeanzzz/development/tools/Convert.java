@@ -28,7 +28,7 @@ public class Convert {
 	 * 
 	 * @param inputFile Set the xls file to be converted to json
 	 */
-	public static ArrayList<JSONArray> convert(String inputFile) throws IOException {
+	public static ArrayList<JSONArray> convert(String inputFile) throws IOException, BiffException {
 		File inputWorkbook = new File(inputFile);
 		Workbook workbook;
 		
@@ -59,46 +59,42 @@ public class Convert {
 		JSONArray ueTable = new JSONArray();
 		JSONArray mccMncTable = new JSONArray();
 		
-		try {
-			workbook = Workbook.getWorkbook(inputWorkbook);
-			for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
-				sheet = workbook.getSheet(sheetNumber);
-				String[] sheetLabels = labelList.get(sheetNumber);
-				JSONObject datasetRow = new JSONObject();
-				for (int row = 1; row < sheet.getRows(); row++){
-					for (int column = 0; column < sheet.getColumns(); column++) {
-						cell = sheet.getCell(column, row);
-						cellType = cell.getType();
-						if(cellType == CellType.DATE){
-							DateCell dateCell = (DateCell) cell;
-							Date date = dateCell.getDate();
-							SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-							datasetRow.put(sheetLabels[column], formatter.format(date));
-						}
-						else{
-							datasetRow.put(sheetLabels[column], cell.getContents());
-						}
+		workbook = Workbook.getWorkbook(inputWorkbook);
+		for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
+			sheet = workbook.getSheet(sheetNumber);
+			String[] sheetLabels = labelList.get(sheetNumber);
+			JSONObject datasetRow = new JSONObject();
+			for (int row = 1; row < sheet.getRows(); row++){
+				for (int column = 0; column < sheet.getColumns(); column++) {
+					cell = sheet.getCell(column, row);
+					cellType = cell.getType();
+					if(cellType == CellType.DATE){
+						DateCell dateCell = (DateCell) cell;
+						Date date = dateCell.getDate();
+						SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+						datasetRow.put(sheetLabels[column], formatter.format(date));
 					}
-					if(sheetNumber == 0){
-						baseData.add(datasetRow);
+					else{
+						datasetRow.put(sheetLabels[column], cell.getContents());
 					}
-					else if(sheetNumber == 1){
-						eventCauseTable.add(datasetRow);
-					}
-					else if(sheetNumber == 2){
-						failureClassTable.add(datasetRow);
-					}
-					else if(sheetNumber == 3){
-						ueTable.add(datasetRow);
-					}
-					else if(sheetNumber == 4){
-						mccMncTable.add(datasetRow);
-					}
-					datasetRow = new JSONObject();
 				}
+				if(sheetNumber == 0){
+					baseData.add(datasetRow);
+				}
+				else if(sheetNumber == 1){
+					eventCauseTable.add(datasetRow);
+				}
+				else if(sheetNumber == 2){
+					failureClassTable.add(datasetRow);
+				}
+				else if(sheetNumber == 3){
+					ueTable.add(datasetRow);
+				}
+				else if(sheetNumber == 4){
+					mccMncTable.add(datasetRow);
+				}
+				datasetRow = new JSONObject();
 			}
-		} catch (BiffException e) {
-			System.out.println("BiffException: " + e);
 		}
 		datasetTables.add(baseData);
 		datasetTables.add(eventCauseTable);

@@ -1,6 +1,5 @@
 package com.coolbeanzzz.development.resttests;
 
-import org.jboss.arquillian.junit.InSequence;
 import org.junit.Test;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -12,7 +11,7 @@ public class UsersGetTest {
 	given().
 		auth().basic("admin", "admin").
 	when().
-		get("http://localhost:8080/CallFailureEnterprise/rest/users").
+		get("CallFailureEnterprise/rest/users").
 	then().
 		statusCode(200);	
 	}
