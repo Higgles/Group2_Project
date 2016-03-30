@@ -1,6 +1,6 @@
 package com.coolbeanzzz.development.tools;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,17 +69,13 @@ public class FolderWatcher{
 	 * This is used to create valid data and erroneous data tables which are then
 	 * added to the database.
 	 * 
-	 * The dataset is copied to a savedDatasets directory. The dataset and json directories
-	 * are then cleared
-	 * 
 	 * @param path Directory to monitor for changes
-	 * @throws BiffException 
 	 */
 	@Asynchronous
 	public void watchDirectoryPath(Path path){
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
-			path.register(folderWatchService, ENTRY_CREATE);
+			path.register(folderWatchService, ENTRY_MODIFY);
             WatchKey key = null;
             
             Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
@@ -98,11 +94,11 @@ public class FolderWatcher{
 	                Kind<?> kind = null;
 	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
 	                    kind = watchEvent.kind();
-	                    if (ENTRY_CREATE == kind) {
-	                        Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
-	                        if(newPath.getFileName().toString().endsWith(".xls")){
-	                        	String inputFile = newPath.toAbsolutePath().toString();
-	                        	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);//
+	                    if (ENTRY_MODIFY == kind) {
+	                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
+	                        if(watchEvent.context().toString().endsWith(".xls")){
+	                        	long startTime = System.currentTimeMillis();
+	                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
 	                        	
 	                        	failureClassService.populateTable(datasetArray.get(2));
 	                    		System.out.println("1/6 tables complete");
@@ -136,6 +132,8 @@ public class FolderWatcher{
 	                        	System.out.println("6/6 tables complete");
 	                        	
 	                    		System.out.println("Dataset import complete");
+	                    		
+	                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
 	                        }
 	                    }
 	                }
