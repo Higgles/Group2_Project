@@ -1,7 +1,7 @@
 /**
  * @author Coolbeanzzz
  */
-package com.coolbeanzzz.development.services;
+package com.coolbeanzzz.jee.jaxrs;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,7 +52,7 @@ public class FileUploadService {
 					
 					writeFile(bytes, fileName);
 					
-					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
+					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.jsp");
 					
 					return Response.temporaryRedirect(location).build();
 				}

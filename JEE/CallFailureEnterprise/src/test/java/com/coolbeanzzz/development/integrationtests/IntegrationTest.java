@@ -4,9 +4,25 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.isA;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
+
+import jxl.Cell;
+import jxl.biff.RecordData;
+import jxl.biff.drawing.Drawing;
+import jxl.biff.formula.ExternalSheet;
+import jxl.common.Logger;
+import jxl.common.log.SimpleLogger;
+import jxl.format.Font;
+import jxl.read.biff.BiffException;
+import jxl.write.WritableCell;
+import jxl.write.biff.BooleanRecord;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -16,6 +32,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +54,8 @@ import com.coolbeanzzz.development.services.EventCauseService;
 import com.coolbeanzzz.development.services.FailureClassService;
 import com.coolbeanzzz.development.services.MccMncService;
 import com.coolbeanzzz.development.services.UETableService;
+import com.coolbeanzzz.development.tools.CompareData;
+import com.coolbeanzzz.development.tools.Convert;
 
 @RunWith(Arquillian.class)
 public class IntegrationTest {
@@ -63,15 +82,28 @@ public class IntegrationTest {
 	public static JavaArchive createDeployment() {
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class,
 				"callfailureenterprise.jar");
+		
 		jar.addPackage(FailureClass.class.getPackage())
 				.addPackage(FailureClassService.class.getPackage())
 				.addPackage(JPAFailureClassDAO.class.getPackage())
-				.addPackage(FailureClassDAO.class.getPackage());
+				.addPackage(FailureClassDAO.class.getPackage())
+				.addPackage(Convert.class.getPackage())
+				.addPackage(Cell.class.getPackage())
+				.addPackage(BiffException.class.getPackage())
+				.addPackage(RecordData.class.getPackage())
+				.addPackage(Font.class.getPackage())
+				.addPackage(ExternalSheet.class.getPackage())
+				.addPackage(WritableCell.class.getPackage())
+				.addPackage(BooleanRecord.class.getPackage())
+				.addPackage(Drawing.class.getPackage())
+				.addPackage(Logger.class.getPackage())
+				.addPackage(SimpleLogger.class.getPackage());
 		jar.addAsManifestResource("test_persistence.xml", "persistence.xml");
 		jar.addAsManifestResource(EmptyAsset.INSTANCE,
 				ArchivePaths.create("beans.xml"))
 				.addPackage(JSONArray.class.getPackage())
 				.addPackage(ParseException.class.getPackage());
+		//jar.addAsResource("test_data.xls", "test_data.xls");
 		return jar;
 	}
 
@@ -295,27 +327,68 @@ public class IntegrationTest {
 		assertEquals(1,res.size());
 	}
 	
+	@Test
+	@InSequence(20)
+	public void getUniqueCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
 	
-	@Test @InSequence(20)
-	public void uploadFailureClassFromFile() {		 
-		failureClassService.populateTable(new File("/home/user1/software/jboss/bin/test_Failure Class Table.json"));
-	    Collection<FailureTable> failureClasses=failureClassService.getCatalog();
-	    assert(failureClasses.size()>0); 
-	    eventCauseService.populateTable(new File("/home/user1/software/jboss/bin/test_Event-Cause Table.json"));
-		Collection<FailureTable> eventCauses=eventCauseService.getCatalog();
-		assert(eventCauses.size()>0); 
-	    mccmncService.populateTable(new File("/home/user1/software/jboss/bin/test_MCC - MNC Table.json"));
-	    Collection<FailureTable> mccmncs=mccmncService.getCatalog();
-	    assert(mccmncs.size()>0);
-	    ueTableService.populateTable(new File("/home/user1/software/jboss/bin/test_UE Table.json"));
-	    Collection<FailureTable> ueTables=ueTableService.getCatalog();
-	    assert(ueTables.size()>0);
-	    baseDataService.populateTable(new File("/home/user1/software/jboss/bin/test_validData.json"));
-	    Collection<FailureTable> baseDatas=baseDataService.getCatalog();
-	    assert(baseDatas.size()>0);
-	    erroneousDataService.populateTable(new File("/home/user1/software/jboss/bin/test_erroneousData.json"));
-	    Collection<FailureTable> erroneousData=erroneousDataService.getCatalog();
-	    assert(erroneousData.size()>0); 
+	@Test
+	@InSequence(21)
+	public void getTop10ImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
+	
+	@Test @InSequence(22)
+	public void uploadFromFileTest() {
+		ArrayList<JSONArray> datasetArray;
+		try {
+			datasetArray = Convert.convert("test_data.xls");
+		
+			failureClassService.populateTable(datasetArray.get(2));
+			Collection<FailureTable> fcTest = failureClassService.getCatalog();
+			assertEquals(datasetArray.get(2).size(), fcTest.size());
+			
+	    	eventCauseService.populateTable(datasetArray.get(1));
+	    	Collection<FailureTable> ecTest = eventCauseService.getCatalog();
+			assertEquals(datasetArray.get(1).size(), ecTest.size());
+			
+	    	mccmncService.populateTable(datasetArray.get(4));
+	    	Collection<FailureTable> mccmncTest = mccmncService.getCatalog();
+			assertEquals(datasetArray.get(4).size(), mccmncTest.size());
+			
+	    	ueTableService.populateTable(datasetArray.get(3));
+	    	Collection<FailureTable> ueTableTest = ueTableService.getCatalog();
+			assertEquals(datasetArray.get(3).size(), ueTableTest.size());
+	    	
+			Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+			Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+			Collection<Integer> uniqueFailureCodes = failureClassService.getFailureClassCodes();
+			Collection<Integer> mccs = mccmncService.getAllUniqueMCCs();
+			Collection<Integer> mncs = mccmncService.getAllUniqueMNCs();	
+			Collection<Integer> ueTypes = ueTableService.getUETypes();
+			
+			CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
+	    	
+			ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
+			
+	    	
+	    	JSONArray validData = baseData.get(0);
+	    	baseDataService.populateTable(validData);
+	    	Collection<FailureTable> validDataTest = baseDataService.getCatalog();
+			assertEquals(validData.size(), validDataTest.size()-1);
+	    	
+	    	JSONArray erroneousData = baseData.get(1);
+	    	erroneousDataService.populateTable(erroneousData);
+	    	Collection<FailureTable> erroneousDataTest = erroneousDataService.getCatalog();
+			assertEquals(erroneousData.size(), erroneousDataTest.size());
+		} catch (IOException e) {
+			fail("Problem with test file");
+		} catch (BiffException e) {
+			fail("Unable to parse test file");
+		}
 	}
 	 
 	@Test

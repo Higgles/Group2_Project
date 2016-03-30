@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +61,7 @@
 				<ul class="nav navbar-nav">
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li style="font-size: 1.8em;"><a href="upload.html" class="navbar-brand"><span></span> Upload Dataset</a></li>
+					<li style="font-size: 1.8em;"><a href="upload.jsp" class="navbar-brand"><span></span> Upload Dataset</a></li>
 					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
 					<li style="font-size: 1.8em;">
 						<a href="../logout">

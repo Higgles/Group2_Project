@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,25 +6,25 @@
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
 
 <title>Query</title>
-<link rel="stylesheet" href="../media/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../resources/syntax/shCore.css">
-<link rel="stylesheet" type="text/css" href="../resources/demo.css">
-<link rel="stylesheet" href="../media/css/bootstrap-table.css">
-<link href="../media/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="../media/css/select2.min.css">
-<link rel="stylesheet" type="text/css" href="../media/css/mainPage.css">
+<link rel="stylesheet" href="media/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
+<link rel="stylesheet" type="text/css" href="resources/demo.css">
+<link rel="stylesheet" href="media/css/bootstrap-table.css">
+<link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="media/css/mainPage.css">
 <style type="text/css" class="init"></style>
-<script type="text/javascript" language="javascript" src="../media/js/jquery.js"></script>
-<script type="text/javascript" language="javascript" src="../resources/syntax/shCore.js"></script>
-<script type="text/javascript" src="../media/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="../media/js/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="../media/js/transition.js"></script>
-<script type="text/javascript" src="../media/js/moment-with-locales.js"></script>
-<script type="text/javascript" src="../media/js/collapse.js"></script>
-<script type="text/javascript" src="../media/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
+<script type="text/javascript" src="media/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="media/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="media/js/transition.js"></script>
+<script type="text/javascript" src="media/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="media/js/collapse.js"></script>
+<script type="text/javascript" src="media/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" language="javascript" class="init"></script>
-<script type="text/javascript" src="../media/js/select2.full.js"></script>
+<script type="text/javascript" src="media/js/select2.full.js"></script>
 </head>
 
 <body>
@@ -52,7 +53,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
 					<li style="font-size: 1.8em;">
-						<a href="../logout">
+						<a href="logout">
 							<span class="glyphicon glyphicon-log-out"></span> Logout
 						</a>
 					</li>
@@ -66,10 +67,16 @@
 		</button>
 		<ul class="dropdown-menu">
 			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event ID and CauseCodes for given IMSI</a></li>
-			<!-- li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li-->
-			<!-- li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li-->
-			<!-- li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li-->
-			<!-- li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li-->
+			<li><a id="availQuery14" onClick=selectQuery(14)>Display Unique CauseCodes for given IMSI</a></li>
+			<shiro:hasAnyRoles name="SupEng, NetManEng">
+			<li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li>
+			<li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li>
+			<shiro:hasRole name="NetManEng">
+			<li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li>
+			<li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li>
+			<li><a id="availQuery15" onClick=selectQuery(15)>Display top 10 IMSIs with call failures during a time period</a></li>
+			</shiro:hasRole>
+			</shiro:hasAnyRoles>
 		</ul>
 	</div>
 	<br>
@@ -109,14 +116,14 @@
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="manufacturerDropdown">Choose Manufacturer:</label> 
-								<select id="manufacturerDropdown" style="width: 300px">
+								<select id="manufacturerDropdown" class="js-example-responsive" style="width: 300px">
 								</select>
 							</div>
 						</div>
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="modelDropdown">Choose Model:</label> 
-								<select id="modelDropdown"style="width: 300px">
+								<select id="modelDropdown" class="js-example-responsive" style="width: 300px">
 								</select>
 							</div>
 						</div>
@@ -142,8 +149,7 @@
 				<div class="panel-body" style="font-size: 15px;">
 					<div id="resultsDiv"
 						style="overflow: auto; height: auto; max-height: 300px; display: none;">
-						<table id="dataTable"
-							class="table tablesorter tablesorter-default table-striped table-bordered">
+						<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
 						</table>
 					</div>
 				</div>
@@ -165,6 +171,7 @@
 				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
 				populateManufacturerDropdown();
+				
 				populateImsiDropdown();
 				setUserDetails();
 			});
@@ -192,7 +199,7 @@
 		function setUserDetails() {
 			$.ajax({
 				type : 'GET',
-				url : '../rest/users/currentUser',
+				url : 'rest/users/currentUser',
 				success : function(data) {
 					var userBar = document.getElementById("userBar");
 					userBar.innerHTML = "Priviledge type: " + data[1];
@@ -205,30 +212,32 @@
 
 		$("#manufacturerDropdown").on("change",function(e) {
 			$("#modelDropdown").empty();
-			$.ajax({
-					type : 'GET',
-					url : '../rest/uetables/models/'
-							+ $("#manufacturerDropdown").select2(
-									'data')[0].text,
-					success : function(data) {
-						for (i = 0; i < data.length; i++) {
-							var opt = data[i];
-							var text = "<option value=\""+i+"\">"
-									+ opt + "</option>";
-							$("#modelDropdown").append(text);
-						}
-						var $example = $("#modelDropdown")
-								.select2();
-						$example.val("0").trigger("change");
-					},
-				});
+			if($("#manufacturerDropdown").select2('data').length>0){
+				$.ajax({
+						type : 'GET',
+						url : 'rest/uetables/models/'
+								+ $("#manufacturerDropdown").select2(
+										'data')[0].text,
+						success : function(data) {
+							for (i = 0; i < data.length; i++) {
+								var opt = data[i];
+								var text = "<option value=\""+i+"\">"
+										+ opt + "</option>";
+								$("#modelDropdown").append(text);
+							}
+							var $example = $("#modelDropdown")
+									.select2();
+							$example.val("0").trigger("change");
+						},
+					});
+			}
 		});
 
 		function populateManufacturerDropdown() {
 			$("#manufacturerDropdown").empty();
 			$.ajax({
 				type : 'GET',
-				url : '../rest/uetables/manufacturers',
+				url : 'rest/uetables/manufacturers',
 				success : function(data) {
 					for (i = 0; i < data.length; i++) {
 						var opt = data[i];
@@ -246,7 +255,7 @@
 			$("#imsiDropdown").empty();
 			$.ajax({
 				type : 'GET',
-				url : '../rest/validdata/imsis',
+				url : 'rest/validdata/imsis',
 				success : function(data){
 					for(i=0;i<data.length;i++){
 						var opt = data[i];  
@@ -270,7 +279,7 @@
 			var fromdate = $("#fromdatetimepicker").data("DateTimePicker").date();
 			var todate = $("#todatetimepicker").data("DateTimePicker").date();
 			var dates = [];
-			var queryUrl='../rest/validdata/CB-'+(selectedQuery+3);
+			var queryUrl='rest/validdata/CB-'+(selectedQuery+3);
 			var inputData=[];
 			
 			var ajaxDetails={
@@ -290,8 +299,18 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				if($("#manufacturerDropdown").select2('data').length>0){
+					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
+				if($("#modelDropdown").select2('data').length>0){
+					inputData.push($("#modelDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
@@ -300,8 +319,25 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				if($("#manufacturerDropdown").select2('data').length>0){
+					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
+				if($("#modelDropdown").select2('data').length>0){
+					inputData.push($("#modelDropdown").select2('data')[0].text);
+				}
+				else{
+					inputData.push(" ");
+				}
+				break;
+			case 14:
+				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
+				break;
+			case 15:
+				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			}
 			if(queryType=="POST"){
@@ -409,6 +445,14 @@
 			case 5:
 				queryType="POST";
 				tacPickers.style.display="block"
+				break;
+			case 14:
+				queryType="GET";
+				imsiPickers.style.display="block";
+				break;
+			case 15:
+				dateTimePickers.style.display="block";
+				queryType="POST";
 				break;
 			}
 		}

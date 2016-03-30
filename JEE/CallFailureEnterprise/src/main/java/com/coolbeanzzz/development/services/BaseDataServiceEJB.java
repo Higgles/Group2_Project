@@ -19,6 +19,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
 
@@ -56,12 +59,12 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getCatalog() {
 		return dao.getAllTableRows();
 	}
-	
-	@Override
-	public void populateTable(File filename) {
-		dao.populateTable(filename);
-	}
 
+	@Override
+	public void populateTable(JSONArray validObj) {
+		dao.populateTable(validObj);
+	}
+	
 	@Override
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
 		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model);
@@ -111,8 +114,19 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd) {
 		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd);
 	}
+	
 	@Override
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
 		return dao.getIMSIsforFailureClass(failureClass);
+	}
+		
+	@Override
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
+		return dao.getUniqueCauseCodeForIMSI(IMSI);
+	}
+	
+	@Override
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
+		return dao.getTop10ImsiListBetween2Dates(date1, date2);
 	}
 }

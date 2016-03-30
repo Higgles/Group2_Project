@@ -8,6 +8,9 @@ import java.util.Collection;
 
 import javax.ejb.Local;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.coolbeanzzz.development.entities.FailureTable;
 
 
@@ -86,6 +89,19 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of IMSI rows from underlying table
 	 */
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
-	
 
+	/** 
+	 * Gets unique cause code for an input IMSI from the database
+	 * @param input IMSI
+	 * @return a collection of FailureTable results
+	 */
+	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	
+	/**
+	 * Gets a list of the top 10 IMSIs with call failures during a given time period from the database
+	 * @param start date, end date 
+	 * @return a collection of FailureTable results
+	 */	
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
 }
+

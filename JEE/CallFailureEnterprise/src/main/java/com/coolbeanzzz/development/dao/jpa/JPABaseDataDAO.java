@@ -44,7 +44,19 @@ import com.coolbeanzzz.development.entities.UETable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"EventId", "CauseCode", "Occurrences", "UEType", "Manufacturer", "MarketingName"};
+			new String[]{"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Marketing Name"};
+	private static final String[] getImsiListBetween2DatesHeadings=
+			new String[]{"IMSI", "Market", "Operator", "Total Duration"};
+	private static final String[] noOfCallFailuresAndDurationForImsiInDateRangeHeadings=
+			new String[]{"IMSI", "Number of Failures", "Total Duration"};
+	private static final String[] failCountByPhoneModelHeadings=
+			new String[]{"Manufacturer", "Model","Number of Failures", "Total Duration"};
+	private static final String[] uniqueCauseCodeForImsiHeadings=
+			new String[]{"Event Id", "Cause Code", "Description", "Number of Occurences"};
+	private static final String[] allEventIdsCauseCodeForImsiHeadings=
+			new String[]{"Date/Time","Event Id", "Cause Code", "Description"};
+	private static final String[] top10ImsiListBetween2DatesHeadings=
+			new String[]{"IMSI", "Market", "Operator", "Number of Occurences"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
@@ -68,54 +80,31 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	}
 	
 	@Override
-	public void populateTable(File filename) {	
-		JSONObject baseRow;
-		BaseData object;
+	public void populateTable(JSONArray objectArray){
+		Iterator<?> iteratorValid = objectArray.iterator();
 		
-		int j = 0;
-
-		JSONParser parser = new JSONParser();
-		try{
-			Object obj = parser.parse(new FileReader(filename));
-
-			JSONArray rows = (JSONArray) obj;
-
-			Iterator<?> iteratorFile = rows.iterator();
+		while(iteratorValid.hasNext()){
+			JSONObject validObj = (JSONObject) iteratorValid.next();
 			
-			while(iteratorFile.hasNext()){
-				j++;
-				
-				baseRow = (JSONObject) iteratorFile.next();
-				
-				object = new BaseData(
-						0,
-						baseRow.get("Date / Time").toString(),
-						baseRow.get("Cell Id").toString(),
-						baseRow.get("Duration").toString(),
-						baseRow.get("NE Version").toString(),
-						baseRow.get("IMSI").toString(),
-						baseRow.get("HIER3_ID").toString(),
-						baseRow.get("HIER32_ID").toString(),
-						baseRow.get("HIER321_ID").toString(),
-						em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(baseRow.get("Event Id").toString()), Integer.parseInt(baseRow.get("Cause Code").toString()))),
-						em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(baseRow.get("Market").toString()),Integer.parseInt(baseRow.get("Operator").toString()))),
-						em.find(UETable.class, Integer.parseInt(baseRow.get("UE Type").toString())),
-						em.find(FailureClass.class, Integer.parseInt(baseRow.get("Failure Class").toString()))
-						);
-				
-				em.merge(object);
-
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
+			BaseData baseDataObject = new BaseData(
+					0,
+					validObj.get("Date / Time").toString(),
+					validObj.get("Cell Id").toString(),
+					validObj.get("Duration").toString(),
+					validObj.get("NE Version").toString(),
+					validObj.get("IMSI").toString(),
+					validObj.get("HIER3_ID").toString(),
+					validObj.get("HIER32_ID").toString(),
+					validObj.get("HIER321_ID").toString(),
+					em.find(EventCause.class, new EventCausePrimaryKey(Integer.parseInt(validObj.get("Event Id").toString()), Integer.parseInt(validObj.get("Cause Code").toString()))),
+					em.find(MccMnc.class, new MccMncPrimaryKey(Integer.parseInt(validObj.get("Market").toString()),Integer.parseInt(validObj.get("Operator").toString()))),
+					em.find(UETable.class, Integer.parseInt(validObj.get("UE Type").toString())),
+					em.find(FailureClass.class, Integer.parseInt(validObj.get("Failure Class").toString()))
+					);
+			
+			em.merge(baseDataObject);
 		}
 	}
-
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -134,14 +123,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
 			String fromDate, String toDate) {
-		Query query = em.createQuery("select bd.dateTime, bd.imsi, count(bd.id), sum(duration) "
+		Query query = em.createQuery("select bd.imsi, count(bd.id), sum(duration) "
 				+ "from BaseData bd "
 				+ "where bd.dateTime>=:date1 and bd.dateTime<=:date2 "
 				+ "group by bd.imsi");
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
 		List basedata = query.getResultList();
-		basedata.add(0,new Object[]{"DateTime", "IMSI", "No. of Failures", "TotalCallDuration"});
+		basedata.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 		return basedata;
 	}
 
@@ -149,14 +138,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
 		Query query = em.createQuery(""
-		+"select bd.imsi, bd.mccmnc.mcc, bd.mccmnc.mnc, sum(bd.duration) "
+		+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, sum(bd.duration) "
 		+"from BaseData bd "
 		+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
 		+"group by bd.imsi");
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"Imsi", "Market", "Operator", "Total Duration"});
+		basedata.add(0, getImsiListBetween2DatesHeadings);
 		return basedata;
 	}	
 	
@@ -230,7 +219,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			results.set(0, new Object[]{manufacturer,model, 0, 0});
 		}
 		List basedata = results;
-		basedata.add(0, new Object[]{"Manufacturer", "Model","No. Of Failures", "Total Duration"});
+		basedata.add(0, failCountByPhoneModelHeadings);
 		
 		return basedata;
 	}
@@ -266,15 +255,42 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, bd.imsi "				//QUERY
+		Query query = em.createQuery(" select bd.dateTime, bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description "				//QUERY
+				+ " from BaseData bd where bd.imsi=:IMSI");
+		query.setParameter("IMSI", IMSI);
+		List basedata = query.getResultList();
+		basedata.add(0, allEventIdsCauseCodeForImsiHeadings);
+		return basedata;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, count(bd.eventCause.causeCode) "
 				+ " from BaseData bd where bd.imsi=:IMSI"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
 		query.setParameter("IMSI", IMSI);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"EventId", "CauseCode", "Description", "IMSI"});
+		basedata.add(0,uniqueCauseCodeForImsiHeadings);
 		return basedata;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
+		Query query = em.createQuery(""
+				+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, count(bd.imsi) "
+				+"from BaseData bd "
+				+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
+				+"group by bd.imsi "
+				+"order by count(bd.imsi) desc ");
+				query.setParameter("date1", date1);
+				query.setParameter("date2", date2);
+				List basedata = query.setMaxResults(10).getResultList();
+				basedata.add(0, top10ImsiListBetween2DatesHeadings);
+				return basedata;
+	}	
+		
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");
 

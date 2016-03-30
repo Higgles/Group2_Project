@@ -1,24 +1,25 @@
 package com.coolbeanzzz.development.tools;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardCopyOption.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.apache.commons.io.FileUtils;
+import jxl.read.biff.BiffException;
+
+import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
@@ -64,14 +65,15 @@ public class FolderWatcher{
 	 * Once an excel file is added to the directory it is converted.
 	 * 
 	 * The comparison tables are added to the database and this data is
-	 * compared to base data to create valid data and erroneous data tables
-	 * which are then added to the database.
+	 * compared to the base data JSON array that gets returns from the convert operation.
+	 * This is used to create valid data and erroneous data tables which are then
+	 * added to the database.
 	 * 
 	 * The dataset is copied to a savedDatasets directory. The dataset and json directories
 	 * are then cleared
-	 * directory
 	 * 
 	 * @param path Directory to monitor for changes
+	 * @throws BiffException 
 	 */
 	@Asynchronous
 	public void watchDirectoryPath(Path path){
@@ -87,17 +89,16 @@ public class FolderWatcher{
                     if (ENTRY_CREATE == kind) {
                         Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
                         if(newPath.getFileName().toString().endsWith(".xls")){
-                        	Convert convert = new Convert();
-                        	convert.setInputFile(newPath.toAbsolutePath().toString());
-                        	convert.convert();
+                        	String inputFile = newPath.toAbsolutePath().toString();
+                        	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);
                         	
-                        	failureClassService.populateTable(new File("/home/user1/json/Failure Class Table.json"));
+                        	failureClassService.populateTable(datasetArray.get(2));
                     		System.out.println("1/6 tables complete");
-                        	eventCauseService.populateTable(new File("/home/user1/json/Event-Cause Table.json"));
+                        	eventCauseService.populateTable(datasetArray.get(1));
                         	System.out.println("2/6 tables complete");
-                        	mccMncService.populateTable(new File("/home/user1/json/MCC - MNC Table.json"));
+                        	mccMncService.populateTable(datasetArray.get(4));
                         	System.out.println("3/6 tables complete");
-                        	ueTableService.populateTable(new File("/home/user1/json/UE Table.json"));
+                        	ueTableService.populateTable(datasetArray.get(3));
                         	System.out.println("4/6 tables complete");
                         	
                     		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
@@ -111,19 +112,18 @@ public class FolderWatcher{
                     		ueTypes = ueTableService.getUETypes();
                     		
                     		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-                        	compare.compareData();
                         	
-                    		baseDataService.populateTable(new File("/home/user1/json/validData.json"));
-                    		System.out.println("5/6 tables complete");
-                    		erroneousDataService.populateTable(new File("/home/user1/json/erroneousData.json"));                        	
-                    		System.out.println("6/6 tables complete");
-                    		
-                    		Files.copy(newPath, new File("/home/user1/savedDatasets/" + newPath.getFileName()).toPath(), REPLACE_EXISTING);
-                    		File jsonDir = new File("/home/user1/json");
-                    		File uploadDir = new File("/home/user1/datasets");
-                    		FileUtils.cleanDirectory(jsonDir);
-                    		FileUtils.cleanDirectory(uploadDir);
-                    		System.out.println(("DONE"));
+                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
+                        	
+                        	JSONArray validData = baseData.get(0);
+                        	baseDataService.populateTable(validData);
+                        	System.out.println("5/6 tables complete");
+                        	
+                        	JSONArray erroneousData = baseData.get(1);
+                        	erroneousDataService.populateTable(erroneousData);
+                        	System.out.println("6/6 tables complete");
+                        	
+                    		System.out.println("Dataset import complete");
                         }
                     }
                 }
@@ -146,6 +146,8 @@ public class FolderWatcher{
 			System.out.println("IOEXception: " + e.toString());
 		}catch (InterruptedException e){
 			System.out.println("InterruptException: " + e.toString());
+		} catch (BiffException e) {
+			System.out.println("BiffException: " + e.toString());
 		}
 	}
 	
