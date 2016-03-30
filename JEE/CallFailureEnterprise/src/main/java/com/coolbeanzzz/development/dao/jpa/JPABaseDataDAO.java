@@ -289,7 +289,15 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				List basedata = query.setMaxResults(10).getResultList();
 				basedata.add(0, top10ImsiListBetween2DatesHeadings);
 				return basedata;
-	}	
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public Collection<String> getAllFailureValues() {
+		Query query = em.createQuery("select distinct bd.failureClass.description from FailureClass bd");
+		List<String> basedata = query.getResultList();
+		return basedata;
+	}
 		
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

@@ -68,13 +68,17 @@
 		<ul class="dropdown-menu">
 			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event ID and CauseCodes for given IMSI</a></li>
 			<li><a id="availQuery14" onClick=selectQuery(14)>Display Unique CauseCodes for given IMSI</a></li>
+			<li><a id="availQuery9" onClick=selectQuery(9)>Display failure count for given IMSI during a time period.</a></li>
 			<shiro:hasAnyRoles name="SupEng, NetManEng">
 			<li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li>
 			<li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li>
+			<li><a id="availQuery16" onClick=selectQuery(16)>Display IMSIs for a given failure Cause Class</a></li>
 			<shiro:hasRole name="NetManEng">
 			<li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li>
 			<li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li>
+			<li><a id="availQuery12" onClick=selectQuery(12)>Display Top 10 Market/Operator/Cell ID combinations with call failures during a time period</a></li>			 
 			<li><a id="availQuery15" onClick=selectQuery(15)>Display top 10 IMSIs with call failures during a time period</a></li>
+			
 			</shiro:hasRole>
 			</shiro:hasAnyRoles>
 		</ul>
@@ -133,6 +137,11 @@
 						<select id="imsiDropdown" class="js-example-responsive" style="width: 400px">
 						</select>
 					</div>
+					<div class="container" id="failurePicker">
+						<label for="failureDropdown">Choose Failure Class:</label> 
+						<select id="failureDropdown" class="js-example-responsive" style="width: 400px">
+						</select>
+					</div>
 					<button id="query1" type="button" class="btn btn-primary">Run Query</button>
 				</div>
 			</div>
@@ -173,6 +182,7 @@
 				populateManufacturerDropdown();
 				
 				populateImsiDropdown();
+				populateFailureDropdown();
 				setUserDetails();
 			});
 		});
@@ -267,6 +277,25 @@
 				},
 			});
 		}
+		
+		function populateFailureDropdown(){
+			$("#failureDropdown").empty();
+			$.ajax({
+				type : 'GET',
+				url : 'rest/validdata/failure',
+				success : function(data){
+					for(i=0;i<data.length;i++){
+						var opt = data[i];  
+						var text = "<option value=\""+i+"\">"+opt+"</option>";
+						$("#failureDropdown").append(text);
+					}
+					var $example = $("#failureDropdown").select2();
+					$example.val("0").trigger("change");
+				},
+			});
+		}
+		
+		
 
 		$("#query1").click(function() {
 			$('#collapseOne').collapse("hide");
@@ -332,6 +361,17 @@
 					inputData.push(" ");
 				}
 				break;
+			case 9:
+				if($("#imsiDropdown").select2('data').length>0){
+					inputData.push($("#imsiDropdown").select2('data')[0].text);
+				}
+				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				break;				
+			case 12:
+				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
@@ -339,6 +379,9 @@
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
+			case 16:  // NEW DROPDOWN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
+				break;	
 			}
 			if(queryType=="POST"){
 				ajaxDetails.data=JSON.stringify(inputData);
@@ -417,12 +460,14 @@
 			var dateTimePickers=document.getElementById("datetimepickers");
 			var tacPickers=document.getElementById("tacPicker");
 			var imsiPickers=document.getElementById("imsiPicker");
+			var failurePickers=document.getElementById("failurePicker");
 			selectedQuery=i;
 			document.getElementById("selectedquery").innerHTML=document.getElementById("availQuery"+selectedQuery).innerHTML;
 			
 			tacPickers.style.display="none";
 			dateTimePickers.style.display="none";
 			imsiPickers.style.display="none";
+			failurePickers.style.display="none";
 			
 			switch(selectedQuery){
 			case 1:
@@ -445,7 +490,16 @@
 			case 5:
 				queryType="POST";
 				tacPickers.style.display="block"
+				break;				
+			case 9:
+				queryType="GET";
+				imsiPickers.style.display="block";
+				dateTimePickers.style.display="block";
 				break;
+			case 12:
+				queryType="GET";
+				dateTimePickers.style.display="block";
+				break;				
 			case 14:
 				queryType="GET";
 				imsiPickers.style.display="block";
@@ -453,6 +507,10 @@
 			case 15:
 				dateTimePickers.style.display="block";
 				queryType="POST";
+				break;
+			case 16:
+				failurePickers.style.display="block";
+				queryType="GET";
 				break;
 			}
 		}

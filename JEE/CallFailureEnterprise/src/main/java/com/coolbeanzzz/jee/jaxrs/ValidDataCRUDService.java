@@ -151,18 +151,18 @@ public class ValidDataCRUDService {
   	 * @param Failure Class
   	 * @return a collection of IMSI rows from underlying table
   	 */
-    @Path("/CB-19")
+    @Path("/CB-19/{failure}")
     @GET
  	@Produces(MediaType.APPLICATION_JSON)
     //@Consumes(MediaType.APPLICATION_JSON)
- 	public ResultList getQ19(String[] data) {    	
+ 	public ResultList getQ19(@PathParam("failure") String failure) {    	
  	   	ResultList baseData = new ResultList();
- 	    	//the next line has hard coded values used for testing
- 	   	baseData.setDataCollection(service.getIMSIsforFailureClass("MT ACCESS"));
- 	    	//baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(data[0]));
+ 	   	baseData.setDataCollection(service.getIMSIsforFailureClass(failure));
  	    	return baseData;
  		
  	}
+    
+    
      
     /**
      * Adds new entry to failure table in database
@@ -188,6 +188,17 @@ public class ValidDataCRUDService {
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<String> getAllImsis() {
         return service.getAllImsiValues();
+    }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/failure")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<String> getAllFailures() {
+        return service.getAllFailureValues();
     }
     
     /**

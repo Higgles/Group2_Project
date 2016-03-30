@@ -129,4 +129,9 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
 		return dao.getTop10ImsiListBetween2Dates(date1, date2);
 	}
+
+	@Override
+	public Collection<String> getAllFailureValues() {
+		return dao.getAllFailureValues();
+	}
 }
