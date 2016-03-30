@@ -81,73 +81,78 @@ public class FolderWatcher{
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_CREATE);
             WatchKey key = null;
+            
+            Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
+    			public void run(){
+    				try{
+    					folderWatchService.close();
+    				}catch (IOException e){
+    					System.out.println("IOEXception: " + e.toString()); 
+    				}  
+    			}
+    		});
+            
             while (true){
-                key = folderWatchService.take();
-                Kind<?> kind = null;
-                for (WatchEvent<?> watchEvent : key.pollEvents()) {
-                    kind = watchEvent.kind();
-                    if (ENTRY_CREATE == kind) {
-                        Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
-                        if(newPath.getFileName().toString().endsWith(".xls")){
-                        	String inputFile = newPath.toAbsolutePath().toString();
-                        	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);
-                        	
-                        	failureClassService.populateTable(datasetArray.get(2));
-                    		System.out.println("1/6 tables complete");
-                        	eventCauseService.populateTable(datasetArray.get(1));
-                        	System.out.println("2/6 tables complete");
-                        	mccMncService.populateTable(datasetArray.get(4));
-                        	System.out.println("3/6 tables complete");
-                        	ueTableService.populateTable(datasetArray.get(3));
-                        	System.out.println("4/6 tables complete");
-                        	
-                    		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-                    		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-                    		
-                    		uniqueFailureCodes = failureClassService.getFailureClassCodes();
-                    		
-                    		mccs = mccMncService.getAllUniqueMCCs();
-                    		mncs = mccMncService.getAllUniqueMNCs();
-                    		
-                    		ueTypes = ueTableService.getUETypes();
-                    		
-                    		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-                        	
-                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
-                        	
-                        	JSONArray validData = baseData.get(0);
-                        	baseDataService.populateTable(validData);
-                        	System.out.println("5/6 tables complete");
-                        	
-                        	JSONArray erroneousData = baseData.get(1);
-                        	erroneousDataService.populateTable(erroneousData);
-                        	System.out.println("6/6 tables complete");
-                        	
-                    		System.out.println("Dataset import complete");
-                        }
-                    }
-                }
-                
-                Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
-        			public void run(){
-        				try{
-        					folderWatchService.close();
-        				}catch (IOException e){
-        					System.out.println("IOEXception: " + e.toString()); 
-        				}  
-        			}
-        		});
-
-                if (!key.reset()) {
-                    break;
-                }
+                try{
+	            	key = folderWatchService.take();//
+	                Kind<?> kind = null;
+	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
+	                    kind = watchEvent.kind();
+	                    if (ENTRY_CREATE == kind) {
+	                        Path newPath = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
+	                        if(newPath.getFileName().toString().endsWith(".xls")){
+	                        	String inputFile = newPath.toAbsolutePath().toString();
+	                        	ArrayList<JSONArray> datasetArray = Convert.convert(inputFile);//
+	                        	
+	                        	failureClassService.populateTable(datasetArray.get(2));
+	                    		System.out.println("1/6 tables complete");
+	                        	eventCauseService.populateTable(datasetArray.get(1));
+	                        	System.out.println("2/6 tables complete");
+	                        	mccMncService.populateTable(datasetArray.get(4));
+	                        	System.out.println("3/6 tables complete");
+	                        	ueTableService.populateTable(datasetArray.get(3));
+	                        	System.out.println("4/6 tables complete");
+	                        	
+	                    		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+	                    		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+	                    		
+	                    		uniqueFailureCodes = failureClassService.getFailureClassCodes();
+	                    		
+	                    		mccs = mccMncService.getAllUniqueMCCs();
+	                    		mncs = mccMncService.getAllUniqueMNCs();
+	                    		
+	                    		ueTypes = ueTableService.getUETypes();
+	                    		
+	                    		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
+	                        	
+	                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
+	                        	
+	                        	JSONArray validData = baseData.get(0);
+	                        	baseDataService.populateTable(validData);
+	                        	System.out.println("5/6 tables complete");
+	                        	
+	                        	JSONArray erroneousData = baseData.get(1);
+	                        	erroneousDataService.populateTable(erroneousData);
+	                        	System.out.println("6/6 tables complete");
+	                        	
+	                    		System.out.println("Dataset import complete");
+	                        }
+	                    }
+	                }
+	                	
+	                if (!key.reset()) {
+	                    break;
+	                }
+            	}catch(IOException e){
+            		System.out.println("IOEXception: " + e.toString());
+            	}catch (InterruptedException e){
+        			System.out.println("InterruptException: " + e.toString());
+        		} catch (BiffException e) {
+        			System.out.println("BiffException: " + e.toString());
+        		}
             }
 		}catch(IOException e){
 			System.out.println("IOEXception: " + e.toString());
-		}catch (InterruptedException e){
-			System.out.println("InterruptException: " + e.toString());
-		} catch (BiffException e) {
-			System.out.println("BiffException: " + e.toString());
 		}
 	}
 	
