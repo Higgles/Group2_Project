@@ -311,7 +311,8 @@ public class IntegrationTest {
 	public void uploadFromFileTest() {
 		ArrayList<JSONArray> datasetArray;
 		try {
-			datasetArray = Convert.convert("test_data.xls");
+			File dataset = new File("test_data.xls");
+			datasetArray = Convert.convert(dataset);
 		
 			failureClassService.populateTable(datasetArray.get(2));
 			Collection<FailureTable> fcTest = failureClassService.getCatalog();
@@ -352,8 +353,10 @@ public class IntegrationTest {
 			assertEquals(erroneousData.size(), erroneousDataTest.size());
 		} catch (IOException e) {
 			fail("Problem with test file");
+		} catch (InterruptedException e) {
+			fail("File reading interrupted");
 		} catch (BiffException e) {
-			fail("Unable to parse test file");
+			fail("Problem extracting excel file");
 		}
 	}
 	

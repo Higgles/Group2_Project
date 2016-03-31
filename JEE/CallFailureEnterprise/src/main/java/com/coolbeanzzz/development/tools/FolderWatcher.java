@@ -4,6 +4,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
@@ -76,30 +77,30 @@ public class FolderWatcher{
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_MODIFY);
-            WatchKey key = null;
-            
-            Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
-    			public void run(){
-    				try{
-    					folderWatchService.close();
-    				}catch (IOException e){
-    					System.out.println("IOEXception: " + e.toString()); 
-    				}  
-    			}
-    		});
-            
+	            
+	            
+	        Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
+	    		public void run(){
+	    			try{
+	    				folderWatchService.close();
+	    			}catch (IOException e){
+	    				System.out.println("IOEXception: " + e.toString()); 
+	    			}  
+	    		}
+	    	});			
+			WatchKey key = null;
             while (true){
-                try{
+            	try{
 	            	key = folderWatchService.take();//
 	                Kind<?> kind = null;
 	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
 	                    kind = watchEvent.kind();
 	                    if (ENTRY_MODIFY == kind) {
+	                    	System.out.println("New File "+watchEvent.context());
 	                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
 	                        if(watchEvent.context().toString().endsWith(".xls")){
 	                        	long startTime = System.currentTimeMillis();
 	                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
-	                        	
 	                        	failureClassService.populateTable(datasetArray.get(2));
 	                    		System.out.println("1/6 tables complete");
 	                        	eventCauseService.populateTable(datasetArray.get(1));
@@ -123,6 +124,8 @@ public class FolderWatcher{
 	                        	
 	                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
 	                        	
+	                    		System.out.println(baseData.get(0).size());
+	                    		
 	                        	JSONArray validData = baseData.get(0);
 	                        	baseDataService.populateTable(validData);
 	                        	System.out.println("5/6 tables complete");
@@ -137,20 +140,21 @@ public class FolderWatcher{
 	                        }
 	                    }
 	                }
-	                	
-	                if (!key.reset()) {
-	                    break;
-	                }
             	}catch(IOException e){
-            		System.out.println("IOEXception: " + e.toString());
-            	}catch (InterruptedException e){
-        			System.out.println("InterruptException: " + e.toString());
+        			System.out.println(e.getMessage());
+        		}catch (InterruptedException e){
+        			System.out.println(e.getMessage());
         		} catch (BiffException e) {
-        			System.out.println("BiffException: " + e.toString());
-        		}
+        			System.out.println(e.getMessage());
+				}
+            	if (!key.reset()) {
+                    break;
+                } 
             }
 		}catch(IOException e){
-			System.out.println("IOEXception: " + e.toString());
+			System.out.println(e.getMessage());
+		}catch(ClosedWatchServiceException e){
+			System.out.println(e.getMessage());
 		}
 	}
 	

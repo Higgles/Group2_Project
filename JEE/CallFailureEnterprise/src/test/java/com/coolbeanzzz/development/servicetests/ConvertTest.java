@@ -18,10 +18,13 @@ public class ConvertTest {
 	@Test
 	public void testConversion() throws IOException {
 		try {
-			Convert.convert("./testData.xls");
+			File dataset = new File("./testData.xls");
+			Convert.convert(dataset);
 			assertEquals(FileUtils.readLines(new File("./testCheck.json")), FileUtils.readLines(new File("./MCC - MNC Table.json")));
+		} catch (InterruptedException e) {
+			fail("Interrupted conversion");
 		} catch (BiffException e) {
-			fail("Unable to convert xls file");
+			fail("File not found");
 		}	
 	}
 

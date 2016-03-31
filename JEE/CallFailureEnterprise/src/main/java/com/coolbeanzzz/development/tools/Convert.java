@@ -28,7 +28,7 @@ public class Convert {
 	 * @param inputFile Set the xls file to be converted to json arrays
 	 * @throws IOException, InterruptedException 
 	 */
-	public static ArrayList<JSONArray> convert(File inputFile) throws IOException, InterruptedException, BiffException {
+	public static ArrayList<JSONArray> convert(File inputFile) throws IOException, InterruptedException, BiffException{
 		Workbook workbook;
 		
 		ArrayList<String[]> labelList = new ArrayList<String[]>();
@@ -57,7 +57,6 @@ public class Convert {
 		JSONArray failureClassTable = new JSONArray();
 		JSONArray ueTable = new JSONArray();
 		JSONArray mccMncTable = new JSONArray();
-		
 		workbook = Workbook.getWorkbook(inputFile);
 		for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
 			sheet = workbook.getSheet(sheetNumber);
@@ -77,23 +76,23 @@ public class Convert {
 						datasetRow.put(sheetLabels[column], cell.getContents());
 					}
 				}
+				if(sheetNumber == 0){
+					baseData.add(datasetRow);
+				}
+				else if(sheetNumber == 1){
+					eventCauseTable.add(datasetRow);
+				}
+				else if(sheetNumber == 2){
+					failureClassTable.add(datasetRow);
+				}
+				else if(sheetNumber == 3){
+					ueTable.add(datasetRow);
+				}
+				else if(sheetNumber == 4){
+					mccMncTable.add(datasetRow);
+				}
+				datasetRow = new JSONObject();
 			}
-			if(sheetNumber == 0){
-				baseData.add(datasetRow);
-			}
-			else if(sheetNumber == 1){
-				eventCauseTable.add(datasetRow);
-			}
-			else if(sheetNumber == 2){
-				failureClassTable.add(datasetRow);
-			}
-			else if(sheetNumber == 3){
-				ueTable.add(datasetRow);
-			}
-			else if(sheetNumber == 4){
-				mccMncTable.add(datasetRow);
-			}
-			datasetRow = new JSONObject();
 		}
 		datasetTables.add(baseData);
 		datasetTables.add(eventCauseTable);
