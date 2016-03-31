@@ -144,6 +144,8 @@ public class FolderWatcher{
 			System.out.println("IOEXception: " + e.toString());
 		}catch (InterruptedException e){
 			System.out.println("InterruptException: " + e.toString());
+		} catch (BiffException e) {
+			System.out.println("BiffException: " + e.toString());
 		}
 	}
 	

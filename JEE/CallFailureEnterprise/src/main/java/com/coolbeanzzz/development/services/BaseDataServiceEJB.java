@@ -104,4 +104,14 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {																						//EJB
 		return dao.getEventIdsCauseCodeForIMSI(IMSI);
 	}
+
+	@Override
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
+		return dao.getUniqueCauseCodeForIMSI(IMSI);
+	}
+	
+	@Override
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
+		return dao.getTop10ImsiListBetween2Dates(date1, date2);
+	}
 }

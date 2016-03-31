@@ -27,19 +27,10 @@ CREATE TABLE  `CoolBeanzzz`.`roles_permissions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `CoolBeanzzz`.`user_role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(45) DEFAULT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 insert into CoolBeanzzz.roles_permissions(permission, role_name) values('SysAd:access', 'SysAd');
 insert into CoolBeanzzz.roles_permissions(permission, role_name) values('SupEng:access', 'SupEng');
-
-insert into CoolBeanzzz.user_role(role_name, username) values('SysAd', 'admin');
-insert into CoolBeanzzz.user_role(role_name, username) values('SupEng', 'supeng');
-
+insert into CoolBeanzzz.roles_permissions(permission, role_name) values('NetManEng:access', 'NetManEng');
+insert into CoolBeanzzz.roles_permissions(permission, role_name) values('CSR:access', 'CSR');
 
 -- -----------------------------------------------------
 -- Table `CoolBeanzzz`.`Failure Class`

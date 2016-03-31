@@ -78,23 +78,23 @@ public class Convert {
 							datasetRow.put(sheetLabels[column], cell.getContents());
 						}
 					}
-					if(sheetNumber == 0){
-						baseData.add(datasetRow);
-					}
-					else if(sheetNumber == 1){
-						eventCauseTable.add(datasetRow);
-					}
-					else if(sheetNumber == 2){
-						failureClassTable.add(datasetRow);
-					}
-					else if(sheetNumber == 3){
-						ueTable.add(datasetRow);
-					}
-					else if(sheetNumber == 4){
-						mccMncTable.add(datasetRow);
-					}
-					datasetRow = new JSONObject();
 				}
+				if(sheetNumber == 0){
+					baseData.add(datasetRow);
+				}
+				else if(sheetNumber == 1){
+					eventCauseTable.add(datasetRow);
+				}
+				else if(sheetNumber == 2){
+					failureClassTable.add(datasetRow);
+				}
+				else if(sheetNumber == 3){
+					ueTable.add(datasetRow);
+				}
+				else if(sheetNumber == 4){
+					mccMncTable.add(datasetRow);
+				}
+				datasetRow = new JSONObject();
 			}
 		} catch (BiffException e) {
 			System.out.println("BiffException: " + e.getMessage());

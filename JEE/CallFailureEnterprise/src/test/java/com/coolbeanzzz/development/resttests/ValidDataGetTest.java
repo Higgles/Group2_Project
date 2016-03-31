@@ -12,7 +12,7 @@ public class ValidDataGetTest {
 		given().
 		auth().basic("admin", "admin").
 	when().
-		get("http://localhost:8080/CallFailureEnterprise/rest/validdata").
+		get("CallFailureEnterprise/rest/validdata").
 	then().
 		statusCode(200);
 	}

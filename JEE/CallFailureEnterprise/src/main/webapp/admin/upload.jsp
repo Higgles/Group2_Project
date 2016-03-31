@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -53,7 +54,7 @@
 				<ul class="nav navbar-nav">
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li style="font-size: 1.8em;"><a href="addUser.html" class="navbar-brand"><span></span> Add/Edit Users</a></li>
+					<li style="font-size: 1.8em;"><a href="addUser.jsp" class="navbar-brand"><span></span> Add/Edit Users</a></li>
 					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
 					<li style="font-size: 1.8em;">
 						<a href="../logout">
@@ -78,29 +79,14 @@
 					
 				</form>
 			</div>
-			<h4 id="tableCount" align="center"></h4>
 		</div>
 	</div>
 	<script>
 		$(document).ready(function() {
 			$(function() {
 				setUserDetails();
-				setTimeout(uploadCompleted, 15000);
-				setInterval(tableCount, 2500);
 			});
 		});
-		
-		function uploadCompleted(){
-			alert("Upload Complete");
-		}
-		
-		var count = 0;
-		function tableCount(){
-			if(count < 6){
-				count = count + 1;
-				document.getElementById("tableCount").innerHTML=(count + "/6 tables added to database")
-			}	
-		}
 		
 		function setUserDetails() {
 			$.ajax({

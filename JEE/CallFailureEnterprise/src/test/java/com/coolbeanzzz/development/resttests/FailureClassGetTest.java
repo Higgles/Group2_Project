@@ -12,7 +12,7 @@ public class FailureClassGetTest {
 		given().
 		auth().basic("admin", "admin").
 	when().
-		get("http://localhost:8080/CallFailureEnterprise/rest/failureclasses").
+		get("CallFailureEnterprise/rest/failureclasses").
 	then().
 		statusCode(200);
 	}

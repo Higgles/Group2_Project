@@ -62,4 +62,18 @@ public interface BaseDataService extends FailureTableService{
 	 */
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI);
 
+	/** 
+	 * Gets unique cause code for an input IMSI from the database
+	 * @param input IMSI
+	 * @return a collection of FailureTable results
+	 */
+	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	
+	/**
+	 * Gets a list of the top 10 IMSIs with call failures during a given time period from the database
+	 * @param start date, end date 
+	 * @return a collection of FailureTable results
+	 */	
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
 }
+
