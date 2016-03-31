@@ -13,7 +13,27 @@
 <link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
 <link rel="stylesheet" type="text/css" href="media/css/mainPage.css">
-<style type="text/css" class="init"></style>
+<!--  link href="example.css" rel="stylesheet" type="text/css"-->
+<style type="text/css">
+
+	#placeholder {
+		width: 550px;
+		height: 400px;
+	}
+	
+	.demo-placeholder {
+	font-size: 14px;
+	line-height: 1.2em;
+	}
+	
+	a {	color: #069; }
+	a:hover { color: #28b; }
+	
+	.legend table {
+		border-spacing: 5px;
+	}
+
+</style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
@@ -25,6 +45,8 @@
 <script type="text/javascript" src="media/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" language="javascript" class="init"></script>
 <script type="text/javascript" src="media/js/select2.full.js"></script>
+<script language="javascript" type="text/javascript" src="media/js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="media/js/jquery.flot.pie.js"></script>
 </head>
 
 <body>
@@ -164,12 +186,20 @@
 				</div>
 				<div class="panel-footer" style="font-size: 15px;">
 					<p id="count"></p>
+					<button id="graph_button" type="button" class="btn btn-primary">Look at this Graph!</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<br />
 	<br />
+
+	<!--  div class="demo-container"-->	
+	<div class="container">
+		<div id="placeholder" ></div>
+	</div>
+	<!--  /div -->
+	<p id = "percent"></p>
 	<script>
 		var selectedQuery=1;
 		var queryType="GET";
@@ -388,7 +418,7 @@
 				ajaxDetails.dataType="json";
 				ajaxDetails.contentType='application/json';
 			}
-			
+		
 			$.ajax({
 				type : queryType,
 				url : queryUrl,
@@ -492,13 +522,14 @@
 				tacPickers.style.display="block"
 				break;				
 			case 9:
-				queryType="GET";
+				queryType="POST";
 				imsiPickers.style.display="block";
 				dateTimePickers.style.display="block";
 				break;
 			case 12:
-				queryType="GET";
+				//queryType="GET";
 				dateTimePickers.style.display="block";
+				queryType="POST";
 				break;				
 			case 14:
 				queryType="GET";
@@ -513,6 +544,82 @@
 				queryType="GET";
 				break;
 			}
+		}
+		
+		$("#graph_button").click(function(e) {
+
+			var data = [
+			 //data got from something like: document.getElementById("count").innerHTML
+			 //label got from: 
+				{ label: "Series1",  data: 3599 },
+				{ label: "Series2",  data: 3494 },
+				{ label: "Series3",  data: 3411 },
+				{ label: "Series4",  data: 3239 },
+				{ label: "Series5",  data: 3164 },
+				{ label: "Series6",  data: 3103 },
+				{ label: "Series7",  data: 2951 },
+				{ label: "Series8",  data: 2652 },
+				{ label: "Series9",  data: 1217 },
+				{ label: "Series10",  data: 1154 }
+			];	
+
+
+			var placeholder = $("#placeholder");
+
+
+			$.plot(placeholder, data, {
+				series: {
+					pie: { 
+						show: true
+					}
+				},
+				grid: {
+					hoverable: true,
+					clickable: true
+				}
+			});
+
+			setCode([
+				"$.plot('#placeholder', data, {",
+				"    series: {",
+				"        pie: {",
+				"            show: true",
+				"        }",
+				"    },",
+				"    grid: {",
+				"        hoverable: true,",
+				"        clickable: true",
+				"    }",
+				"});"
+			]);
+
+			placeholder.bind("plothover", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+
+				var percent = parseFloat(obj.series.percent).toFixed(2);
+				$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
+			});
+
+			placeholder.bind("plotclick", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+
+				percent = parseFloat(obj.series.percent).toFixed(2);
+				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "%";
+			});
+		});
+
+		function labelFormatter(label, series) {
+			return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+		}
+
+		function setCode(lines) {
+			$("#code").text(lines.join("\n"));
 		}
 	</script>
 </body>

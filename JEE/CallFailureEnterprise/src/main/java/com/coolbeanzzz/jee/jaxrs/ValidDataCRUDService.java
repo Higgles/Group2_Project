@@ -115,16 +115,16 @@ public class ValidDataCRUDService {
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
     @Path("/CB-12")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public ResultList getQ12(String[] data) {    	
     	ResultList baseData = new ResultList();
     	//the next line has hard coded values used for testing
-   	baseData.setDataCollection(service.getFailCountByImsiAndDate("344930000000011",
-    			"2013-01-10 17:11:00",
-    		"2013-01-15 17:11:00"));
-    	//baseData.setDataCollection(service.getFailCountByImsiAndDate(data[0], data[1], data[2]));
+//   	baseData.setDataCollection(service.getFailCountByImsiAndDate("344930000000011",
+//    		"2013-01-10 17:11:00",
+//    		"2013-01-15 17:11:00"));
+    	baseData.setDataCollection(service.getFailCountByImsiAndDate(data[0], data[1], data[2]));
     	return baseData;
     }
     
@@ -134,17 +134,28 @@ public class ValidDataCRUDService {
 	 * @param dateEnd end date for time period
 	 * @return a collection of FailureTable rows from underlying table
 	 */
+//    @Path("/CB-15")
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    //@Consumes(MediaType.APPLICATION_JSON)
+//    public ResultList getQ15(String[] dates) {    	
+//    	ResultList baseData = new ResultList();
+//    	//the next line has hard coded values used for testing
+//   	baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
+//    	//baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
+//    	return baseData;
+//    }
+    
     @Path("/CB-15")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public ResultList getQ15(String[] dates) {    	
     	ResultList baseData = new ResultList();
-    	//the next line has hard coded values used for testing
-   	baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates("2011-01-10 17:11:00","2015-01-15 17:11:00"));
-    	//baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
+    	baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
     	return baseData;
     }
+        
     
     /**
   	 * As a Support Engineer I want to display, for a given failure Cause Class, the IMSIs that were affected.
