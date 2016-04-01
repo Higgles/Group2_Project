@@ -409,7 +409,7 @@
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
-			case 16:  // NEW DROPDOWN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
 				break;	
 			}
@@ -548,21 +548,17 @@
 		
 		$("#graph_button").click(function(e) {
 
-			var data = [
-			 //data got from something like: document.getElementById("count").innerHTML
-			 //label got from: 
-				{ label: "Series1",  data: 3599 },
-				{ label: "Series2",  data: 3494 },
-				{ label: "Series3",  data: 3411 },
-				{ label: "Series4",  data: 3239 },
-				{ label: "Series5",  data: 3164 },
-				{ label: "Series6",  data: 3103 },
-				{ label: "Series7",  data: 2951 },
-				{ label: "Series8",  data: 2652 },
-				{ label: "Series9",  data: 1217 },
-				{ label: "Series10",  data: 1154 }
-			];	
+var jsonArray = $("#dataTable").bootstrapTable('getData');
 
+var data = [];
+
+//alert(JSON.stringify($("#dataTable").bootstrapTable('getData')));
+		
+for(var i = 0; i < jsonArray.length; i++){
+
+	data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
+	
+	}	 
 
 			var placeholder = $("#placeholder");
 
@@ -570,7 +566,17 @@
 			$.plot(placeholder, data, {
 				series: {
 					pie: { 
-						show: true
+						show: true/*,
+						//Label on pie slice code attempt 
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: {
+								opacity: 0.5
+							}
+						}  */ 
 					}
 				},
 				grid: {
@@ -584,6 +590,17 @@
 				"    series: {",
 				"        pie: {",
 				"            show: true",
+				//Label on pie slice code attempt 
+				/*,
+				"            radius: 1,",
+				"            label: {",
+				"                show: true,",
+				"                radius: 3/4,",
+				"                formatter: labelFormatter,",
+				"                background: {",
+				"                    opacity: 0.5",
+				"                }",
+				"            }",    */
 				"        }",
 				"    },",
 				"    grid: {",
@@ -608,9 +625,8 @@
 				if (!obj) {
 					return;
 				}
-
 				percent = parseFloat(obj.series.percent).toFixed(2);
-				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "%";
+				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "% "+ obj.series.data.toString().split(",").pop();
 			});
 		});
 
