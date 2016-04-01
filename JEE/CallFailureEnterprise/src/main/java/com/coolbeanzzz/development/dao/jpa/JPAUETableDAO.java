@@ -105,17 +105,27 @@ public class JPAUETableDAO implements UETableDAO {
 	}
 
 	@Override
-	public Collection<String> getAllManufacturers() {
-		Query query = em.createQuery("select distinct u.manufacturer from UETable u order by u.manufacturer");
+	public Collection<String> getAllManufacturers(int page, String searchTerm, int pageLimit) {
+		Query query = em.createQuery("select distinct u.manufacturer from UETable u where u.manufacturer like :searchTerm order by u.manufacturer");
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		if(pageLimit != -1){
+			int start = pageLimit * (page - 1);
+			query.setFirstResult(start).setMaxResults(pageLimit);
+		}
 		List<String> ueTables = query.getResultList();
 		
 		return ueTables;
 	}
 
 	@Override
-	public Collection<String> getModelsForManufacturer(String manufacturer) {
-		Query query = em.createQuery("select u.marketingName from UETable u where u.manufacturer=:manufacturer");
+	public Collection<String> getModelsForManufacturer(String manufacturer, int page, String searchTerm, int pageLimit) {
+		Query query = em.createQuery("select u.model from UETable u where u.manufacturer=:manufacturer and u.model like :searchTerm");
 		query.setParameter("manufacturer", manufacturer);
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		if(pageLimit != -1){
+			int start = pageLimit * (page - 1);
+			query.setFirstResult(start).setMaxResults(pageLimit);
+		}
 		List<String> ueTables = query.getResultList();
 		
 		return ueTables;

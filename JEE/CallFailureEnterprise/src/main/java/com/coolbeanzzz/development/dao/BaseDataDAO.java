@@ -48,9 +48,12 @@ public interface BaseDataDAO extends FailureTableDAO{
 	
 	/**
 	 * Queries the database for all unique imsi values
+	 * @param page
+	 * @param searchTerm 
+	 * @param pageLimit 
 	 * @return a collection of imsi values
 	 */	
-	Collection<String> getAllImsiValues();
+	Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit);
 
 	 /** 
 	 * Queries the underlying table for event id's and cause code combinations for an input IMSI

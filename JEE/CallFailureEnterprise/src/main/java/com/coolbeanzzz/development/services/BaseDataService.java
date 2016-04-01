@@ -51,9 +51,12 @@ public interface BaseDataService extends FailureTableService{
 	
 	/**
 	 * Gets all unique imsi values from database
+	 * @param page 
+	 * @param searchTerm 
+	 * @param pageLimit 
 	 * @return a collection of unique imsi values
 	 */
-	public Collection<String> getAllImsiValues();
+	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit);
 
 	 /** 
 	 * Gets event id's and cause code combinations for an input IMSI from the database
