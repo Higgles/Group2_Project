@@ -331,6 +331,9 @@
 					showData();
 				}
 				break;
+			case 2:
+					showData();
+				break;
 			case 3:
 				if($("#manufacturerDropdown").select2('data').length<1){
 					alert("Choose Manufacturer");
@@ -341,6 +344,9 @@
 				else{
 					showData();
 				}
+				break;
+			case 4:
+				showData();
 				break;
 			case 5:
 				if($("#manufacturerDropdown").select2('data').length<1){
@@ -360,6 +366,9 @@
 				else{
 					showData();
 				}
+				break;
+			case 15:
+				showData();
 				break;
 			}
 		}
