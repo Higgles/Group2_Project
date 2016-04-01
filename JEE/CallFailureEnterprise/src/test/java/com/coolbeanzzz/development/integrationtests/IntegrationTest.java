@@ -1,8 +1,6 @@
 package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.isA;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

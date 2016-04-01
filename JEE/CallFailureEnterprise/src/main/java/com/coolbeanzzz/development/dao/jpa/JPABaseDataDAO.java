@@ -149,7 +149,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}	
 	
-	//************************* MIKE G ****************************** 22/3/16
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2){
@@ -166,9 +165,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		basedata.add(0, new Object[]{"Count", "Total Duration"});
 		return basedata;
 	}
-	
-	//************************* MIKE G ****************************** 23/3/16
-	//Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd){
@@ -185,8 +182,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;	
 	}
 	
-	//************************* MIKE G ****************************** 24/3/16
-	//As a Support Engineer I want to display, for a given failure Cause Class, the IMSIs that were affected.
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
@@ -238,7 +233,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery("DELETE from BaseData");
 		query.executeUpdate();
 	}
-
+	
+	@SuppressWarnings({"unchecked" })
 	@Override
 	public Collection<String> getAllImsiValues() {
 		Query query = em.createQuery("select distinct bd.imsi from BaseData bd");
@@ -246,12 +242,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
-	
-	/**
-	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
-	 * the Event ID and Cause Code for any / all failures affecting that IMSI
-	 * 
-	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
