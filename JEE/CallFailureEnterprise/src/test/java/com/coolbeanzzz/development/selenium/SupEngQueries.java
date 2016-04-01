@@ -47,6 +47,9 @@ public class SupEngQueries extends TestCase {
      * @throws InterruptedException
      */
     public void testQuery1() throws InterruptedException{
+    	driver.findElement(By.id("button1")).click();
+        driver.findElement(By.id("availQuery1")).click();
+        driver.findElement(By.id("phead")).click();
         driver.findElement(By.id("query1")).click();
         
         String[] query1headings = {"Date/Time", "Event Id", "Cause Code", "Description"};
