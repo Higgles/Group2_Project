@@ -416,6 +416,17 @@
 					showData();
 				}
 				break;
+			case 9:
+				if($("#imsiDropdown").select2('data').length<1){
+					alert("Select Imsi value");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 12:
+				showData();
+				break;
 			case 14:
 				if($("#imsiDropdown").select2('data').length<1){
 					alert("Select Imsi value");
@@ -426,6 +437,14 @@
 				break;
 			case 15:
 				showData();
+				break;
+			case 16:
+				if($("#failureDropdown").select2('data').length<1){
+					alert("Select Failure Class");
+				}
+				else{
+					showData();
+				}
 				break;
 			}
 		}
@@ -474,9 +493,7 @@
 				inputData.push($("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
-				if($("#imsiDropdown").select2('data').length>0){
-					inputData.push($("#imsiDropdown").select2('data')[0].text);
-				}
+				inputData.push($("#imsiDropdown").select2('data')[0].text);
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;				
@@ -625,95 +642,95 @@
 		
 		$("#graph_button").click(function(e) {
 
-var jsonArray = $("#dataTable").bootstrapTable('getData');
+		var jsonArray = $("#dataTable").bootstrapTable('getData');
 
-var data = [];
+		var data = [];
 
-//alert(JSON.stringify($("#dataTable").bootstrapTable('getData')));
+		//alert(JSON.stringify($("#dataTable").bootstrapTable('getData')));
 		
-for(var i = 0; i < jsonArray.length; i++){
+		for(var i = 0; i < jsonArray.length; i++){
 
-	data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
+		data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
 	
-	}	 
+		}	 
 
-			var placeholder = $("#placeholder");
+		var placeholder = $("#placeholder");
 
 
-			$.plot(placeholder, data, {
-				series: {
-					pie: { 
-						show: true/*,
-						//Label on pie slice code attempt 
-						radius: 1,
-						label: {
-							show: true,
-							radius: 3/4,
-							formatter: labelFormatter,
-							background: {
-								opacity: 0.5
-							}
-						}  */ 
-					}
-				},
-				grid: {
-					hoverable: true,
-					clickable: true
+		$.plot(placeholder, data, {
+			series: {
+				pie: { 
+					show: true/*,
+					//Label on pie slice code attempt 
+					radius: 1,
+					label: {
+						show: true,
+						radius: 3/4,
+						formatter: labelFormatter,
+						background: {
+							opacity: 0.5
+						}
+					}  */ 
 				}
-			});
-
-			setCode([
-				"$.plot('#placeholder', data, {",
-				"    series: {",
-				"        pie: {",
-				"            show: true",
-				//Label on pie slice code attempt 
-				/*,
-				"            radius: 1,",
-				"            label: {",
-				"                show: true,",
-				"                radius: 3/4,",
-				"                formatter: labelFormatter,",
-				"                background: {",
-				"                    opacity: 0.5",
-				"                }",
-				"            }",    */
-				"        }",
-				"    },",
-				"    grid: {",
-				"        hoverable: true,",
-				"        clickable: true",
-				"    }",
-				"});"
-			]);
-
-			placeholder.bind("plothover", function(event, pos, obj) {
-
-				if (!obj) {
-					return;
-				}
-
-				var percent = parseFloat(obj.series.percent).toFixed(2);
-				$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
-			});
-
-			placeholder.bind("plotclick", function(event, pos, obj) {
-
-				if (!obj) {
-					return;
-				}
-				percent = parseFloat(obj.series.percent).toFixed(2);
-				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "% "+ obj.series.data.toString().split(",").pop();
-			});
+			},
+			grid: {
+				hoverable: true,
+				clickable: true
+			}
 		});
 
-		function labelFormatter(label, series) {
-			return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-		}
+		setCode([
+			"$.plot('#placeholder', data, {",
+			"    series: {",
+			"        pie: {",
+			"            show: true",
+			//Label on pie slice code attempt 
+			/*,
+			"            radius: 1,",
+			"            label: {",
+			"                show: true,",
+			"                radius: 3/4,",
+			"                formatter: labelFormatter,",
+			"                background: {",
+			"                    opacity: 0.5",
+			"                }",
+			"            }",    */
+			"        }",
+			"    },",
+			"    grid: {",
+			"        hoverable: true,",
+			"        clickable: true",
+			"    }",
+			"});"
+		]);
 
-		function setCode(lines) {
-			$("#code").text(lines.join("\n"));
-		}
+		placeholder.bind("plothover", function(event, pos, obj) {
+
+			if (!obj) {
+				return;
+			}
+
+			var percent = parseFloat(obj.series.percent).toFixed(2);
+			$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
+		});
+
+		placeholder.bind("plotclick", function(event, pos, obj) {
+
+			if (!obj) {
+				return;
+			}
+			percent = parseFloat(obj.series.percent).toFixed(2);
+			document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "% "+ obj.series.data.toString().split(",").pop();
+		});
+	});
+
+	function labelFormatter(label, series) {
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+	}
+
+	function setCode(lines) {
+		$("#code").text(lines.join("\n"));
+	}
 	</script>
 </body>
 </html>
