@@ -104,7 +104,22 @@ public class BaseDataServiceEJB implements BaseDataService {
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection) {																						//EJB
 		return dao.getEventIdsCauseCodeForIMSI(IMSI, start, length, searchTerm, orderColumn, orderDirection);
 	}
+	
+	@Override
+	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd){
+		return dao.getFailCountByImsiAndDate(IMSI, dateStart, dateEnd);
+	}
 
+	@Override
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd) {
+		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd);
+	}
+	
+	@Override
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
+		return dao.getIMSIsforFailureClass(failureClass);
+	}
+		
 	@Override
 	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
 		return dao.getUniqueCauseCodeForIMSI(IMSI);
@@ -113,5 +128,10 @@ public class BaseDataServiceEJB implements BaseDataService {
 	@Override
 	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
 		return dao.getTop10ImsiListBetween2Dates(date1, date2);
+	}
+
+	@Override
+	public Collection<String> getAllFailureValues() {
+		return dao.getAllFailureValues();
 	}
 }

@@ -29,15 +29,14 @@ public interface BaseDataDAO extends FailureTableDAO{
 	Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String fromDate, String toDate);
 
 	/**
-	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
+	 * Display IMSIs with call failures during a given time period
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
 	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
 	
 	/**
-	 * As a Support Engineer I want to count, for a given model of phone, the number of call failures it 
-	 * has had during a given time period.
+	 * Count call failures, for a given model of phone, during a given time period.
 	 * @param manufacturer phone manufacturer to be checked
 	 * @param model phone model to be checked
 	 * @param dateStart start date for time period
@@ -46,6 +45,30 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 */	
 	Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd);
 	
+	/**
+	 * Count the number of failures, for a given IMSI, during a given time period.
+	 * @param imsi to be checked
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
+	
+	/**
+	 * Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+	
+	/**
+	 * Display the IMSIs that were affected for a given failure Cause Class.
+	 * @param Failure Class
+	 * @return a collection of IMSI rows from underlying table
+	 */
+	Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
+		
 	/**
 	 * Queries the database for all unique imsi values
 	 * @param page
@@ -80,5 +103,11 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
 	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
+	
+	/**
+	 * Queries the database for all unique failure values
+	 * @return a collection of failure values
+	 */	
+	Collection<String> getAllFailureValues();
 	
 }

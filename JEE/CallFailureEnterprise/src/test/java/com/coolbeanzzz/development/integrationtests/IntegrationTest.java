@@ -1,7 +1,6 @@
 package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -305,9 +304,42 @@ public class IntegrationTest {
 		assertEquals(1,res.size());
 	}
 	
+	@Test
+	@InSequence(17)
+	public void getFailCountByImsiAndDateTest() {
+		Collection<?> res=baseDataService.getFailCountByImsiAndDate("344930000000011","2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(2,res.size());
+	}
 	
+	@Test
+	@InSequence(18)
+	public void getTop10MarketOperatorCellBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10MarketOperatorCellBetween2Dates("2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
 	
-	@Test @InSequence(17)
+	@Test
+	@InSequence(19)
+	public void getIMSIsforFailureClassTest() {
+		Collection<?> res=baseDataService.getIMSIsforFailureClass("HIGH PRIORITY ACCESS");
+		assertEquals(1,res.size());
+	}
+	
+	@Test
+	@InSequence(20)
+	public void getUniqueCauseCodeForIMSITest() {
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
+		assertEquals(res.size(),1);
+	}
+	
+	@Test
+	@InSequence(21)
+	public void getTop10ImsiListBetween2DatesTest() {
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		assertEquals(1,res.size());
+	}
+	
+	@Test @InSequence(22)
 	public void uploadFromFileTest() {
 		ArrayList<JSONArray> datasetArray;
 		try {
@@ -358,20 +390,6 @@ public class IntegrationTest {
 		} catch (BiffException e) {
 			fail("Problem extracting excel file");
 		}
-	}
-	
-	@Test
-	@InSequence(18)
-	public void getUniqueCauseCodeForIMSITest() {
-		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
-		assertEquals(res.size(),1);
-	}
-	
-	@Test
-	@InSequence(19)
-	public void getTop10ImsiListBetween2DatesTest() {
-		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
 	}
 	 
 	@Test

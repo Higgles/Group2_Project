@@ -128,6 +128,51 @@ public class ValidDataCRUDService {
     }
     
     /**
+	 * Gets a list of results from a query
+	 * @return A list of Base data results
+	 */	
+    @Path("/CB-12")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ12(String[] data) {    	
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getFailCountByImsiAndDate(data[0], data[1], data[2]));
+    	return baseData;
+    }
+    
+  
+    /**
+   	 * Gets a list of results from a query
+   	 * @return A list of Base data results
+   	 */	
+    @Path("/CB-15")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ15(String[] dates) {    	
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
+    	return baseData;
+    }
+        
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-19/{failure}")
+    @GET
+ 	@Produces(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
+ 	public ResultList getQ19(@PathParam("failure") String failure) {    	
+ 	   	ResultList baseData = new ResultList();
+ 	   	baseData.setDataCollection(service.getIMSIsforFailureClass(failure));
+ 	    	return baseData;
+ 		
+ 	}
+    
+    /**
      * Adds new entry to failure table in database
      * @param newEntry to be added to database
      * @return added failuretable entry
@@ -138,7 +183,7 @@ public class ValidDataCRUDService {
     	newEntry.setId(0);
 		service.addNewEntry(newEntry);
 		return newEntry;
-	}
+	} 
     
     /**
      * Gets a list of results from a query
@@ -150,6 +195,17 @@ public class ValidDataCRUDService {
     //@Consumes(MediaType.APPLICATION_JSON)
     public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
         return service.getAllImsiValues(page, searchTerm, pageLimit);
+    }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/failure")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<String> getAllFailures() {
+        return service.getAllFailureValues();
     }
     
     /**

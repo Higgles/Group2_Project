@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Examples: Pie Charts</title>
+	<link href="example.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+
+	.demo-container {
+		position: relative;
+		height: 400px;
+	}
+
+	#placeholder {
+		width: 550px;
+	}
+
+	</style>
+	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<script language="javascript" type="text/javascript" src="media/js/jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="media/js/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="media/js/jquery.flot.pie.js"></script>
+	<script type="text/javascript">
+
+	$(function() {
+
+		var data = [
+		 //data got from something like: document.getElementById("count").innerHTML
+		 //label got from: 
+			{ label: "Series1",  data: 3599 },
+			{ label: "Series2",  data: 3494 },
+			{ label: "Series3",  data: 3411 },
+			{ label: "Series4",  data: 3239 },
+			{ label: "Series5",  data: 3164 },
+			{ label: "Series6",  data: 3103 },
+			{ label: "Series7",  data: 2951 },
+			{ label: "Series8",  data: 2652 },
+			{ label: "Series9",  data: 1217 },
+			{ label: "Series10",  data: 1154 }
+		];	
+
+
+		var placeholder = $("#placeholder");
+
+		$(document).ready(function () {
+
+			placeholder.unbind();
+
+			$("#title").text("Interactivity");
+			$("#description").text("The pie can be made interactive with hover and click events.");
+
+			$.plot(placeholder, data, {
+				series: {
+					pie: { 
+						show: true
+					}
+				},
+				grid: {
+					hoverable: true,
+					clickable: true
+				}
+			});
+
+			setCode([
+				"$.plot('#placeholder', data, {",
+				"    series: {",
+				"        pie: {",
+				"            show: true",
+				"        }",
+				"    },",
+				"    grid: {",
+				"        hoverable: true,",
+				"        clickable: true",
+				"    }",
+				"});"
+			]);
+
+			placeholder.bind("plothover", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+
+				var percent = parseFloat(obj.series.percent).toFixed(2);
+				$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
+			});
+
+			placeholder.bind("plotclick", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+
+				percent = parseFloat(obj.series.percent).toFixed(2);
+				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "%";
+			});
+		});
+	});
+
+	function labelFormatter(label, series) {
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+	}
+
+	function setCode(lines) {
+		$("#code").text(lines.join("\n"));
+	}
+
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Look at this graph</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+		</div>
+	<p id = "percent"></p>
+	<div id="footer">
+	</div>
+
+</body>
+</html>

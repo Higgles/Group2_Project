@@ -151,6 +151,55 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
+	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2){
+		Query query = em.createQuery(""
+				+"select count(bd.id), sum(duration) "
+				+"from BaseData bd "
+				+"where bd.imsi=:imsi "
+				+"and bd.dateTime >=:date1 and bd.dateTime <:date2 ");
+
+		query.setParameter("imsi", imsi);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List basedata = query.getResultList();
+		basedata.add(0, new Object[]{"Count", "Total Duration"});
+		return basedata;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd){
+		Query query = em.createQuery(""
+				+"select bd.mccmnc.country, bd.mccmnc.operator, bd.cellId, count(bd.id) "  
+				+"from BaseData bd "
+				+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
+				+"group by bd.mccmnc.country, bd.mccmnc.operator, bd.cellId "						
+				+"order by count(bd.id) desc ");
+		query.setParameter("date1", dateStart);
+		query.setParameter("date2", dateEnd);
+		List basedata = query.setMaxResults(10).getResultList();
+		basedata.add(0, new Object[]{"Market", "Operator","Cell Id","Count"});
+		return basedata;	
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
+			Query query = em.createQuery(""
+					+"select bd.imsi, count(bd.id) "  
+					+"from BaseData bd "
+					+"where bd.failureClass.description =:failureClass "
+					+"group by bd.imsi ");
+			query.setParameter("failureClass",failureClass);
+			List basedata = query.getResultList();
+			basedata.add(0, new Object[]{"IMSIs","Count"});
+			return basedata;	
+		}
+	
+	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
 		Query query = em.createQuery(""
 		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id), sum(bd.duration) "
@@ -184,7 +233,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery("DELETE from BaseData");
 		query.executeUpdate();
 	}
-
+	
+	@SuppressWarnings({"unchecked" })
 	@Override
 	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit) {
 		
@@ -198,14 +248,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		return basedata;
 	}
 	
-	
-	/**
-	 * User Story 4
-	 * 
-	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
-	 * the Event ID and Cause Code for any / all failures affecting that IMSI
-	 * 
-	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection) {
@@ -254,7 +296,15 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				List basedata = query.setMaxResults(10).getResultList();
 				basedata.add(0, top10ImsiListBetween2DatesHeadings);
 				return basedata;
-	}	
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public Collection<String> getAllFailureValues() {
+		Query query = em.createQuery("select distinct bd.failureClass.description from FailureClass bd");
+		List<String> basedata = query.getResultList();
+		return basedata;
+	}
 		
 	/*public void populateBaseDataTableJSON(JSONArray baseData) {
 		Query query = em.createQuery("from BaseData");

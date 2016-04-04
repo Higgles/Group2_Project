@@ -33,7 +33,7 @@ public interface BaseDataService extends FailureTableService{
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2);
 	
 	/**
-	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
+	 * Display IMSIs with call failures during a given time period
 	 * @param start date, end date 
 	 * @return a collection of FailureTable results
 	 */	
@@ -57,6 +57,12 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of unique imsi values
 	 */
 	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit);
+	
+	/**
+	 * Gets all unique failure values from database
+	 * @return a collection of unique failure values
+	 */
+	public Collection<String> getAllFailureValues();
 
 	 /** 
 	 * Gets event id's and cause code combinations for an input IMSI from the database
@@ -69,6 +75,30 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of FailureTable results
 	 */
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection);
+	
+	/**
+	 * Count the number of failures, for a given IMSI, during a given time period.
+	 * @param imsi to be checked
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */	
+	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
+	
+	/**
+	 * Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
+	 * @param dateStart start date for time period
+	 * @param dateEnd end date for time period
+	 * @return a collection of FailureTable rows from underlying table
+	 */
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+
+	/**
+	 * Display the IMSIs that were affected for a given failure Cause Class.
+	 * @param Failure Class
+	 * @return a collection of IMSI rows from underlying table
+	 */
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
 
 	/** 
 	 * Gets unique cause code for an input IMSI from the database

@@ -36,6 +36,9 @@ public class BaseDataServiceTest {
 		when(mockedBaseDataDao.getImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getNoOfCallFailuresAndDurationForImsiInDateRange(isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getFailCountByImsiAndDate(isA(String.class),isA(String.class), isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getTop10MarketOperatorCellBetween2Dates(isA(String.class),isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getIMSIsforFailureClass(isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getTop10ImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
 		baseDataService=new BaseDataServiceEJB();
@@ -81,6 +84,24 @@ public class BaseDataServiceTest {
 	@Test
 	public void getNoOfCallFailuresAndDurationForImsiInDateRangetest() {
 		Collection<FailureTable> baseData = baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange("","");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getFailCountByImsiAndDate(){
+		Collection<FailureTable> baseData = baseDataService.getFailCountByImsiAndDate("","","");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getTop10MarketOperatorCellBetween2Dates(){
+		Collection<FailureTable> baseData = baseDataService.getTop10MarketOperatorCellBetween2Dates("","");
+		assertEquals(baseData1, baseData.iterator().next());
+	}
+	
+	@Test
+	public void getIMSIsforFailureClass(){
+		Collection<FailureTable> baseData = baseDataService.getIMSIsforFailureClass("");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 	
