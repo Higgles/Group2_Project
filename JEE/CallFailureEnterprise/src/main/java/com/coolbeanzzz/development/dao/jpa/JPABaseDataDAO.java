@@ -208,11 +208,22 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection) {
+		Query countquery = em.createQuery(" select count(id) from BaseData bd where bd.imsi=:IMSI and Concat(bd.dateTime, '', bd.eventCause.eventId, '', bd.eventCause.causeCode, '', bd.eventCause.description) like :searchTerm");
 		Query query = em.createQuery(" select bd.dateTime, bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description "				//QUERY
-				+ " from BaseData bd where bd.imsi=:IMSI");
+				+ " from BaseData bd "
+				+ "where bd.imsi=:IMSI and Concat(bd.dateTime, '', bd.eventCause.eventId, '', bd.eventCause.causeCode, '', bd.eventCause.description) like :searchTerm "
+				+ "order by :order "+orderDirection);
 		query.setParameter("IMSI", IMSI);
+		countquery.setParameter("IMSI", IMSI);
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		countquery.setParameter("searchTerm", "%"+searchTerm+"%");
+		System.out.println((orderColumn+1)+" "+orderDirection);
+		query.setParameter("order", (orderColumn+1));
+		query.setFirstResult(start).setMaxResults(length);
 		List basedata = query.getResultList();
+		long resultSize = (long) countquery.getSingleResult();
+		basedata.add(0, resultSize);
 		basedata.add(0, allEventIdsCauseCodeForImsiHeadings);
 		return basedata;
 	}

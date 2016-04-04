@@ -273,8 +273,8 @@ public class IntegrationTest {
 	@Test
 	@InSequence(12)
 	public void getEventIdsCauseCodeForIMSITest() {
-		Collection<?> res=baseDataService.getEventIdsCauseCodeForIMSI("2344930000000011");
-		assertEquals(res.size(),1);
+		Collection<?> res=baseDataService.getEventIdsCauseCodeForIMSI("2344930000000011",0,0,"");
+		assertEquals(2, res.size());
 	}
 	
 	@Test

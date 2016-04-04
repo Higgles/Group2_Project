@@ -30,7 +30,7 @@ public class BaseDataServiceTest {
 		bds.add(baseData2);
 		when(mockedBaseDataDao.getAllTableRows()).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class),isA(String.class))).thenReturn(bds);
-		when(mockedBaseDataDao.getEventIdsCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
+		when(mockedBaseDataDao.getEventIdsCauseCodeForIMSI(isA(String.class), anyInt(), anyInt(), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getAllImsiValues(anyInt(), isA(String.class), anyInt())).thenReturn(new ArrayList<String>());
 		when(mockedBaseDataDao.getFailCountByPhoneModel(isA(String.class), isA(String.class), isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
@@ -56,7 +56,7 @@ public class BaseDataServiceTest {
 	
 	@Test
 	public void getEventIdsCauseCodeForIMSItest() {
-		Collection<FailureTable> baseData = baseDataService.getEventIdsCauseCodeForIMSI("1");
+		Collection<FailureTable> baseData = baseDataService.getEventIdsCauseCodeForIMSI("1",0,0,"");
 		assertEquals(baseData1, baseData.iterator().next());
 	}
 	

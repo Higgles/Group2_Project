@@ -9,16 +9,19 @@
 <link rel="stylesheet" href="media/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
 <link rel="stylesheet" type="text/css" href="resources/demo.css">
-<link rel="stylesheet" href="media/css/bootstrap-table.css">
+<!--link rel="stylesheet" href="media/css/bootstrap-table.css"-->
+<link rel="stylesheet" type="text/css" href="media/css/jquery.dataTables.min.css">
 <link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
 <link rel="stylesheet" type="text/css" href="media/css/mainPage.css">
 <style type="text/css" class="init"></style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
+<!--script type="text/javascript" language="javascript" src="resources/demo.js"></script-->
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
+<!-- script type="text/javascript" src="media/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script-->
+<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="media/js/transition.js"></script>
 <script type="text/javascript" src="media/js/moment-with-locales.js"></script>
 <script type="text/javascript" src="media/js/collapse.js"></script>
@@ -147,15 +150,14 @@
 			</div>
 			<div id="collapseTwo" class="collapse">
 				<div class="panel-body" style="font-size: 15px;">
-					<div id="resultsDiv"
-						style="overflow: auto; height: auto; max-height: 300px; display: none;">
-						<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
+					<div id="resultsDiv" style="display: none;">
+						<table id="dataTable" class="display">
 						</table>
 					</div>
 				</div>
-				<div class="panel-footer" style="font-size: 15px;">
+				<!--div class="panel-footer" style="font-size: 15px;">
 					<p id="count"></p>
-				</div>
+				</div-->
 			</div>
 		</div>
 	</div>
@@ -170,7 +172,7 @@
 		$(document).ready(function() {
 			$(function() {
 				$(".js-example-responsive").select2();
-				$("#dataTable").tablesorter();
+				//$("#dataTable").DataTable();
 				setUserDetails();
 			});
 		});
@@ -432,50 +434,28 @@
 			
 			$.ajax({
 				type : queryType,
-				url : queryUrl,
+				url : queryUrl+"?start=0&length=1&headings=true",
 				dataType : ajaxDetails.dataType,
 				contentType : ajaxDetails.contentType,
 				data : ajaxDetails.data,
 				success : function(data) {
 					$("#resultsDiv").empty();
-					var table = $("<table id='dataTable' class='table tablesorter tablesorter-default table-striped table-bordered'>");
+					var table = $("<table id='dataTable' class='display'>");
 					
 					$("#resultsDiv").append(table);
-						document.getElementById("count").innerHTML = "Count ="
-							+ (data.dataCollection.length - 1);
 					var columnTitles = [];
-					for (j = 0; j < data.dataCollection[0].length; j++) {
+					for (j = 0; j < data.data[0].length; j++) {
 						columnTitles.push({
-							title : "" + data.dataCollection[0][j],
-							field : "" + data.dataCollection[0][j],
-							align : 'center',
-							valign : 'middle',
-							sortable : true
+							title : "" + data.data[0][j]
 						});
 					}
-	
-					$('#dataTable').bootstrapTable({
-						columns : columnTitles
+					
+					$('#dataTable').DataTable({
+						columns : columnTitles,
+						serverSide: true,
+				        ajax: queryUrl,
+				        //sort: false
 					});
-	
-					var arr = [];
-					for (i = 1; i < data.dataCollection.length; i++) {
-						var rowData = '{';
-						for (j = 0; j < data.dataCollection[i].length - 1; j++) {
-							rowData += '"' + data.dataCollection[0][j]
-									+ '" : "'
-									+ data.dataCollection[i][j] + '",';
-						}
-						rowData += '"'
-								+ data.dataCollection[0][data.dataCollection[i].length - 1]
-								+ '" : "'
-								+ data.dataCollection[i][data.dataCollection[i].length - 1]
-								+ '"';
-						rowData += '}';
-						arr.push(JSON.parse(rowData));
-					}
-					$('#dataTable').bootstrapTable('load', arr);
-					$("#dataTable").trigger("update");
 					document.getElementById("resultsDiv").style.display = "block";
 					document.getElementById("collapseTwo")
 							.scrollIntoView();

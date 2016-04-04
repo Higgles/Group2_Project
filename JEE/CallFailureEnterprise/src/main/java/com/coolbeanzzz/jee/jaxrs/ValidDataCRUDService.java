@@ -4,11 +4,12 @@
 package com.coolbeanzzz.jee.jaxrs;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,6 +17,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -72,13 +75,28 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-4/{imsi}")
+    @SuppressWarnings("unchecked")
+	@Path("/CB-4/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ4(@PathParam("imsi") String imsi) {
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getEventIdsCauseCodeForIMSI(imsi));
-        return baseData;
+    public JSONObject getQ4(@PathParam("imsi") String imsi, @QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, @QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
+    	List queryResults = (List) service.getEventIdsCauseCodeForIMSI(imsi, start, length, searchTerm, orderColumn, orderDirection);
+    	JSONObject result;
+    	HashMap res = new HashMap();
+    	res.put("draw", draw);
+    	long total = (long) queryResults.remove(1);
+    	if(!headings)
+    		queryResults.remove(0);
+    	res.put("recordsTotal", total);
+    	res.put("recordsFiltered", total);
+    	res.put("data", queryResults);
+    	result = new JSONObject(res);
+        return result;
     }
 
     /**
