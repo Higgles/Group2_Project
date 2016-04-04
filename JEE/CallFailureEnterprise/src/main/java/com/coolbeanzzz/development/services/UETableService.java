@@ -24,13 +24,19 @@ public interface UETableService extends FailureTableService{
 	
 	/**
 	 * Gets all unique manufacturer values from database
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return a collection of unique manufacturer values
 	 */
-	public Collection<String> getAllManufacturers();
+	public Collection<String> getAllManufacturers(int page, String searchTerm, int pageLimit);
 	
 	/**
 	 * Gets all models relating to manufacturer from database
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return a collection of model values
 	 */
-	public Collection<String> getModelsForManufacturer(String manufacturer);
+	public Collection<String> getModelsForManufacturer(String manufacturer, int page, String searchTerm, int pageLimit);
 }

@@ -236,8 +236,14 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({"unchecked" })
 	@Override
-	public Collection<String> getAllImsiValues() {
-		Query query = em.createQuery("select distinct bd.imsi from BaseData bd");
+	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit) {
+		
+		Query query = em.createQuery("select distinct bd.imsi from BaseData bd where bd.imsi like :searchTerm");
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		if(pageLimit != -1){
+			int start = pageLimit * (page - 1);
+			query.setFirstResult(start).setMaxResults(pageLimit);
+		}
 		List<String> basedata = query.getResultList();
 		return basedata;
 	}

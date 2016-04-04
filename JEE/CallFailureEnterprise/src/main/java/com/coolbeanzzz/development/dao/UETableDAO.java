@@ -20,13 +20,19 @@ public interface UETableDAO extends FailureTableDAO{
 	
 	/**
 	 * Gets all manufacturers from database
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return a collection of manufacturers from database
 	 */	
-	Collection<String> getAllManufacturers();
+	Collection<String> getAllManufacturers(int page, String searchTerm, int pageLimit);
 	
 	/**
 	 * Gets all models for given manufacturer
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return a collection of models relating to the input manufacturer from database
 	 */	
-	Collection<String> getModelsForManufacturer(String manufacturer);
+	Collection<String> getModelsForManufacturer(String manufacturer, int page, String searchTerm, int pageLimit);
 }

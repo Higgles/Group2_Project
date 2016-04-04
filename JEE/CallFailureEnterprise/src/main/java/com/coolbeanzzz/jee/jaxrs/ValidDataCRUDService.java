@@ -7,11 +7,14 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.coolbeanzzz.development.entities.BaseData;
@@ -171,8 +174,9 @@ public class ValidDataCRUDService {
     @Path("/imsis")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<String> getAllImsis() {
-        return service.getAllImsiValues();
+    //@Consumes(MediaType.APPLICATION_JSON)
+    public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
+        return service.getAllImsiValues(page, searchTerm, pageLimit);
     }
     
     /**

@@ -96,8 +96,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 
 	@Override
-	public Collection<String> getAllImsiValues() {
-		return dao.getAllImsiValues();
+	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit) {
+		return dao.getAllImsiValues(page, searchTerm, pageLimit);
 	}
 	
 	@Override

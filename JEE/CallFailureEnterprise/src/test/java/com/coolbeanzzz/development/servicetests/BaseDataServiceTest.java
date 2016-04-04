@@ -31,7 +31,7 @@ public class BaseDataServiceTest {
 		when(mockedBaseDataDao.getAllTableRows()).thenReturn(bds);
 		when(mockedBaseDataDao.getUniqueEventIdsCauseCodeForPhoneType(isA(String.class),isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getEventIdsCauseCodeForIMSI(isA(String.class))).thenReturn(bds);
-		when(mockedBaseDataDao.getAllImsiValues()).thenReturn(new ArrayList<String>());
+		when(mockedBaseDataDao.getAllImsiValues(anyInt(), isA(String.class), anyInt())).thenReturn(new ArrayList<String>());
 		when(mockedBaseDataDao.getFailCountByPhoneModel(isA(String.class), isA(String.class), isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getImsiListBetween2Dates(isA(String.class), isA(String.class))).thenReturn(bds);
 		when(mockedBaseDataDao.getNoOfCallFailuresAndDurationForImsiInDateRange(isA(String.class), isA(String.class))).thenReturn(bds);
@@ -65,7 +65,7 @@ public class BaseDataServiceTest {
 	
 	@Test
 	public void getAllImsiValuestest() {
-		Collection<String> allImsiValues = baseDataService.getAllImsiValues();
+		Collection<String> allImsiValues = baseDataService.getAllImsiValues(1,"", -1);
 		assert(allImsiValues.size()==0);
 	}
 	

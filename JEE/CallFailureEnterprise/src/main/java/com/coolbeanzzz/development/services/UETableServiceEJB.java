@@ -78,13 +78,13 @@ public class UETableServiceEJB implements UETableService {
 	}
 
 	@Override
-	public Collection<String> getAllManufacturers() {
-		return dao.getAllManufacturers();
+	public Collection<String> getAllManufacturers(int page, String searchTerm, int pageLimit) {
+		return dao.getAllManufacturers(page, searchTerm, pageLimit);
 	}
 
 	@Override
-	public Collection<String> getModelsForManufacturer(String manufacturer) {
-		return dao.getModelsForManufacturer(manufacturer);
+	public Collection<String> getModelsForManufacturer(String manufacturer, int page, String searchTerm, int pageLimit) {
+		return dao.getModelsForManufacturer(manufacturer, page, searchTerm, pageLimit);
 	}
 
 	@Override

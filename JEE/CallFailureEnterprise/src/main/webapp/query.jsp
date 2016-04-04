@@ -142,21 +142,21 @@
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="manufacturerDropdown">Choose Manufacturer:</label> 
-								<select id="manufacturerDropdown" class="js-example-responsive" style="width: 300px">
+								<select id="manufacturerDropdown" class="js-data-example-ajax" style="width: 300px">
 								</select>
 							</div>
 						</div>
 						<div class='col-lg-4 col-md-4'>
 							<div class="form-group">
 								<label for="modelDropdown">Choose Model:</label> 
-								<select id="modelDropdown" class="js-example-responsive" style="width: 300px">
+								<select id="modelDropdown" class="js-data-example-ajax" style="width: 300px">
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="container" id="imsiPicker">
 						<label for="imsiDropdown">Choose IMSI:</label> 
-						<select id="imsiDropdown" class="js-example-responsive" style="width: 400px">
+						<select id="imsiDropdown" class="js-data-example-ajax" style="width: 400px">
 						</select>
 					</div>
 					<div class="container" id="failurePicker">
@@ -201,6 +201,7 @@
 	<!--  /div -->
 	<p id = "percent"></p>
 	<script>
+		const QUERYPAGELIMIT = 20;
 		var selectedQuery=1;
 		var queryType="GET";
 		selectQuery(1);
@@ -209,14 +210,44 @@
 			$(function() {
 				$(".js-example-responsive").select2();
 				$("#dataTable").tablesorter();
-				populateManufacturerDropdown();
-				
-				populateImsiDropdown();
 				populateFailureDropdown();
 				setUserDetails();
 			});
 		});
-
+		
+		$("#imsiDropdown").select2({
+			placeholder: 'IMSI',
+			ajax: {
+				type : 'GET',
+				url: 'rest/validdata/imsis',
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
+			}
+		});
+		
 		$(function() {
 			$('#fromdatetimepicker').datetimepicker({
 				locale : 'en-gb'
@@ -249,64 +280,78 @@
 				},
 			});
 		}
-
-		$("#manufacturerDropdown").on("change",function(e) {
-			$("#modelDropdown").empty();
-			if($("#manufacturerDropdown").select2('data').length>0){
-				$.ajax({
-						type : 'GET',
-						url : 'rest/uetables/models/'
-								+ $("#manufacturerDropdown").select2(
-										'data')[0].text,
-						success : function(data) {
-							for (i = 0; i < data.length; i++) {
-								var opt = data[i];
-								var text = "<option value=\""+i+"\">"
-										+ opt + "</option>";
-								$("#modelDropdown").append(text);
+		
+		$("#manufacturerDropdown").select2({
+			placeholder: 'Manufacturer',
+			ajax: {
+				type : 'GET',
+				url: 'rest/uetables/manufacturers',
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
 							}
-							var $example = $("#modelDropdown")
-									.select2();
-							$example.val("0").trigger("change");
-						},
-					});
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
 			}
 		});
-
-		function populateManufacturerDropdown() {
-			$("#manufacturerDropdown").empty();
-			$.ajax({
-				type : 'GET',
-				url : 'rest/uetables/manufacturers',
-				success : function(data) {
-					for (i = 0; i < data.length; i++) {
-						var opt = data[i];
-						var text = "<option value=\""+i+"\">" + opt
-								+ "</option>";
-						$("#manufacturerDropdown").append(text);
-					}
-					var $example = $("#manufacturerDropdown").select2();
-					$example.val("0").trigger("change");
-				},
-			});
-		}
 		
-		function populateImsiDropdown(){
-			$("#imsiDropdown").empty();
-			$.ajax({
+		$("#modelDropdown").select2({
+			placeholder: 'Model',
+			ajax: {
 				type : 'GET',
-				url : 'rest/validdata/imsis',
-				success : function(data){
-					for(i=0;i<data.length;i++){
-						var opt = data[i];  
-						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#imsiDropdown").append(text);
+				url : function(){
+					if($("#manufacturerDropdown").select2('data').length>0)
+						return 'rest/uetables/models/'+ $("#manufacturerDropdown").select2('data')[0].text;
+					else{
+						return 'rest/uetables/models/';
 					}
-					var $example = $("#imsiDropdown").select2();
-					$example.val("0").trigger("change");
 				},
-			});
-		}
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
+			}
+		});
 		
 		function populateFailureDropdown(){
 			$("#failureDropdown").empty();
@@ -323,16 +368,73 @@
 					$example.val("0").trigger("change");
 				},
 			});
-		}
+		}				
 		
-		
+		$("#manufacturerDropdown").on("change",function(e) {
+			$("#modelDropdown").val('').trigger('change');	
+		});
 
 		$("#query1").click(function() {
+			validate();
+		});
+
+		function validate(){
+			switch(selectedQuery){
+			case 1:
+				if($("#imsiDropdown").select2('data').length<1){
+					alert("Select Imsi value");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 2:
+					showData();
+				break;
+			case 3:
+				if($("#manufacturerDropdown").select2('data').length<1){
+					alert("Choose Manufacturer");
+				}
+				else if($("#modelDropdown").select2('data').length<1){
+					alert("Choose Model");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 4:
+				showData();
+				break;
+			case 5:
+				if($("#manufacturerDropdown").select2('data').length<1){
+					alert("Choose Manufacturer");
+				}
+				else if($("#modelDropdown").select2('data').length<1){
+					alert("Choose Model");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 14:
+				if($("#imsiDropdown").select2('data').length<1){
+					alert("Select Imsi value");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 15:
+				showData();
+				break;
+			}
+		}
+		
+		function showData(){
 			$('#collapseOne').collapse("hide");
 			$('#collapseTwo').collapse('show');
 			setTimeout(getData, 300);
-		});
-
+		}
 		
 		function getData() {
 			var fromdate = $("#fromdatetimepicker").data("DateTimePicker").date();
@@ -358,18 +460,8 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
-				if($("#manufacturerDropdown").select2('data').length>0){
-					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				}
-				else{
-					inputData.push(" ");
-				}
-				if($("#modelDropdown").select2('data').length>0){
-					inputData.push($("#modelDropdown").select2('data')[0].text);
-				}
-				else{
-					inputData.push(" ");
-				}
+				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				inputData.push($("#modelDropdown").select2('data')[0].text);
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
@@ -378,18 +470,8 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
-				if($("#manufacturerDropdown").select2('data').length>0){
-					inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				}
-				else{
-					inputData.push(" ");
-				}
-				if($("#modelDropdown").select2('data').length>0){
-					inputData.push($("#modelDropdown").select2('data')[0].text);
-				}
-				else{
-					inputData.push(" ");
-				}
+				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
+				inputData.push($("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
 				if($("#imsiDropdown").select2('data').length>0){
@@ -472,11 +554,6 @@
 			});
 
 		}
-		
-		$("#empty").click(function clear() {
-			var $example = $("#modelDropdown").select2();
-			$example.val("3").trigger("change");
-		});
 
 		$('#phead').click(function(e) {
 			$('#collapseOne').collapse('toggle');

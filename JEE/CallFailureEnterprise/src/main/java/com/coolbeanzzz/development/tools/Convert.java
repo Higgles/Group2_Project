@@ -22,14 +22,13 @@ import jxl.read.biff.BiffException;
 public class Convert {
 	
 	/**
-	 * Creates a json file from each sheet in a provided xls file
+	 * Creates a json araay from each sheet in a provided xls file
 	 * Creates and returns a JSON array for the base data sheet to be used for consistency checking
-	 * @throws BiffException 
 	 * 
-	 * @param inputFile Set the xls file to be converted to json
+	 * @param inputFile Set the xls file to be converted to json arrays
+	 * @throws IOException, InterruptedException 
 	 */
-	public static ArrayList<JSONArray> convert(String inputFile) throws IOException, BiffException {
-		File inputWorkbook = new File(inputFile);
+	public static ArrayList<JSONArray> convert(File inputFile) throws IOException, InterruptedException, BiffException{
 		Workbook workbook;
 		
 		ArrayList<String[]> labelList = new ArrayList<String[]>();
@@ -58,8 +57,7 @@ public class Convert {
 		JSONArray failureClassTable = new JSONArray();
 		JSONArray ueTable = new JSONArray();
 		JSONArray mccMncTable = new JSONArray();
-		
-		workbook = Workbook.getWorkbook(inputWorkbook);
+		workbook = Workbook.getWorkbook(inputFile);
 		for(int sheetNumber = 0; sheetNumber < workbook.getNumberOfSheets(); sheetNumber++){
 			sheet = workbook.getSheet(sheetNumber);
 			String[] sheetLabels = labelList.get(sheetNumber);

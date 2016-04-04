@@ -7,11 +7,13 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.coolbeanzzz.development.entities.FailureTable;
@@ -45,8 +47,8 @@ public class UETableCRUDService {
     @GET
     @Path("/manufacturers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<String> getUeTableManufacturers() {
-    	return service.getAllManufacturers();
+    public Collection<String> getUeTableManufacturers(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
+    	return service.getAllManufacturers(page, searchTerm, pageLimit);
     }
     
     /**
@@ -56,8 +58,8 @@ public class UETableCRUDService {
     @GET
     @Path("/models/{manufacturer}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<String> getUeTableModels(@PathParam("manufacturer") String manufacturer) {
-    	return service.getModelsForManufacturer(manufacturer);
+    public Collection<String> getUeTableModels(@PathParam("manufacturer") String manufacturer, @DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
+    	return service.getModelsForManufacturer(manufacturer, page, searchTerm, pageLimit);
     }
     
     /**
