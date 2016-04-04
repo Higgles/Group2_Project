@@ -102,12 +102,5 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
-	
-	/**
-	 * Queries the database for all unique failure values
-	 * @return a collection of failure values
-	 */	
-	Collection<String> getAllFailureValues();
-	
+	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );	
 }

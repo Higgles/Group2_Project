@@ -201,17 +201,6 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/failure")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Collection<String> getAllFailures() {
-        return service.getAllFailureValues();
-    }
-    
-    /**
-     * Gets a list of results from a query
-     * @return A list of Base data results
-     */
     @Path("/CB-17/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

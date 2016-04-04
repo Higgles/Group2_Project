@@ -164,7 +164,7 @@
 					</div>
 					<div class="container" id="failurePicker">
 						<label for="failureDropdown">Choose Failure Class:</label> 
-						<select id="failureDropdown" class="js-example-responsive" style="width: 400px">
+						<select id="failureDropdown" class="js-data-example-ajax" style="width: 400px">
 						</select>
 					</div>
 					<button id="query1" type="button" class="btn btn-primary">Run Query</button>
@@ -211,7 +211,7 @@
 			$(function() {
 				$(".js-example-responsive").select2();
 				//$("#dataTable").DataTable();
-				populateFailureDropdown();
+				//populateFailureDropdown();
 				setUserDetails();
 			});
 		});
@@ -249,38 +249,38 @@
 			}
 		});
 		
-		$(function() {
-			$('#fromdatetimepicker').datetimepicker({
-				locale : 'en-gb'
-			});
-			$('#todatetimepicker').datetimepicker({
-				useCurrent : false,
-				locale : 'en-gb'
-			});
-			
-			$("#fromdatetimepicker").on("dp.change", function(e) {
-				$('#todatetimepicker').data("DateTimePicker").minDate(e.date);
-			});
-			$("#todatetimepicker").on("dp.change", function(e) {
-				$('#fromdatetimepicker').data("DateTimePicker").maxDate(e.date);
-			});
-			$('#fromdatetimepicker').data("DateTimePicker").date(new Date());
-			$('#todatetimepicker').data("DateTimePicker").date(new Date());
-		});
-
-		function setUserDetails() {
-			$.ajax({
+		$("#failureDropdown").select2({
+			placeholder: 'Failure Class',
+			ajax: {
 				type : 'GET',
-				url : 'rest/users/currentUser',
-				success : function(data) {
-					var userBar = document.getElementById("userBar");
-					userBar.innerHTML = "Priviledge type: " + data[1];
-					var loginType = document.getElementById("logintype");
-					loginType.innerHTML = "<span></span>Logged in as: "
-							+ data[0];
+				url: 'rest/failureclasses/descriptions',
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
 				},
-			});
-		}
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
+			}
+		});
 		
 		$("#manufacturerDropdown").select2({
 			placeholder: 'Manufacturer',
@@ -354,7 +354,7 @@
 			}
 		});
 		
-		function populateFailureDropdown(){
+		/*function populateFailureDropdown(){
 			$("#failureDropdown").empty();
 			$.ajax({
 				type : 'GET',
@@ -369,11 +369,44 @@
 					$example.val("0").trigger("change");
 				},
 			});
-		}				
+		}*/				
 		
 		$("#manufacturerDropdown").on("change",function(e) {
 			$("#modelDropdown").val('').trigger('change');	
 		});
+		
+		$(function() {
+			$('#fromdatetimepicker').datetimepicker({
+				locale : 'en-gb'
+			});
+			$('#todatetimepicker').datetimepicker({
+				useCurrent : false,
+				locale : 'en-gb'
+			});
+			
+			$("#fromdatetimepicker").on("dp.change", function(e) {
+				$('#todatetimepicker').data("DateTimePicker").minDate(e.date);
+			});
+			$("#todatetimepicker").on("dp.change", function(e) {
+				$('#fromdatetimepicker').data("DateTimePicker").maxDate(e.date);
+			});
+			$('#fromdatetimepicker').data("DateTimePicker").date(new Date());
+			$('#todatetimepicker').data("DateTimePicker").date(new Date());
+		});
+
+		function setUserDetails() {
+			$.ajax({
+				type : 'GET',
+				url : 'rest/users/currentUser',
+				success : function(data) {
+					var userBar = document.getElementById("userBar");
+					userBar.innerHTML = "Priviledge type: " + data[1];
+					var loginType = document.getElementById("logintype");
+					loginType.innerHTML = "<span></span>Logged in as: "
+							+ data[0];
+				},
+			});
+		}
 
 		$("#query1").click(function() {
 			validate();
