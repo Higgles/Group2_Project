@@ -417,6 +417,17 @@
 					showData();
 				}
 				break;
+			case 9:
+				if($("#imsiDropdown").select2('data').length<1){
+					alert("Select Imsi value");
+				}
+				else{
+					showData();
+				}
+				break;
+			case 12:
+				showData();
+				break;
 			case 14:
 				if($("#imsiDropdown").select2('data').length<1){
 					alert("Select Imsi value");
@@ -427,6 +438,14 @@
 				break;
 			case 15:
 				showData();
+				break;
+			case 16:
+				if($("#failureDropdown").select2('data').length<1){
+					alert("Select Failure Class");
+				}
+				else{
+					showData();
+				}
 				break;
 			}
 		}
@@ -475,9 +494,7 @@
 				inputData.push($("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
-				if($("#imsiDropdown").select2('data').length>0){
-					inputData.push($("#imsiDropdown").select2('data')[0].text);
-				}
+				inputData.push($("#imsiDropdown").select2('data')[0].text);
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;				
