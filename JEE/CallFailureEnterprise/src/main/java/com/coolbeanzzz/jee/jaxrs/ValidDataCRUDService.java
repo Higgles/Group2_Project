@@ -240,13 +240,20 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-18")
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ResultList getQ18(String[] dates) {    	
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getTop10ImsiListBetween2Dates(dates[0], dates[1]));
-    	return baseData;
+    public JSONObject getQ18(@QueryParam("fromdate") String fromdate, 
+    		@QueryParam("todate") String todate, 
+    		@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	    	
+    	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getTop10ImsiListBetween2Dates(fromdate, todate, options);
+    	return this.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**

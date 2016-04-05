@@ -108,9 +108,10 @@ public interface BaseDataService extends FailureTableService{
 	
 	/**
 	 * Gets a list of the top 10 IMSIs with call failures during a given time period from the database
+	 * @param options 
 	 * @param start date, end date 
 	 * @return a collection of FailureTable results
 	 */	
-	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options );
 }
 

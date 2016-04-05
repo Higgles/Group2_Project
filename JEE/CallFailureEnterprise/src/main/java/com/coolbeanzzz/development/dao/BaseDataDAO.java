@@ -100,8 +100,9 @@ public interface BaseDataDAO extends FailureTableDAO{
 	
 	/**
 	 * Queries the underlying table for a list of the top 10 IMSIs with call failures during a given time period
+	 * @param options 
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );	
+	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options );	
 }

@@ -338,18 +338,22 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
 		Query query = em.createQuery(""
-				+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, count(bd.imsi) "
-				+"from BaseData bd "
-				+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
-				+"group by bd.imsi "
-				+"order by count(bd.imsi) desc ");
-				query.setParameter("date1", date1);
-				query.setParameter("date2", date2);
-				List basedata = query.setMaxResults(10).getResultList();
-				basedata.add(0, top10ImsiListBetween2DatesHeadings);
-				return basedata;
+				+ "select bd.imsi,"
+				+ " bd.mccmnc.country,"
+				+ " bd.mccmnc.operator,"
+				+ " count(bd.imsi)"
+				+" from BaseData bd"
+				+" where bd.dateTime >=:date1"
+				+" and bd.dateTime <=:date2"
+				+" group by bd.imsi"
+				+" order by count(bd.imsi) desc");
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+				
+		List basedata = query.setMaxResults(10).getResultList();
+		return this.getQueryResultList(basedata, options, top10ImsiListBetween2DatesHeadings);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

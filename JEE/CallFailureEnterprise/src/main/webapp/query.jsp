@@ -204,7 +204,6 @@
 	<script>
 		const QUERYPAGELIMIT = 20;
 		var selectedQuery=1;
-		var queryType="GET";
 		selectQuery(1);
 		
 		$(document).ready(function() {
@@ -477,16 +476,8 @@
 			var queryUrl='rest/validdata/CB-'+(selectedQuery+3);
 			var inputData=[];
 			
-			var ajaxDetails={
-				type : queryType,
-				url : queryUrl,
-				dataType : null,
-				contentType : null,
-				data : null,
-				sort: true,
-				search: true
-			}
-			
+			var enablesort = true;
+			var enablesearch = true;
 			switch(selectedQuery){
 			case 1:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -517,24 +508,21 @@
 			case 12:
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
-				ajaxDetails.sort=false;
-				ajaxDetails.search=false;
+				enablesort=false;
+				enablesearch=false;
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 15:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
+				enablesort=false;
+				enablesearch=false;
 				break;
 			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
 				break;	
-			}
-			if(queryType=="POST"){
-				ajaxDetails.data=JSON.stringify(inputData);
-				ajaxDetails.dataType="json";
-				ajaxDetails.contentType='application/json';
 			}
 			
 			queryUrl+="?";
@@ -547,9 +535,8 @@
 			
 			
 			$.ajax({
-				type : queryType,
+				type : "GET",
 				url : queryUrl+"&start=0&length=1&headings=true",
-				data : ajaxDetails.data,
 				success : function(data) {
 					$("#resultsDiv").empty();
 					var table = $("<table id='dataTable' class='display'>");
@@ -566,8 +553,8 @@
 						columns : columnTitles,
 						serverSide: true,
 				        ajax: queryUrl,
-				        sort: ajaxDetails.sort,
-				        searching: ajaxDetails.search
+				        sort: enablesort,
+				        searching: enablesearch
 					});
 					document.getElementById("resultsDiv").style.display = "block";
 					document.getElementById("collapseTwo")
@@ -600,47 +587,36 @@
 			
 			switch(selectedQuery){
 			case 1:
-				queryType="GET";
 				imsiPickers.style.display="block";
 				break;
 			case 2:
 				dateTimePickers.style.display="block";
-				queryType="GET";
 				break;
 			case 3:
-				queryType="GET";
 				dateTimePickers.style.display="block";
 				tacPickers.style.display="block"
 				break;
 			case 4:
 				dateTimePickers.style.display="block";
-				queryType="GET";
 				break;
 			case 5:
-				queryType="GET";
 				tacPickers.style.display="block"
 				break;				
 			case 9:
-				queryType="GET";
 				imsiPickers.style.display="block";
 				dateTimePickers.style.display="block";
 				break;
 			case 12:
-				//queryType="GET";
 				dateTimePickers.style.display="block";
-				queryType="GET";
 				break;				
 			case 14:
-				queryType="GET";
 				imsiPickers.style.display="block";
 				break;
 			case 15:
 				dateTimePickers.style.display="block";
-				queryType="POST";
 				break;
 			case 16:
 				failurePickers.style.display="block";
-				queryType="GET";
 				break;
 			}
 		}
