@@ -62,16 +62,12 @@ public interface BaseDataService extends FailureTableService{
 	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit);
 
 	/** 
-	 * Gets event id's and cause code combinations for an input IMSI from the database
-	 * @param length 
-	 * @param start 
-	 * @param searchTerm 
-	 * @param orderDirection 
-	 * @param orderColumn 
-	 * @param input IMSI
+	 * Gets event id's and cause code combinations for an input IMSI from the database 
+	 * @param IMSI
+	 * @param options
 	 * @return a collection of FailureTable results
 	 */
-	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection);
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options);
 	
 	/**
 	 * Count the number of failures, for a given IMSI, during a given time period.

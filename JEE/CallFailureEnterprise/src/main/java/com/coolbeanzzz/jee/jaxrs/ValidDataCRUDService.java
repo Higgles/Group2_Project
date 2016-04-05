@@ -95,7 +95,6 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
     	ResultList baseData = new ResultList();
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
-    	
     	List queryResults = (List) service.getNoOfCallFailuresAndDurationForImsiInDateRange(fromdate, todate, options);
     	JSONObject result;
     	HashMap res = new HashMap();
@@ -124,11 +123,12 @@ public class ValidDataCRUDService {
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
     		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
-    	List queryResults = (List) service.getEventIdsCauseCodeForIMSI(imsi, start, length, searchTerm, orderColumn, orderDirection);
+    	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getEventIdsCauseCodeForIMSI(imsi, options);
     	JSONObject result;
     	HashMap res = new HashMap();
     	res.put("draw", draw);
-    	long total = (long) queryResults.remove(1);
+    	int total = (int) queryResults.remove(1);
     	if(!headings)
     		queryResults.remove(0);
     	res.put("recordsTotal", total);

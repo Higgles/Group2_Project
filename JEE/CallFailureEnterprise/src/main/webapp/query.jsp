@@ -188,7 +188,7 @@
 				</div>
 				<div class="panel-footer" style="font-size: 15px;">
 					<button id="graph_button" type="button" class="btn btn-primary">Look at this Graph!</button>
-				</div>h
+				</div>
 			</div>
 		</div>
 	</div>
@@ -210,8 +210,6 @@
 		$(document).ready(function() {
 			$(function() {
 				$(".js-example-responsive").select2();
-				//$("#dataTable").DataTable();
-				//populateFailureDropdown();
 				setUserDetails();
 			});
 		});
@@ -352,24 +350,7 @@
 					};
 				}
 			}
-		});
-		
-		/*function populateFailureDropdown(){
-			$("#failureDropdown").empty();
-			$.ajax({
-				type : 'GET',
-				url : 'rest/validdata/failure',
-				success : function(data){
-					for(i=0;i<data.length;i++){
-						var opt = data[i];  
-						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#failureDropdown").append(text);
-					}
-					var $example = $("#failureDropdown").select2();
-					$example.val("0").trigger("change");
-				},
-			});
-		}*/				
+		});		
 		
 		$("#manufacturerDropdown").on("change",function(e) {
 			$("#modelDropdown").val('').trigger('change');	

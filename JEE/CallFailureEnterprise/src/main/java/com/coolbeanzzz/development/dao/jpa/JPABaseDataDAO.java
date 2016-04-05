@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -115,18 +116,27 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " where bd.ueTable.manufacturer=:manufacturer"
 				+ " and bd.ueTable.model=:model"
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
-				+ " having Concat(bd.eventCause.eventId, '', bd.eventCause.causeCode, '', count(bd.id), '', bd.ueTable.tac, '', bd.ueTable.manufacturer, '', bd.ueTable.model) like :searchTerm"
+				+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+				+ " or Concat(count(bd.id), '') like :searchTerm"
+				+ " or Concat(bd.ueTable.tac, '') like :searchTerm"
+				+ " or Concat(bd.ueTable.manufacturer, '') like :searchTerm"
+				+ " or Concat(bd.ueTable.model, '') like :searchTerm"
 				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("manufacturer", manufacturer);
 		query.setParameter("model", model);
 		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 		query.setParameter("order", (options.getOrderColumn()+1));
-		int resultSize = query.getResultList().size();
-		query.setFirstResult(options.getStart()).setMaxResults(options.getLength());
 		List basedata = query.getResultList();
-		basedata.add(0, resultSize);
-		basedata.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
-		return basedata;
+		int resultSize = basedata.size();
+		List resultList = new ArrayList();
+		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
+			resultList.add(basedata.get(i));
+		}
+		
+		resultList.add(0, resultSize);
+		resultList.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
+		return resultList;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -137,20 +147,26 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " from BaseData bd"
 				+ " where bd.dateTime>=:date1 and bd.dateTime<=:date2"
 				+ " group by bd.imsi"
-				+ " having Concat(bd.imsi, '', count(bd.id), '', sum(duration)) like :searchTerm"
+				+ " having Concat(bd.imsi, '') like :searchTerm"
+				+ " or Concat(count(bd.id), '') like :searchTerm"
+				+ " or Concat(sum(duration), '') like :searchTerm"
 				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
 		
 		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 		query.setParameter("order", (options.getOrderColumn()+1));
-		int resultSize = query.getResultList().size();
-		query.setFirstResult(options.getStart()).setMaxResults(options.getLength());
 		
 		List basedata = query.getResultList();
-		basedata.add(0, resultSize);
-		basedata.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
-		return basedata;
+		int resultSize = basedata.size();
+		List resultList = new ArrayList();
+		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
+			resultList.add(basedata.get(i));
+		}
+		
+		resultList.add(0, resultSize);
+		resultList.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
+		return resultList;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -269,23 +285,28 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, int start, int length, String searchTerm, int orderColumn, String orderDirection) {
-		Query countquery = em.createQuery(" select count(id) from BaseData bd where bd.imsi=:IMSI and Concat(bd.dateTime, '', bd.eventCause.eventId, '', bd.eventCause.causeCode, '', bd.eventCause.description) like :searchTerm");
-		Query query = em.createQuery(" select bd.dateTime, bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description "				//QUERY
-				+ " from BaseData bd "
-				+ "where bd.imsi=:IMSI and Concat(bd.dateTime, '', bd.eventCause.eventId, '', bd.eventCause.causeCode, '', bd.eventCause.description) like :searchTerm "
-				+ "order by :order "+orderDirection);
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options) {
+		Query query = em.createQuery("select bd.dateTime, bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description "				
+				+ " from BaseData bd"
+				+ " where bd.imsi=:IMSI"
+				+ " and (Concat(bd.dateTime, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.eventId, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.description, '') like :searchTerm)"
+				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("IMSI", IMSI);
-		countquery.setParameter("IMSI", IMSI);
-		query.setParameter("searchTerm", "%"+searchTerm+"%");
-		countquery.setParameter("searchTerm", "%"+searchTerm+"%");
-		query.setParameter("order", (orderColumn+1));
-		query.setFirstResult(start).setMaxResults(length);
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		long resultSize = (long) countquery.getSingleResult();
-		basedata.add(0, resultSize);
-		basedata.add(0, allEventIdsCauseCodeForImsiHeadings);
-		return basedata;
+		int resultSize = basedata.size();
+		List resultList = new ArrayList();
+		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
+			resultList.add(basedata.get(i));
+		}
+		
+		resultList.add(0, resultSize);
+		resultList.add(0, allEventIdsCauseCodeForImsiHeadings);
+		return resultList;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
