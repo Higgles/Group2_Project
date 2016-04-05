@@ -626,8 +626,6 @@
 var jsonArray = $("#dataTable").DataTable().data();
 
 var data = [];
-
-//alert(JSON.stringify($("#dataTable").bootstrapTable('getData')));
 		
 for(var i = 0; i < jsonArray.length; i++){
 
