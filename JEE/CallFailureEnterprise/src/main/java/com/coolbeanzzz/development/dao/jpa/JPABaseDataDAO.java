@@ -181,24 +181,30 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2){
+	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2, QueryOptions options){
 		Query query = em.createQuery(""
-				+"select count(bd.id), sum(duration) "
-				+"from BaseData bd "
-				+"where bd.imsi=:imsi "
-				+"and bd.dateTime >=:date1 and bd.dateTime <:date2 ");
+				+ "select count(bd.id), sum(duration)"
+				+ " from BaseData bd"
+				+ " where bd.imsi=:imsi"
+				+ " and bd.dateTime >=:date1 "
+				+ " and bd.dateTime <:date2"
+				+ " group by bd.imsi "
+				+ " having Concat(count(bd.id), '') like :searchTerm"
+				+ " or Concat(sum(duration), '') like :searchTerm"
+				+ " order by :order "+ options.getOrderDirection());
 
 		query.setParameter("imsi", imsi);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		basedata.add(0, failCountByImsiAndDateHeadings);
-		return basedata;
+		return this.getQueryResultList(basedata, options, failCountByImsiAndDateHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd){
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd, QueryOptions options){
 		Query query = em.createQuery(""
 				+"select bd.mccmnc.country, bd.mccmnc.operator, bd.cellId, count(bd.id) "  
 				+"from BaseData bd "
@@ -207,9 +213,9 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+"order by count(bd.id) desc ");
 		query.setParameter("date1", dateStart);
 		query.setParameter("date2", dateEnd);
+		
 		List basedata = query.setMaxResults(10).getResultList();
-		basedata.add(0, top10MarketOperatorCellBetween2DatesHeadings);
-		return basedata;	
+		return this.getQueryResultList(basedata, options, top10MarketOperatorCellBetween2DatesHeadings);	
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

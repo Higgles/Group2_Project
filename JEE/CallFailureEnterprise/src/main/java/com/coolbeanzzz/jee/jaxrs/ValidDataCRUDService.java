@@ -156,13 +156,21 @@ public class ValidDataCRUDService {
 	 * @return A list of Base data results
 	 */	
     @Path("/CB-12")
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ResultList getQ12(String[] data) {    	
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getFailCountByImsiAndDate(data[0], data[1], data[2]));
-    	return baseData;
+    public JSONObject getQ12(@QueryParam("imsi") String imsi,
+    		@QueryParam("fromdate") String fromdate, 
+    		@QueryParam("todate") String todate, 
+    		@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	
+    	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getFailCountByImsiAndDate(imsi, fromdate, todate, options);
+    	return this.getQueryResultsAsJSON(queryResults, options);
     }
     
   
@@ -171,13 +179,20 @@ public class ValidDataCRUDService {
    	 * @return A list of Base data results
    	 */	
     @Path("/CB-15")
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ResultList getQ15(String[] dates) {    	
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getTop10MarketOperatorCellBetween2Dates(dates[0], dates[1]));
-    	return baseData;
+    public JSONObject getQ15(@QueryParam("fromdate") String fromdate, 
+    		@QueryParam("todate") String todate, 
+    		@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	    	
+    	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getTop10MarketOperatorCellBetween2Dates(fromdate, todate, options);
+    	return this.getQueryResultsAsJSON(queryResults, options);
     }
         
     

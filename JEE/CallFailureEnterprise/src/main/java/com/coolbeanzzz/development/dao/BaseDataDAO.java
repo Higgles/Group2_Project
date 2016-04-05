@@ -51,17 +51,19 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param imsi to be checked
 	 * @param dateStart start date for time period
 	 * @param dateEnd end date for time period
+	 * @param options 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd);
+	Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd, QueryOptions options);
 	
 	/**
 	 * Top 10 Market/Operator/Cell ID combinations that had call failures during a time period
 	 * @param dateStart start date for time period
 	 * @param dateEnd end date for time period
+	 * @param options 
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-	Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd);
+	Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd, QueryOptions options);
 	
 	/**
 	 * Display the IMSIs that were affected for a given failure Cause Class.

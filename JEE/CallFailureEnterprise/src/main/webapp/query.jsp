@@ -483,6 +483,8 @@
 				dataType : null,
 				contentType : null,
 				data : null,
+				sort: true,
+				search: true
 			}
 			
 			switch(selectedQuery){
@@ -508,13 +510,15 @@
 				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
-				inputData.push($("#imsiDropdown").select2('data')[0].text);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("imsi="+$("#imsiDropdown").select2('data')[0].text);
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;				
 			case 12:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
+				ajaxDetails.sort=false;
+				ajaxDetails.search=false;
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -562,7 +566,8 @@
 						columns : columnTitles,
 						serverSide: true,
 				        ajax: queryUrl,
-				        //sort: false
+				        sort: ajaxDetails.sort,
+				        searching: ajaxDetails.search
 					});
 					document.getElementById("resultsDiv").style.display = "block";
 					document.getElementById("collapseTwo")
@@ -616,14 +621,14 @@
 				tacPickers.style.display="block"
 				break;				
 			case 9:
-				queryType="POST";
+				queryType="GET";
 				imsiPickers.style.display="block";
 				dateTimePickers.style.display="block";
 				break;
 			case 12:
 				//queryType="GET";
 				dateTimePickers.style.display="block";
-				queryType="POST";
+				queryType="GET";
 				break;				
 			case 14:
 				queryType="GET";

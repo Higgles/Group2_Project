@@ -107,13 +107,13 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd){
-		return dao.getFailCountByImsiAndDate(IMSI, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd, QueryOptions options){
+		return dao.getFailCountByImsiAndDate(IMSI, dateStart, dateEnd, options);
 	}
 
 	@Override
-	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd) {
-		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd);
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd, QueryOptions options) {
+		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd, options);
 	}
 	
 	@Override
