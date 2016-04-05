@@ -28,11 +28,12 @@ public interface BaseDataService extends FailureTableService{
 	
 	/**
 	 * Gets the no of call failures and total duration for each imsi value within a date period 
+	 * @param options 
 	 * @param manufacturer phone manufacturer
 	 * @param model phone model
 	 * @return a collection of FailureTable results
 	 */
-	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2);
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2, QueryOptions options);
 	
 	/**
 	 * Display IMSIs with call failures during a given time period

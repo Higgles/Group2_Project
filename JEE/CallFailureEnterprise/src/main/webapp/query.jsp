@@ -519,8 +519,8 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 4:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
 				inputData.push("manufacturer="+$("#manufacturerDropdown").select2('data')[0].text);
@@ -563,7 +563,7 @@
 			
 			$.ajax({
 				type : queryType,
-				url : queryUrl+"start=0&length=1&headings=true",
+				url : queryUrl+"&start=0&length=1&headings=true",
 				data : ajaxDetails.data,
 				success : function(data) {
 					$("#resultsDiv").empty();
@@ -628,7 +628,7 @@
 				break;
 			case 4:
 				dateTimePickers.style.display="block";
-				queryType="POST";
+				queryType="GET";
 				break;
 			case 5:
 				queryType="GET";

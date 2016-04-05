@@ -82,13 +82,32 @@ public class ValidDataCRUDService {
      * @return A list of Base data results
      */
     @Path("/CB-7")
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ResultList getQ7(String[] dates) {
+    public JSONObject getQ7(@QueryParam("fromdate") String fromdate, 
+    		@QueryParam("todate") String todate, 
+    		@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
     	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getNoOfCallFailuresAndDurationForImsiInDateRange(dates[0], dates[1]));
-    	return baseData;
+    	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	
+    	List queryResults = (List) service.getNoOfCallFailuresAndDurationForImsiInDateRange(fromdate, todate, options);
+    	JSONObject result;
+    	HashMap res = new HashMap();
+    	res.put("draw", draw);
+    	int total = (int) queryResults.remove(1);
+    	if(!headings)
+    		queryResults.remove(0);
+    	res.put("recordsTotal", total);
+    	res.put("recordsFiltered", total);
+    	res.put("data", queryResults);
+    	result = new JSONObject(res);
+        return result;
     }
     
     /**

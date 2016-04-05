@@ -132,14 +132,23 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
-			String fromDate, String toDate) {
+			String fromDate, String toDate, QueryOptions options) {
 		Query query = em.createQuery("select bd.imsi, count(bd.id), sum(duration) "
-				+ "from BaseData bd "
-				+ "where bd.dateTime>=:date1 and bd.dateTime<=:date2 "
-				+ "group by bd.imsi");
+				+ " from BaseData bd"
+				+ " where bd.dateTime>=:date1 and bd.dateTime<=:date2"
+				+ " group by bd.imsi"
+				+ " having Concat(bd.imsi, '', count(bd.id), '', sum(duration)) like :searchTerm"
+				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
+		
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
+		int resultSize = query.getResultList().size();
+		query.setFirstResult(options.getStart()).setMaxResults(options.getLength());
+		
 		List basedata = query.getResultList();
+		basedata.add(0, resultSize);
 		basedata.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 		return basedata;
 	}

@@ -72,8 +72,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 
 	@Override
-	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2) {
-		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2);
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2, QueryOptions options) {
+		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2, options);
 	}
 
 	@Override
