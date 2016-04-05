@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 @Stateless
 @Local
@@ -66,8 +67,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
-		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model);
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {
+		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model, options);
 	}
 
 	@Override

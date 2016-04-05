@@ -3,22 +3,20 @@
  */
 package com.coolbeanzzz.development.dao;
 
-import java.math.BigInteger;
 import java.util.Collection;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 public interface BaseDataDAO extends FailureTableDAO{
 	/**
 	 * Queries the underlying table for unique event id and cause code combinations for an input phone type
 	 * @param manufacturer phone manufacturer to be checked
 	 * @param model phone model to be checked
+	 * @param options 
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model);
+	Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options);
 	
 	/**
 	 * Queries the underlying table for no of call failures and total duration for each

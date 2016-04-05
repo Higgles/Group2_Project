@@ -523,8 +523,8 @@
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				inputData.push("manufacturer="+$("#manufacturerDropdown").select2('data')[0].text);
+				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
 				inputData.push($("#imsiDropdown").select2('data')[0].text);
@@ -551,12 +551,19 @@
 				ajaxDetails.dataType="json";
 				ajaxDetails.contentType='application/json';
 			}
-		
+			
+			queryUrl+="?";
+			for(i=0;i<inputData.length;i++){
+				if(i!=0){
+					queryUrl+="&";
+				}
+				queryUrl+=inputData[i];
+			}
+			
+			
 			$.ajax({
 				type : queryType,
-				url : queryUrl+"?start=0&length=1&headings=true",
-				dataType : ajaxDetails.dataType,
-				contentType : ajaxDetails.contentType,
+				url : queryUrl+"start=0&length=1&headings=true",
 				data : ajaxDetails.data,
 				success : function(data) {
 					$("#resultsDiv").empty();
@@ -624,7 +631,7 @@
 				queryType="POST";
 				break;
 			case 5:
-				queryType="POST";
+				queryType="GET";
 				tacPickers.style.display="block"
 				break;				
 			case 9:

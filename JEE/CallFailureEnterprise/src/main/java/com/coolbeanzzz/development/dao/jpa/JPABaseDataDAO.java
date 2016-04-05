@@ -37,6 +37,7 @@ import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
 import com.coolbeanzzz.development.entities.MccMncPrimaryKey;
 import com.coolbeanzzz.development.entities.UETable;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 @Default
 @Stateless
@@ -44,7 +45,7 @@ import com.coolbeanzzz.development.entities.UETable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Marketing Name"};
+			new String[]{"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Model"};
 	private static final String[] getImsiListBetween2DatesHeadings=
 			new String[]{"IMSI", "Market", "Operator", "Total Duration"};
 	private static final String[] noOfCallFailuresAndDurationForImsiInDateRangeHeadings=
@@ -108,13 +109,22 @@ public class JPABaseDataDAO implements BaseDataDAO {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, count(bd.id), bd.ueTable.tac, bd.ueTable.manufacturer, bd.ueTable.marketingName"
-				+ " from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName"
-				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {	
+		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, count(bd.id), bd.ueTable.tac, bd.ueTable.manufacturer, bd.ueTable.model"
+				+ " from BaseData bd"
+				+ " where bd.ueTable.manufacturer=:manufacturer"
+				+ " and bd.ueTable.model=:model"
+				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
+				+ " having Concat(bd.eventCause.eventId, '', bd.eventCause.causeCode, '', count(bd.id), '', bd.ueTable.tac, '', bd.ueTable.manufacturer, '', bd.ueTable.model) like :searchTerm"
+				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("manufacturer", manufacturer);
-		query.setParameter("marketingName", model);
+		query.setParameter("model", model);
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
+		int resultSize = query.getResultList().size();
+		query.setFirstResult(options.getStart()).setMaxResults(options.getLength());
 		List basedata = query.getResultList();
+		basedata.add(0, resultSize);
 		basedata.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 		return basedata;
 	}
@@ -202,11 +212,11 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
 		Query query = em.createQuery(""
-		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id), sum(bd.duration) "
-		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName "
+		+"select bd.ueTable.manufacturer, bd.ueTable.model, count(bd.id), sum(bd.duration) "
+		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.model=:model "
 		+"and bd.dateTime >=:dateStart and bd.dateTime <=:dateEnd ");
 		query.setParameter("manufacturer", manufacturer);
-		query.setParameter("marketingName", model);
+		query.setParameter("model", model);
 		query.setParameter("dateStart", dateStart);
 		query.setParameter("dateEnd", dateEnd);
 		List<Object[]> results = query.getResultList();
@@ -260,7 +270,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		countquery.setParameter("IMSI", IMSI);
 		query.setParameter("searchTerm", "%"+searchTerm+"%");
 		countquery.setParameter("searchTerm", "%"+searchTerm+"%");
-		System.out.println((orderColumn+1)+" "+orderDirection);
 		query.setParameter("order", (orderColumn+1));
 		query.setFirstResult(start).setMaxResults(length);
 		List basedata = query.getResultList();
