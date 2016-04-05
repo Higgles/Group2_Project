@@ -317,14 +317,23 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
-		Query query = em.createQuery(" select bd.eventCause.eventId, bd.eventCause.causeCode, bd.eventCause.description, count(bd.eventCause.causeCode) "
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI, QueryOptions options) {
+		Query query = em.createQuery("select bd.eventCause.eventId,"
+				+ " bd.eventCause.causeCode,"
+				+ " bd.eventCause.description,"
+				+ " count(bd.eventCause.causeCode)"
 				+ " from BaseData bd where bd.imsi=:IMSI"
-				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode");
-		query.setParameter("IMSI", IMSI);
+				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
+				+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.description, '') like :searchTerm"
+				+ " or Concat(count(bd.eventCause.causeCode), '') like :searchTerm"
+				+ " order by :order "+options.getOrderDirection());
+		query.setParameter("IMSI", IMSI);		
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		basedata.add(0,uniqueCauseCodeForImsiHeadings);
-		return basedata;
+		return this.getQueryResultList(basedata, options, uniqueCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

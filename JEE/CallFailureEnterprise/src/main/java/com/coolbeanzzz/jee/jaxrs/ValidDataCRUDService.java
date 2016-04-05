@@ -222,17 +222,17 @@ public class ValidDataCRUDService {
     @Path("/CB-17/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ17(@PathParam("imsi") String imsi,
+    public JSONObject getQ17(@PathParam("imsi") String imsi,
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
     		@QueryParam("length") int length, 
     		@DefaultValue("false") @QueryParam("headings") boolean headings, 
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
     		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
-    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getUniqueCauseCodeForIMSI(imsi));
-        return baseData;
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {        
+        QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getUniqueCauseCodeForIMSI(imsi, options);
+    	return this.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**

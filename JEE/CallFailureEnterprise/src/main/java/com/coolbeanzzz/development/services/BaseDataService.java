@@ -100,10 +100,11 @@ public interface BaseDataService extends FailureTableService{
 
 	/** 
 	 * Gets unique cause code for an input IMSI from the database
+	 * @param options 
 	 * @param input IMSI
 	 * @return a collection of FailureTable results
 	 */
-	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI, QueryOptions options); 
 	
 	/**
 	 * Gets a list of the top 10 IMSIs with call failures during a given time period from the database

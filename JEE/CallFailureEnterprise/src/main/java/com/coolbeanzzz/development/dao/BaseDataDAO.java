@@ -92,10 +92,11 @@ public interface BaseDataDAO extends FailureTableDAO{
 	
 	/** 
 	 * Queries the underlying table for unique cause code for an input IMSI
+	 * @param options 
 	 * @param input IMSI
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI); 
+	Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI, QueryOptions options); 
 	
 	/**
 	 * Queries the underlying table for a list of the top 10 IMSIs with call failures during a given time period
