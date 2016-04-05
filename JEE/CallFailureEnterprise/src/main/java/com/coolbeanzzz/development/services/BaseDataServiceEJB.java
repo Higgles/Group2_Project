@@ -82,8 +82,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
-		return dao.getFailCountByPhoneModel(manufacturer, model, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd, QueryOptions options) {
+		return dao.getFailCountByPhoneModel(manufacturer, model, dateStart, dateEnd, options);
 	}
 
 	@Override

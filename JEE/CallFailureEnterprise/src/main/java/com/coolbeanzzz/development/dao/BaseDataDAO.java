@@ -41,9 +41,10 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param model phone model to be checked
 	 * @param dateStart start date for time period
 	 * @param dateEnd end date for time period
+	 * @param options 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd);
+	Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd, QueryOptions options);
 	
 	/**
 	 * Count the number of failures, for a given IMSI, during a given time period.

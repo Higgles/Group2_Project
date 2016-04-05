@@ -49,9 +49,10 @@ public interface BaseDataService extends FailureTableService{
 	 * @param model phone model
 	 * @param dateStart date to check from for time period
 	 * @param dateEnd date to check to for time period
+	 * @param options 
 	 * @return a collection of FailureTable results
 	 */
-	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd, QueryOptions options);
 	
 	/**
 	 * Gets all unique imsi values from database

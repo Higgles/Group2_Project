@@ -230,23 +230,32 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String fromdate, String todate, QueryOptions options) {
 		Query query = em.createQuery(""
-		+"select bd.ueTable.manufacturer, bd.ueTable.model, count(bd.id), sum(bd.duration) "
-		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.model=:model "
-		+"and bd.dateTime >=:dateStart and bd.dateTime <=:dateEnd ");
+		+ "select bd.ueTable.manufacturer, bd.ueTable.model, count(bd.id), sum(bd.duration)"
+		+ " from BaseData bd"
+		+ " where bd.ueTable.manufacturer=:manufacturer "
+		+ " and bd.ueTable.model=:model"
+		+ " and bd.dateTime >=:dateStart "
+		+ " and bd.dateTime <=:dateEnd "
+		+ " group by bd.ueTable.manufacturer"
+		+ " having Concat(bd.ueTable.manufacturer, '') like :searchTerm"
+		+ " or Concat(bd.ueTable.model, '') like :searchTerm"
+		+ " or Concat(count(bd.id), '') like :searchTerm"
+		+ " or Concat(sum(bd.duration), '') like :searchTerm "
+		+ " order by :order "+options.getOrderDirection());
 		query.setParameter("manufacturer", manufacturer);
 		query.setParameter("model", model);
-		query.setParameter("dateStart", dateStart);
-		query.setParameter("dateEnd", dateEnd);
-		List<Object[]> results = query.getResultList();
-		if(results.get(0)[0]==null){
-			results.set(0, new Object[]{manufacturer,model, 0, 0});
-		}
-		List basedata = results;
-		basedata.add(0, failCountByPhoneModelHeadings);
+		query.setParameter("dateStart", fromdate);
+		query.setParameter("dateEnd", todate);
 		
-		return basedata;
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
+		List basedata = query.getResultList();
+		if(basedata.size()==0){
+			basedata.add(0, new Object[]{manufacturer,model, 0, 0});
+		}
+		return this.getQueryResultList(basedata, options, failCountByPhoneModelHeadings);
 	}
 
 	@SuppressWarnings("unchecked")

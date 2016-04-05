@@ -494,10 +494,10 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("manufacturer="+$("#manufacturerDropdown").select2('data')[0].text);
+				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 4:
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
@@ -603,7 +603,7 @@
 				queryType="GET";
 				break;
 			case 3:
-				queryType="POST";
+				queryType="GET";
 				dateTimePickers.style.display="block";
 				tacPickers.style.display="block"
 				break;
