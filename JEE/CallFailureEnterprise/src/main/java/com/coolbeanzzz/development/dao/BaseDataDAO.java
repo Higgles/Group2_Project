@@ -67,10 +67,11 @@ public interface BaseDataDAO extends FailureTableDAO{
 	
 	/**
 	 * Display the IMSIs that were affected for a given failure Cause Class.
+	 * @param options 
 	 * @param Failure Class
 	 * @return a collection of IMSI rows from underlying table
 	 */
-	Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
+	Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options);
 		
 	/**
 	 * Queries the database for all unique imsi values

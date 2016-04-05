@@ -92,10 +92,11 @@ public interface BaseDataService extends FailureTableService{
 
 	/**
 	 * Display the IMSIs that were affected for a given failure Cause Class.
+	 * @param options 
 	 * @param Failure Class
 	 * @return a collection of IMSI rows from underlying table
 	 */
-	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass);
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options);
 
 	/** 
 	 * Gets unique cause code for an input IMSI from the database

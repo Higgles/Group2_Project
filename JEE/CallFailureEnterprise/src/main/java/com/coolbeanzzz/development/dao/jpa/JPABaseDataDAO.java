@@ -220,16 +220,20 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options){
 			Query query = em.createQuery(""
-					+"select bd.imsi, count(bd.id) "  
-					+"from BaseData bd "
-					+"where bd.failureClass.description =:failureClass "
-					+"group by bd.imsi ");
-			query.setParameter("failureClass",failureClass);
+					+ "select bd.imsi, count(bd.id)"  
+					+ " from BaseData bd"
+					+ " where bd.failureClass.description =:failureClass"
+					+ " group by bd.imsi"
+					+ " having Concat(bd.imsi, '') like :searchTerm"
+					+ " or count(bd.id) like :searchTerm"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("failureClass",failureClass);			
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
 			List basedata = query.getResultList();
-			basedata.add(0, IMSIsforFailureClassHeadings);
-			return basedata;	
+			return this.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
 		}
 	
 	

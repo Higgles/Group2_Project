@@ -195,7 +195,6 @@ public class ValidDataCRUDService {
     	return this.getQueryResultsAsJSON(queryResults, options);
     }
         
-    
     /**
      * Gets a list of results from a query
      * @return A list of Base data results
@@ -203,13 +202,52 @@ public class ValidDataCRUDService {
     @Path("/CB-19/{failure}")
     @GET
  	@Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
- 	public ResultList getQ19(@PathParam("failure") String failure) {    	
- 	   	ResultList baseData = new ResultList();
- 	   	baseData.setDataCollection(service.getIMSIsforFailureClass(failure));
- 	    	return baseData;
- 		
+ 	public JSONObject getQ19(@PathParam("failure") String failure,
+ 			@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	
+ 	   	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
+    	List queryResults = (List) service.getIMSIsforFailureClass(failure, options);
+    	return this.getQueryResultsAsJSON(queryResults, options);
  	}
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-17/{imsi}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ17(@PathParam("imsi") String imsi,
+    		@QueryParam("draw") int draw, 
+    		@QueryParam("start") int start, 
+    		@QueryParam("length") int length, 
+    		@DefaultValue("false") @QueryParam("headings") boolean headings, 
+    		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
+    		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
+    		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getUniqueCauseCodeForIMSI(imsi));
+        return baseData;
+    }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-18")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ18(String[] dates) {    	
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getTop10ImsiListBetween2Dates(dates[0], dates[1]));
+    	return baseData;
+    }
     
     /**
      * Adds new entry to failure table in database
@@ -234,33 +272,6 @@ public class ValidDataCRUDService {
     //@Consumes(MediaType.APPLICATION_JSON)
     public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
         return service.getAllImsiValues(page, searchTerm, pageLimit);
-    }
-    
-    /**
-     * Gets a list of results from a query
-     * @return A list of Base data results
-     */
-    @Path("/CB-17/{imsi}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResultList getQ17(@PathParam("imsi") String imsi) {
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getUniqueCauseCodeForIMSI(imsi));
-        return baseData;
-    }
-    
-    /**
-     * Gets a list of results from a query
-     * @return A list of Base data results
-     */
-    @Path("/CB-18")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ResultList getQ18(String[] dates) {    	
-    	ResultList baseData = new ResultList();
-    	baseData.setDataCollection(service.getTop10ImsiListBetween2Dates(dates[0], dates[1]));
-    	return baseData;
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

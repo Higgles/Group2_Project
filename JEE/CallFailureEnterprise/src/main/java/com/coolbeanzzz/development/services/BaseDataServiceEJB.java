@@ -117,8 +117,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
-		return dao.getIMSIsforFailureClass(failureClass);
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options){
+		return dao.getIMSIsforFailureClass(failureClass, options);
 	}
 		
 	@Override
