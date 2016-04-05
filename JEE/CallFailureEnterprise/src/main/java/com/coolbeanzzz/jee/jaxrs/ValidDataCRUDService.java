@@ -49,10 +49,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-8")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-8")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ1(@QueryParam("manufacturer") String manufacturer, 
+    public JSONObject getUniqueEventIdsCauseCodeForPhoneType(@QueryParam("manufacturer") String manufacturer, 
     		@QueryParam("model") String model,
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
@@ -70,10 +71,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-7")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-7")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ7(@QueryParam("fromdate") String fromdate, 
+    public JSONObject getNoOfCallFailuresAndDurationForImsiInDateRange(@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
@@ -82,7 +84,6 @@ public class ValidDataCRUDService {
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
     		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
-    	ResultList baseData = new ResultList();
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getNoOfCallFailuresAndDurationForImsiInDateRange(fromdate, todate, options);
     	return this.getQueryResultsAsJSON(queryResults, options);
@@ -92,11 +93,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	@Path("/CB-4/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ4(@PathParam("imsi") String imsi, @QueryParam("draw") int draw, 
+    public JSONObject getEventIdsCauseCodeForIMSI(@PathParam("imsi") String imsi, @QueryParam("draw") int draw, 
     		@QueryParam("start") int start, @QueryParam("length") int length, 
     		@DefaultValue("false") @QueryParam("headings") boolean headings, 
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
@@ -111,10 +112,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-5")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-5")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ5(@QueryParam("fromdate") String fromdate, 
+    public JSONObject getImsiListBetween2Dates(@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
@@ -132,10 +134,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-6")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-6")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getCB6(@QueryParam("manufacturer") String manufacturer, 
+    public JSONObject getFailCountByPhoneModel(@QueryParam("manufacturer") String manufacturer, 
     		@QueryParam("model") String model,
     		@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
@@ -155,10 +158,11 @@ public class ValidDataCRUDService {
 	 * Gets a list of results from a query
 	 * @return A list of Base data results
 	 */	
-    @Path("/CB-12")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-12")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ12(@QueryParam("imsi") String imsi,
+    public JSONObject getFailCountByImsiAndDate(@QueryParam("imsi") String imsi,
     		@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
     		@QueryParam("draw") int draw, 
@@ -178,10 +182,11 @@ public class ValidDataCRUDService {
    	 * Gets a list of results from a query
    	 * @return A list of Base data results
    	 */	
-    @Path("/CB-15")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-15")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ15(@QueryParam("fromdate") String fromdate, 
+    public JSONObject getTop10MarketOperatorCellBetween2Dates(@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
@@ -199,10 +204,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-19/{failure}")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-19/{failure}")
     @GET
  	@Produces(MediaType.APPLICATION_JSON)
- 	public JSONObject getQ19(@PathParam("failure") String failure,
+ 	public JSONObject getIMSIsforFailureClass(@PathParam("failure") String failure,
  			@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
     		@QueryParam("length") int length, 
@@ -219,10 +225,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-17/{imsi}")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-17/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ17(@PathParam("imsi") String imsi,
+    public JSONObject getUniqueCauseCodeForIMSI(@PathParam("imsi") String imsi,
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
     		@QueryParam("length") int length, 
@@ -239,10 +246,11 @@ public class ValidDataCRUDService {
      * Gets a list of results from a query
      * @return A list of Base data results
      */
-    @Path("/CB-18")
+    @SuppressWarnings("rawtypes")
+	@Path("/CB-18")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getQ18(@QueryParam("fromdate") String fromdate, 
+    public JSONObject getTop10ImsiListBetween2Dates(@QueryParam("fromdate") String fromdate, 
     		@QueryParam("todate") String todate, 
     		@QueryParam("draw") int draw, 
     		@QueryParam("start") int start, 
