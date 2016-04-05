@@ -490,8 +490,8 @@
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 2:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
 				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
@@ -600,7 +600,7 @@
 				break;
 			case 2:
 				dateTimePickers.style.display="block";
-				queryType="POST";
+				queryType="GET";
 				break;
 			case 3:
 				queryType="POST";

@@ -53,6 +53,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			new String[]{"IMSI", "Number of Failures", "Total Duration"};
 	private static final String[] failCountByPhoneModelHeadings=
 			new String[]{"Manufacturer", "Model","Number of Failures", "Total Duration"};
+	private static final String[] failCountByImsiAndDateHeadings= 
+			new String[]{"Count", "Total Duration"};
 	private static final String[] uniqueCauseCodeForImsiHeadings=
 			new String[]{"Event Id", "Cause Code", "Description", "Number of Occurences"};
 	private static final String[] allEventIdsCauseCodeForImsiHeadings=
@@ -61,6 +63,10 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			new String[]{"IMSI", "Market", "Operator", "Number of Occurences"};
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
+	private static final String[] top10MarketOperatorCellBetween2DatesHeadings=
+			new String[]{"Market", "Operator","Cell Id","Count"};
+	private static final String[] IMSIsforFailureClassHeadings=
+			new String[]{"IMSIs","Count"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
 	
 	@PersistenceContext
@@ -128,15 +134,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		int resultSize = basedata.size();
-		List resultList = new ArrayList();
-		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
-			resultList.add(basedata.get(i));
-		}
-		
-		resultList.add(0, resultSize);
-		resultList.add(0,uniqueEventIdsCauseCodeForPhoneTypeHeadings);
-		return resultList;
+		return this.getQueryResultList(basedata, options, uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -157,31 +155,28 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 		query.setParameter("order", (options.getOrderColumn()+1));
 		
-		List basedata = query.getResultList();
-		int resultSize = basedata.size();
-		List resultList = new ArrayList();
-		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
-			resultList.add(basedata.get(i));
-		}
-		
-		resultList.add(0, resultSize);
-		resultList.add(0, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
-		return resultList;
+		List basedata = query.getResultList();		
+		return this.getQueryResultList(basedata, options, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
+	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
 		Query query = em.createQuery(""
-		+"select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, sum(bd.duration) "
-		+"from BaseData bd "
-		+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
-		+"group by bd.imsi");
+		+ "select bd.imsi, bd.mccmnc.country, bd.mccmnc.operator, sum(bd.duration)"
+		+ " from BaseData bd"
+		+ " where bd.dateTime >=:date1 and bd.dateTime <=:date2"
+		+ " group by bd.imsi"
+		+ " having Concat(bd.imsi, '') like :searchTerm"
+		+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+		+ " or Concat(sum(duration), '') like :searchTerm"
+		+ " order by :order "+options.getOrderDirection());
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
+		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		basedata.add(0, getImsiListBetween2DatesHeadings);
-		return basedata;
+		return this.getQueryResultList(basedata, options, getImsiListBetween2DatesHeadings);
 	}	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -197,7 +192,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
 		List basedata = query.getResultList();
-		basedata.add(0, new Object[]{"Count", "Total Duration"});
+		basedata.add(0, failCountByImsiAndDateHeadings);
 		return basedata;
 	}
 
@@ -213,7 +208,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("date1", dateStart);
 		query.setParameter("date2", dateEnd);
 		List basedata = query.setMaxResults(10).getResultList();
-		basedata.add(0, new Object[]{"Market", "Operator","Cell Id","Count"});
+		basedata.add(0, top10MarketOperatorCellBetween2DatesHeadings);
 		return basedata;	
 	}
 	
@@ -227,7 +222,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 					+"group by bd.imsi ");
 			query.setParameter("failureClass",failureClass);
 			List basedata = query.getResultList();
-			basedata.add(0, new Object[]{"IMSIs","Count"});
+			basedata.add(0, IMSIsforFailureClassHeadings);
 			return basedata;	
 		}
 	
@@ -298,15 +293,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 		query.setParameter("order", (options.getOrderColumn()+1));
 		List basedata = query.getResultList();
-		int resultSize = basedata.size();
-		List resultList = new ArrayList();
-		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
-			resultList.add(basedata.get(i));
-		}
-		
-		resultList.add(0, resultSize);
-		resultList.add(0, allEventIdsCauseCodeForImsiHeadings);
-		return resultList;
+		return this.getQueryResultList(basedata, options, allEventIdsCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -335,5 +322,18 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				List basedata = query.setMaxResults(10).getResultList();
 				basedata.add(0, top10ImsiListBetween2DatesHeadings);
 				return basedata;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List getQueryResultList(List originalResults, QueryOptions options, String[] headings){
+		int resultSize = originalResults.size();
+		List resultList = new ArrayList();
+		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
+			resultList.add(originalResults.get(i));
+		}
+		
+		resultList.add(0, resultSize);
+		resultList.add(0, headings);
+		return resultList;
 	}
 }

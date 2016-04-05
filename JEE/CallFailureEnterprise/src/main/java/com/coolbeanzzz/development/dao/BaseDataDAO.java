@@ -29,10 +29,11 @@ public interface BaseDataDAO extends FailureTableDAO{
 
 	/**
 	 * Display IMSIs with call failures during a given time period
+	 * @param options 
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2 );
+	Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2, QueryOptions options );
 	
 	/**
 	 * Count call failures, for a given model of phone, during a given time period.

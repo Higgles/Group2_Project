@@ -77,8 +77,8 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 
 	@Override
-	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
-		return dao.getImsiListBetween2Dates(date1, date2);
+	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
+		return dao.getImsiListBetween2Dates(date1, date2, options);
 	}
 	
 	@Override
