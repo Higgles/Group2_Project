@@ -623,7 +623,7 @@
 		
 		$("#graph_button").click(function(e) {
 
-var jsonArray = $("#dataTable").bootstrapTable('getData');
+var jsonArray = $("#dataTable").DataTable().data();
 
 var data = [];
 
@@ -631,7 +631,7 @@ var data = [];
 		
 for(var i = 0; i < jsonArray.length; i++){
 
-	data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
+	data.push({label: jsonArray[i][0]+" "+jsonArray[i][1]+" "+jsonArray[i][2], data: jsonArray[i][3] });
 	
 	}	 
 
