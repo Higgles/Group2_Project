@@ -3363,7 +3363,7 @@
 		var select = $('<select/>', {
 			'name':          tableId+'_length',
 			'aria-controls': tableId,
-			'class':         classes.sLengthSelect
+			'class':         'js-example-basic-hide-search'
 		} );
 	
 		for ( var i=0, ien=lengths.length ; i<ien ; i++ ) {

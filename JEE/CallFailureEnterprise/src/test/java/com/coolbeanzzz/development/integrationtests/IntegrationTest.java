@@ -1,6 +1,7 @@
 package com.coolbeanzzz.development.integrationtests;
 
 import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,6 +55,7 @@ import com.coolbeanzzz.development.services.MccMncService;
 import com.coolbeanzzz.development.services.UETableService;
 import com.coolbeanzzz.development.tools.CompareData;
 import com.coolbeanzzz.development.tools.Convert;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 @RunWith(Arquillian.class)
 public class IntegrationTest {
@@ -101,7 +103,6 @@ public class IntegrationTest {
 				ArchivePaths.create("beans.xml"))
 				.addPackage(JSONArray.class.getPackage())
 				.addPackage(ParseException.class.getPackage());
-		//jar.addAsResource("test_data.xls", "test_data.xls");
 		return jar;
 	}
 
@@ -272,71 +273,81 @@ public class IntegrationTest {
 	@Test
 	@InSequence(12)
 	public void getEventIdsCauseCodeForIMSITest() {
-		Collection<?> res=baseDataService.getEventIdsCauseCodeForIMSI("2344930000000011",0,0,"");
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getEventIdsCauseCodeForIMSI("2344930000000011",options);
 		assertEquals(2, res.size());
 	}
 	
 	@Test
 	@InSequence(13)
 	public void getFailCountByPhoneModelTest() {
-		Collection<?> res=baseDataService.getFailCountByPhoneModel("S.A.R.L. B  & B International", "VEA3", "2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getFailCountByPhoneModel("S.A.R.L. B  & B International", "VEA3", "2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
 		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(14)
 	public void getImsiListBetween2DatesTest() {
-		Collection<?> res=baseDataService.getImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(15)
 	public void getNoOfCallFailuresAndDurationForImsiInDateRangeTest() {
-		Collection<?> res=baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getNoOfCallFailuresAndDurationForImsiInDateRange( "2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(16)
 	public void getUniqueEventIdsCauseCodeForPhoneTypeTest() {
-		Collection<?> res=baseDataService.getUniqueEventIdsCauseCodeForPhoneType("S.A.R.L. B  & B International", "VEA3");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getUniqueEventIdsCauseCodeForPhoneType("S.A.R.L. B  & B International", "VEA3", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(17)
 	public void getFailCountByImsiAndDateTest() {
-		Collection<?> res=baseDataService.getFailCountByImsiAndDate("344930000000011","2000-01-11 17:15:00", "2015-01-11 17:15:00");
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getFailCountByImsiAndDate("344930000000011","2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
 		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(18)
 	public void getTop10MarketOperatorCellBetween2DatesTest() {
-		Collection<?> res=baseDataService.getTop10MarketOperatorCellBetween2Dates("2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getTop10MarketOperatorCellBetween2Dates("2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(19)
 	public void getIMSIsforFailureClassTest() {
-		Collection<?> res=baseDataService.getIMSIsforFailureClass("HIGH PRIORITY ACCESS");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getIMSIsforFailureClass("HIGH PRIORITY ACCESS", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(20)
 	public void getUniqueCauseCodeForIMSITest() {
-		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011");
-		assertEquals(res.size(),1);
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getUniqueCauseCodeForIMSI("2344930000000011", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test
 	@InSequence(21)
 	public void getTop10ImsiListBetween2DatesTest() {
-		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00");
-		assertEquals(1,res.size());
+		QueryOptions options=new QueryOptions(0, 0, 0, false, "", 0, "asc");
+		Collection<?> res=baseDataService.getTop10ImsiListBetween2Dates( "2000-01-11 17:15:00", "2015-01-11 17:15:00", options);
+		assertEquals(2,res.size());
 	}
 	
 	@Test @InSequence(22)

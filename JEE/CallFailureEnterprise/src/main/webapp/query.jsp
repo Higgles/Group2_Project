@@ -9,12 +9,10 @@
 <link rel="stylesheet" href="media/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
 <link rel="stylesheet" type="text/css" href="resources/demo.css">
-<!--link rel="stylesheet" href="media/css/bootstrap-table.css"-->
-<link rel="stylesheet" type="text/css" href="media/css/jquery.dataTables.min.css">
-<link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="media/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="media/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="media/css/mainPage.css">
-<!--  link href="example.css" rel="stylesheet" type="text/css"-->
 <style type="text/css">
 
 	#placeholder {
@@ -37,11 +35,8 @@
 </style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
-<!--script type="text/javascript" language="javascript" src="resources/demo.js"></script-->
+<!-- script type="text/javascript" language="javascript" src="resources/demo.js"></script-->
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
-<!-- script type="text/javascript" src="media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script-->
-<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="media/js/transition.js"></script>
 <script type="text/javascript" src="media/js/moment-with-locales.js"></script>
 <script type="text/javascript" src="media/js/collapse.js"></script>
@@ -50,6 +45,7 @@
 <script type="text/javascript" src="media/js/select2.full.js"></script>
 <script language="javascript" type="text/javascript" src="media/js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="media/js/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -539,7 +535,7 @@
 				url : queryUrl+"&start=0&length=1&headings=true",
 				success : function(data) {
 					$("#resultsDiv").empty();
-					var table = $("<table id='dataTable' class='display'>");
+					var table = $("<table id='dataTable' class='table table-striped table-bordered'>");
 					
 					$("#resultsDiv").append(table);
 					var columnTitles = [];
@@ -556,6 +552,12 @@
 				        sort: enablesort,
 				        searching: enablesearch
 					});
+					document.getElementById('dataTable').style.width="100%";
+					
+					$(".js-example-basic-hide-search").select2({
+						  minimumResultsForSearch: Infinity
+					});
+					
 					document.getElementById("resultsDiv").style.display = "block";
 					document.getElementById("collapseTwo")
 							.scrollIntoView();

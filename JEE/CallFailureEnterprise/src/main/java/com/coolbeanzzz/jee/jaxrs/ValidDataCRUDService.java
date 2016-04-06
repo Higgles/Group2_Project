@@ -97,8 +97,10 @@ public class ValidDataCRUDService {
 	@Path("/CB-4/{imsi}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getEventIdsCauseCodeForIMSI(@PathParam("imsi") String imsi, @QueryParam("draw") int draw, 
-    		@QueryParam("start") int start, @QueryParam("length") int length, 
+    public JSONObject getEventIdsCauseCodeForIMSI(@PathParam("imsi") String imsi, 
+    		@DefaultValue("0") @QueryParam("draw") int draw, 
+    		@DefaultValue("0") @QueryParam("start") int start, 
+    		@DefaultValue("10") @QueryParam("length") int length, 
     		@DefaultValue("false") @QueryParam("headings") boolean headings, 
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
     		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
@@ -230,9 +232,9 @@ public class ValidDataCRUDService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JSONObject getUniqueCauseCodeForIMSI(@PathParam("imsi") String imsi,
-    		@QueryParam("draw") int draw, 
-    		@QueryParam("start") int start, 
-    		@QueryParam("length") int length, 
+    		@DefaultValue("0") @QueryParam("draw") int draw, 
+    		@DefaultValue("0") @QueryParam("start") int start, 
+    		@DefaultValue("10") @QueryParam("length") int length, 
     		@DefaultValue("false") @QueryParam("headings") boolean headings, 
     		@DefaultValue("") @QueryParam("search[value]") String searchTerm, 
     		@DefaultValue("0") @QueryParam("order[0][column]") int orderColumn, 
@@ -292,15 +294,15 @@ public class ValidDataCRUDService {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private JSONObject getQueryResultsAsJSON(List queryResults, QueryOptions options){
     	JSONObject result;
-    	HashMap res = new HashMap();
-    	res.put("draw", options.getDraw());
+    	HashMap resultsMap = new HashMap();
+    	resultsMap.put("draw", options.getDraw());
     	int total = (int) queryResults.remove(1);
     	if(!options.isHeadings())
     		queryResults.remove(0);
-    	res.put("recordsTotal", total);
-    	res.put("recordsFiltered", total);
-    	res.put("data", queryResults);
-    	result = new JSONObject(res);
+    	resultsMap.put("recordsTotal", total);
+    	resultsMap.put("recordsFiltered", total);
+    	resultsMap.put("data", queryResults);
+    	result = new JSONObject(resultsMap);
         return result;
     }
 }
