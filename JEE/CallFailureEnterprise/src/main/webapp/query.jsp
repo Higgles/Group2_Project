@@ -202,10 +202,9 @@
 					</div>
 				</div>
 				<div class="panel-footer" style="font-size: 15px;">
-					<p id="count"></p>
-					<!-- Trigger the modal with a button -->
+					<p id="count"></p>					
 <button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">Look at this Graph</button>
-						</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -213,13 +212,11 @@
 	<br />
 
 
-	
-	<!-- Modal -->
+		
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 	
-	<!-- Modal content-->
-    <div class="modal-content">
+	<div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Look at this Graph</h4>
@@ -229,8 +226,12 @@
         <div id="placeholder" ></div>
       </div>
       <div class="modal-footer">
-      	<p id = "percent" align = "left"></p>
-      	<p align = "right"><button type="button" class="btn btn-default" data-dismiss="modal" >Close</button></p>
+      	<div class="col-lg-10">
+      		<p align="left"><b id = "percent"></b></p>
+      	</div>
+      	<div class="col-lg-2">
+      		<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+      	</div>
       </div>
     </div>
 
@@ -444,7 +445,7 @@
 				}
 				break;
 			case 4:
-				showData();look
+				showData();
 				break;
 			case 5:
 				if($("#manufacturerDropdown").select2('data').length<1){
@@ -502,7 +503,7 @@
 			var dates = [];
 			var queryUrl='rest/validdata/CB-'+(selectedQuery+3);
 			var inputData=[];
-			var title = document.getElementById("selectedquery2");
+			
 			
 			var ajaxDetails={
 				type : queryType,
@@ -515,13 +516,10 @@
 			switch(selectedQuery){
 			case 1:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
-				title.innerHTML = "Event ID and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 2:
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "IMSIs with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
-				" and " + todate.format("DD-MM-YYYY HH:mm");
 				break;
 			case 3:
 				var manufacturer = $("#manufacturerDropdown").select2('data')[0].text
@@ -530,49 +528,38 @@
 				inputData.push(model);
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "Number of failures for " + manufacturer + " " + model 
-				+ " between " + fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
 				break;
 			case 4:
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "Number of failures and duration, for each IMSI, between " 
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
 				break;
 			case 5:
 				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
 				inputData.push($("#modelDropdown").select2('data')[0].text);
-				title.innerHTML = "Unique Event ID and Cause Code combinations for " +
-				$("#manufacturerDropdown").select2('data')[0].text + " " + $("#modelDropdown").select2('data')[0].text;
 				break;
 			case 9:
 				inputData.push($("#imsiDropdown").select2('data')[0].text);
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "Number of failures for IMSI: " + $("#imsiDropdown").select2('data')[0].text + " between " 
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
 				break;				
 			case 12:
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "Top 10 Market/Operator/Cell ID combinations with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
-				" and " + todate.format("DD-MM-YYYY HH:mm");
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
-				title.innerHTML = "Unique Event IDs and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 15:
 				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-				title.innerHTML = "Top 10 IMSIs with failures between "
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
 				break;
 			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
-				title.innerHTML = "IMSIs for Failure Class: " + $("#failureDropdown").select2('data')[0].text;
 				break;	
 			}
+			
+			queryTitle(selectedQuery);
+			
 			
 			if(queryType=="POST"){
 				ajaxDetails.data=JSON.stringify(inputData);
@@ -591,8 +578,6 @@
 					var table = $("<table id='dataTable' class='table tablesorter tablesorter-default table-striped table-bordered'>");
 					
 					$("#resultsDiv").append(table);
-						//document.getElementById("count").innerHTML = "Count ="
-							//+ (data.dataCollection.length - 1);
 					if(data.dataCollection.length - 1 === 0){
 						document.getElementById("graph_button").style.display="none";
 					}
@@ -640,6 +625,56 @@
 				}
 			});
 
+		}
+		
+		function queryTitle(selectedQuery){
+			var title = document.getElementById("selectedquery2");
+			var fromdate = $("#fromdatetimepicker").data("DateTimePicker").date();
+			var todate = $("#todatetimepicker").data("DateTimePicker").date();
+			switch(selectedQuery){
+			case 1:
+				title.innerHTML = "Event ID and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
+				break;
+			case 2:
+				title.innerHTML = "IMSIs with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
+				" and " + todate.format("DD-MM-YYYY HH:mm");
+				break;
+			case 3:
+				var manufacturer = $("#manufacturerDropdown").select2('data')[0].text
+				var model = $("#modelDropdown").select2('data')[0].text;
+				title.innerHTML = "Number of failures for " + manufacturer + " " + model 
+				+ " between " + fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
+				break;
+			case 4:
+				title.innerHTML = "Number of failures and duration, for each IMSI, between " 
+				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
+				break;
+			case 5:
+				title.innerHTML = "Unique Event ID and Cause Code combinations for " +
+				$("#manufacturerDropdown").select2('data')[0].text + " " + $("#modelDropdown").select2('data')[0].text;
+				break;
+			case 9:
+				title.innerHTML = "Number of failures for IMSI: " + $("#imsiDropdown").select2('data')[0].text + " between " 
+				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
+				break;				
+			case 12:
+				title.innerHTML = "Top 10 Market/Operator/Cell ID combinations with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
+				" and " + todate.format("DD-MM-YYYY HH:mm");
+				break;
+			case 14:
+				title.innerHTML = "Unique Event IDs and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
+				break;
+			case 15:
+				title.innerHTML = "Top 10 IMSIs with failures between "
+				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
+				break;
+			case 16:  
+				title.innerHTML = "IMSIs for Failure Class: " + $("#failureDropdown").select2('data')[0].text;
+				break;	
+			default:
+				title.innerHTML = " No Query Selected ";
+			}
+			
 		}
 
 		$('#phead').click(function(e) {
@@ -694,7 +729,6 @@
 				graphButton.style.display="none";
 				break;
 			case 12:
-				//queryType="GET";
 				dateTimePickers.style.display="block";
 				queryType="POST";
 				graphButton.style.display="block";
@@ -711,6 +745,7 @@
 				failurePickers.style.display="block";
 				queryType="GET";
 				break;
+			
 			}
 		}
 		
@@ -720,8 +755,6 @@
 
 		var data = [];
 
-		//alert(JSON.stringify($("#dataTable").bootstrapTable('getData')));
-		
 		for(var i = 0; i < jsonArray.length; i++){
 
 		data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
@@ -734,17 +767,7 @@
 		$.plot(placeholder, data, {
 			series: {
 				pie: { 
-					show: true/*,
-					//Label on pie slice code attempt 
-					radius: 1,
-					label: {
-						show: true,
-						radius: 3/4,
-						formatter: labelFormatter,
-						background: {
-							opacity: 0.5
-						}
-					}  */ 
+					show: true
 				}
 			},
 			grid: {
@@ -758,17 +781,6 @@
 			"    series: {",
 			"        pie: {",
 			"            show: true",
-			//Label on pie slice code attempt 
-			/*,
-			"            radius: 1,",
-			"            label: {",
-			"                show: true,",
-			"                radius: 3/4,",
-			"                formatter: labelFormatter,",
-			"                background: {",
-			"                    opacity: 0.5",
-			"                }",
-			"            }",    */
 			"        }",
 			"    },",
 			"    grid: {",
