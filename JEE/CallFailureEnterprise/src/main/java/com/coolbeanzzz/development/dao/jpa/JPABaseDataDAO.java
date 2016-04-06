@@ -114,30 +114,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		}
 	}
 	
-<<<<<<< HEAD
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
-		Query query = em.createQuery(""
-		+"select bd.ueTable.manufacturer, bd.ueTable.marketingName, count(bd.id), sum(bd.duration) "
-		+"from BaseData bd where bd.ueTable.manufacturer=:manufacturer and bd.ueTable.marketingName=:marketingName "
-		+"and bd.dateTime >=:dateStart and bd.dateTime <=:dateEnd ");
-		query.setParameter("manufacturer", manufacturer);
-		query.setParameter("marketingName", model);
-		query.setParameter("dateStart", dateStart);
-		query.setParameter("dateEnd", dateEnd);
-		List<Object[]> results = query.getResultList();
-		if(results.get(0)[0]==null){
-			results.set(0, new Object[]{manufacturer,model, 0, 0});
-		}
-		List basedata = results;
-		basedata.add(0, failCountByPhoneModelHeadings);
-		
-		return basedata;
-	}
-
-=======
->>>>>>> refs/heads/Thomas_Review
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addNewEntry(FailureTable newEntry) {
@@ -152,7 +128,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		Query query = em.createQuery("DELETE from BaseData");
 		query.executeUpdate();
 	}
-
+	
+	@SuppressWarnings({"unchecked" })
 	@Override
 	public Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit) {
 		
@@ -165,19 +142,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		List<String> basedata = query.getResultList();
 		return basedata;
 	}
-<<<<<<< HEAD
-	
-	
-	/**
-	 * User Story 4
-	 * 
-	 * As Customer Service Rep. I want to display, for a given affected IMSI, 
-	 * the Event ID and Cause Code for any / all failures affecting that IMSI
-	 * 
-	 */
-=======
 
->>>>>>> refs/heads/Thomas_Review
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {	
@@ -286,61 +251,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " bd.cellId,"
 				+ " count(bd.id)"  
 				+"from BaseData bd "
-<<<<<<< HEAD
-				+"where bd.dateTime >=:date1 and bd.dateTime <=:date2 "
-				+"group by bd.imsi "
-				+"order by count(bd.imsi) desc ");
-				query.setParameter("date1", date1);
-				query.setParameter("date2", date2);
-				List basedata = query.setMaxResults(10).getResultList();
-				basedata.add(0, top10ImsiListBetween2DatesHeadings);
-				return basedata;
-	}	
-		
-	/*public void populateBaseDataTableJSON(JSONArray baseData) {
-		Query query = em.createQuery("from BaseData");
-
-		Iterator<Object> iterator = baseData.iterator();
-		
-		JSONObject baseRow;
-		BaseData object;
-		
-		EventCause eventCause;
-		MccMnc mccmnc;
-		UETable ueTable;
-		FailureClass failureClass;
-		
-		int j = 0;
-		
-		Iterator<Object> iteratorFile = baseData.iterator();
-
-		while (iterator.hasNext()) {
-			if(j < baseData.size()) j++;
-
-			baseRow = (JSONObject) iterator.next();
-
-			object = new BaseData(
-					j,
-					baseRow.get("Date / Time").toString(),
-					baseRow.get("Cell Id").toString(),
-					baseRow.get("Duration").toString(),
-					baseRow.get("NE Version").toString(),
-					baseRow.get("IMSI").toString(),
-					baseRow.get("HIER3_ID").toString(),
-					baseRow.get("HIER32_ID").toString(),
-					baseRow.get("HIER321_ID").toString(),
-					eventCause = new EventCause(Integer.parseInt(baseRow.get("Cause Code").toString()),
-							Integer.parseInt(baseRow.get("Event Id").toString()), ""),
-					mccmnc = new MccMnc(Integer.parseInt(baseRow.get("Market").toString()),
-									Integer.parseInt(baseRow.get("Operator").toString()), "", ""),
-					ueTable = new UETable(Integer.parseInt(baseRow.get("UE Type").toString()), "", "", "", "", "",
-											"", "", ""),
-					failureClass = new FailureClass(Integer.parseInt(baseRow.get("Failure Class").toString()), "")
-					);
-
-			em.merge(object);
-
-=======
 				+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
 				+"group by bd.mccmnc.country, bd.mccmnc.operator, bd.cellId "						
 				+"order by count(bd.id) desc ");
@@ -368,7 +278,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			List basedata = query.getResultList();
 			return this.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
->>>>>>> refs/heads/Thomas_Review
 		}
 	
 	

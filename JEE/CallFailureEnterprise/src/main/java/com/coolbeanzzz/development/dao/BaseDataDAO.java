@@ -75,9 +75,12 @@ public interface BaseDataDAO extends FailureTableDAO{
 		
 	/**
 	 * Queries the database for all unique imsi values
+	 * @param page
+	 * @param searchTerm 
+	 * @param pageLimit 
 	 * @return a collection of imsi values
 	 */	
-	Collection<String> getAllImsiValues();
+	Collection<String> getAllImsiValues(int page, String searchTerm, int pageLimit);
 
 	 /** 
 	 * Queries the underlying table for event id's and cause code combinations for an input IMSI 
@@ -85,12 +88,7 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param options
 	 * @return a collection of FailureTable rows from underlying table
 	 */
-<<<<<<< HEAD
-
-	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI); 
-=======
 	Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options); 
->>>>>>> refs/heads/Thomas_Review
 	
 	/** 
 	 * Queries the underlying table for unique cause code for an input IMSI
@@ -106,15 +104,5 @@ public interface BaseDataDAO extends FailureTableDAO{
 	 * @param start date, end date 
 	 * @return a collection of FailureTable rows from underlying table
 	 */	
-<<<<<<< HEAD
-	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2 );
-	
-	/**
-	 * Queries the database for all unique failure values
-	 * @return a collection of failure values
-	 */	
-	Collection<String> getAllFailureValues();
-=======
 	Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options );	
->>>>>>> refs/heads/Thomas_Review
 }

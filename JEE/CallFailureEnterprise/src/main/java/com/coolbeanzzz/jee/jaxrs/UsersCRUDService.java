@@ -53,17 +53,11 @@ public class UsersCRUDService {
     	java.net.URI location = null;
     	Subject currentUser = SecurityUtils.getSubject();
     	if(currentUser.hasRole("SysAd")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.html");
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/upload.jsp");
     	}
-    	else if(currentUser.hasRole("SupEng")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/supeng/query.html");
-    	}
-    	else if(currentUser.hasRole("CSR")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/csr/query.html");
-    	}
-    	else if(currentUser.hasRole("NetManEng")){
-    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/netmaneng/query.html");
-    	}
+    	else{
+    		location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/query.jsp");
+    	}    	
     	
     	return Response.temporaryRedirect(location).build();
     }

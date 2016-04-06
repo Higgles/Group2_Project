@@ -155,8 +155,6 @@ public class ValidDataCRUDService {
     }
     
     /**
-<<<<<<< HEAD
-=======
 	 * Gets a list of results from a query
 	 * @return A list of Base data results
 	 */	
@@ -267,7 +265,6 @@ public class ValidDataCRUDService {
     }
     
     /**
->>>>>>> refs/heads/Thomas_Review
      * Adds new entry to failure table in database
      * @param newEntry to be added to database
      * @return added failuretable entry
@@ -278,7 +275,7 @@ public class ValidDataCRUDService {
     	newEntry.setId(0);
 		service.addNewEntry(newEntry);
 		return newEntry;
-	}
+	} 
     
     /**
      * Gets a list of results from a query
@@ -290,8 +287,6 @@ public class ValidDataCRUDService {
     //@Consumes(MediaType.APPLICATION_JSON)
     public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
         return service.getAllImsiValues(page, searchTerm, pageLimit);
-<<<<<<< HEAD
-=======
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -307,6 +302,5 @@ public class ValidDataCRUDService {
     	res.put("data", queryResults);
     	result = new JSONObject(res);
         return result;
->>>>>>> refs/heads/Thomas_Review
     }
 }

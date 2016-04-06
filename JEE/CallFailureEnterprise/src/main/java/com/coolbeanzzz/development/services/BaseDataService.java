@@ -36,12 +36,8 @@ public interface BaseDataService extends FailureTableService{
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2, QueryOptions options);
 	
 	/**
-<<<<<<< HEAD
-	 * As a Support Engineer I want to see a list of all IMSIs with call failures during a given time period
-=======
 	 * Display IMSIs with call failures during a given time period
 	 * @param options 
->>>>>>> refs/heads/Thomas_Review
 	 * @param start date, end date 
 	 * @return a collection of FailureTable results
 	 */	
@@ -73,9 +69,6 @@ public interface BaseDataService extends FailureTableService{
 	 * @param options
 	 * @return a collection of FailureTable results
 	 */
-<<<<<<< HEAD
-	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI);
-=======
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options);
 	
 	/**
@@ -104,7 +97,6 @@ public interface BaseDataService extends FailureTableService{
 	 * @return a collection of IMSI rows from underlying table
 	 */
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options);
->>>>>>> refs/heads/Thomas_Review
 
 	/** 
 	 * Gets unique cause code for an input IMSI from the database
@@ -122,4 +114,3 @@ public interface BaseDataService extends FailureTableService{
 	 */	
 	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options );
 }
-
