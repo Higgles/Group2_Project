@@ -7,11 +7,14 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.coolbeanzzz.development.entities.BaseData;
@@ -126,8 +129,36 @@ public class ValidDataCRUDService {
     @Path("/imsis")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<String> getAllImsis() {
-        return service.getAllImsiValues();
+    //@Consumes(MediaType.APPLICATION_JSON)
+    public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
+        return service.getAllImsiValues(page, searchTerm, pageLimit);
     }
-
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-17/{imsi}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultList getQ17(@PathParam("imsi") String imsi) {
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getUniqueCauseCodeForIMSI(imsi));
+        return baseData;
+    }
+    
+    /**
+     * Gets a list of results from a query
+     * @return A list of Base data results
+     */
+    @Path("/CB-18")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultList getQ18(String[] dates) {    	
+    	ResultList baseData = new ResultList();
+    	baseData.setDataCollection(service.getTop10ImsiListBetween2Dates(dates[0], dates[1]));
+    	return baseData;
+    }
+        
 }
