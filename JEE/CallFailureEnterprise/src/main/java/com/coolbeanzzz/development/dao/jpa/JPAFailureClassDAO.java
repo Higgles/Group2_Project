@@ -60,6 +60,19 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return failureClassIds;
 	}
 	
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public Collection<String> getAllDescriptions(int page, String searchTerm, int pageLimit) {
+		Query query = em.createQuery("select distinct fc.description from FailureClass fc where fc.description like :searchTerm");
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		if(pageLimit != -1){
+			int start = pageLimit * (page - 1);
+			query.setFirstResult(start).setMaxResults(pageLimit);
+		}
+		List<String> descriptions = query.getResultList();
+		return descriptions;
+	}
+	
 	/**
 	 * Populate database table for failure class. Send to Failure Class entity using column names
 	 * used in dataset by getting keyset

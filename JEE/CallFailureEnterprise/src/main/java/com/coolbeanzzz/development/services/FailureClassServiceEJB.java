@@ -66,6 +66,11 @@ public class FailureClassServiceEJB implements FailureClassService {
 	public Collection<Integer> getFailureClassCodes() {
 		return dao.getFailureClassCodes();
 	}
+	
+	@Override
+	public Collection<String> getAllDescriptions(int page, String searchTerm, int pageLimit) {
+		return dao.getAllDescriptions(page, searchTerm, pageLimit);
+	}
 
 	@Override
 	public void addNewEntry(FailureTable newEntry) {
