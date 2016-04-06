@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 @Stateless
 @Local
@@ -66,23 +67,23 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model) {
-		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model);
+	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {
+		return dao.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model, options);
 	}
 
 	@Override
-	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2) {
-		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2);
+	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(String date1, String date2, QueryOptions options) {
+		return dao.getNoOfCallFailuresAndDurationForImsiInDateRange(date1, date2, options);
 	}
 
 	@Override
-	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2) {
-		return dao.getImsiListBetween2Dates(date1, date2);
+	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
+		return dao.getImsiListBetween2Dates(date1, date2, options);
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd) {
-		return dao.getFailCountByPhoneModel(manufacturer, model, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String dateStart, String dateEnd, QueryOptions options) {
+		return dao.getFailCountByPhoneModel(manufacturer, model, dateStart, dateEnd, options);
 	}
 
 	@Override
@@ -101,37 +102,32 @@ public class BaseDataServiceEJB implements BaseDataService {
 	}
 	
 	@Override
-	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI) {																						//EJB
-		return dao.getEventIdsCauseCodeForIMSI(IMSI);
+	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options) {																						//EJB
+		return dao.getEventIdsCauseCodeForIMSI(IMSI, options);
 	}
 	
 	@Override
-	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd){
-		return dao.getFailCountByImsiAndDate(IMSI, dateStart, dateEnd);
+	public Collection<FailureTable> getFailCountByImsiAndDate(String IMSI, String dateStart, String dateEnd, QueryOptions options){
+		return dao.getFailCountByImsiAndDate(IMSI, dateStart, dateEnd, options);
 	}
 
 	@Override
-	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd) {
-		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd);
+	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd, QueryOptions options) {
+		return dao.getTop10MarketOperatorCellBetween2Dates(dateStart, dateEnd, options);
 	}
 	
 	@Override
-	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass){
-		return dao.getIMSIsforFailureClass(failureClass);
+	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options){
+		return dao.getIMSIsforFailureClass(failureClass, options);
 	}
 		
 	@Override
-	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI) {
-		return dao.getUniqueCauseCodeForIMSI(IMSI);
+	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI, QueryOptions options) {
+		return dao.getUniqueCauseCodeForIMSI(IMSI, options);
 	}
 	
 	@Override
-	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2) {
-		return dao.getTop10ImsiListBetween2Dates(date1, date2);
-	}
-
-	@Override
-	public Collection<String> getAllFailureValues() {
-		return dao.getAllFailureValues();
+	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
+		return dao.getTop10ImsiListBetween2Dates(date1, date2, options);
 	}
 }

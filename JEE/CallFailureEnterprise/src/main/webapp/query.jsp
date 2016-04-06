@@ -9,11 +9,10 @@
 <link rel="stylesheet" href="media/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
 <link rel="stylesheet" type="text/css" href="resources/demo.css">
-<link rel="stylesheet" href="media/css/bootstrap-table.css">
-<link href="media/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="media/css/bootstrap-datetimepicker.css">
 <link rel="stylesheet" type="text/css" href="media/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="media/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="media/css/mainPage.css">
-<!--  link href="example.css" rel="stylesheet" type="text/css"-->
 <style type="text/css">
 
 	#placeholder {
@@ -53,9 +52,8 @@
 </style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
+<!-- script type="text/javascript" language="javascript" src="resources/demo.js"></script-->
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="media/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="media/js/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="media/js/transition.js"></script>
 <script type="text/javascript" src="media/js/moment-with-locales.js"></script>
 <script type="text/javascript" src="media/js/collapse.js"></script>
@@ -64,6 +62,7 @@
 <script type="text/javascript" src="media/js/select2.full.js"></script>
 <script language="javascript" type="text/javascript" src="media/js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="media/js/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -178,7 +177,7 @@
 					</div>
 					<div class="container" id="failurePicker">
 						<label for="failureDropdown">Choose Failure Class:</label> 
-						<select id="failureDropdown" class="js-example-responsive" style="width: 400px">
+						<select id="failureDropdown" class="js-data-example-ajax" style="width: 400px">
 						</select>
 					</div>
 					<button id="query1" type="button" class="btn btn-primary">Run Query</button>
@@ -195,95 +194,53 @@
 			</div>
 			<div id="collapseTwo" class="collapse">
 				<div class="panel-body" style="font-size: 15px;">
-					<div id="resultsDiv"
-						style="overflow: auto; height: auto; max-height: 300px; display: none;">
-						<table id="dataTable" class="table tablesorter tablesorter-default table-striped table-bordered">
+					<div id="resultsDiv" style="display: none;">
+						<table id="dataTable" class="display">
 						</table>
 					</div>
 				</div>
-				<div class="panel-footer" style="font-size: 15px;">
-					<p id="count"></p>					
-<button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">Look at this Graph</button>
+				<div class="panel-footer" style="font-size: 15px;">				
+					<button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">Look at this Graph</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<br />
-	<br />
-
-
+	<br />		
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
 		
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+		<div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Look at this Graph</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>Look at this graph</p>
+	        <div id="placeholder" ></div>
+	      </div>
+	      <div class="modal-footer">
+	      	<div class="col-lg-10">
+	      		<p align="left"><b id = "percent"></b></p>
+	      	</div>
+	      	<div class="col-lg-2">
+	      		<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+	      	</div>
+	      </div>
+	    </div>
 	
-	<div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Look at this Graph</h4>
-      </div>
-      <div class="modal-body">
-        <p>Look at this graph</p>
-        <div id="placeholder" ></div>
-      </div>
-      <div class="modal-footer">
-      	<div class="col-lg-10">
-      		<p align="left"><b id = "percent"></b></p>
-      	</div>
-      	<div class="col-lg-2">
-      		<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
-      	</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-	
+	  </div>
+	</div>
 	<script>
 		const QUERYPAGELIMIT = 20;
 		var selectedQuery=1;
-		var queryType="GET";
 		selectQuery(1);
 		
 		$(document).ready(function() {
 			$(function() {
 				$(".js-example-responsive").select2();
-				$("#dataTable").tablesorter();
-				populateFailureDropdown();
 				setUserDetails();
 			});
-		});
-		
-		$("#imsiDropdown").select2({
-			placeholder: 'IMSI',
-			ajax: {
-				type : 'GET',
-				url: 'rest/validdata/imsis',
-				dataType: 'json',
-				delay: 250,
-				data: function(params){
-					return{
-						term: params.term || '',
-			            page: params.page || 1,
-			            pageLimit: QUERYPAGELIMIT
-					};
-				},
-				processResults: function (data, params){
-					
-					params.page = params.page || 1;
-					
-					return {
-						results: $.map(data, function(item){
-							return {
-								text: item,
-								id: item
-							}
-						}),
-						pagination: {
-							more:  data.length == QUERYPAGELIMIT
-						}
-					};
-				}
-			}
 		});
 		
 		$(function() {
@@ -322,6 +279,72 @@
 				},
 			});
 		}
+		
+		$("#imsiDropdown").select2({
+			placeholder: 'IMSI',
+			ajax: {
+				type : 'GET',
+				url: 'rest/validdata/imsis',
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
+			}
+		});
+		
+		$("#failureDropdown").select2({
+			placeholder: 'Failure Class',
+			ajax: {
+				type : 'GET',
+				url: 'rest/failureclasses/descriptions',
+				dataType: 'json',
+				delay: 250,
+				data: function(params){
+					return{
+						term: params.term || '',
+			            page: params.page || 1,
+			            pageLimit: QUERYPAGELIMIT
+					};
+				},
+				processResults: function (data, params){
+					
+					params.page = params.page || 1;
+					
+					return {
+						results: $.map(data, function(item){
+							return {
+								text: item,
+								id: item
+							}
+						}),
+						pagination: {
+							more:  data.length == QUERYPAGELIMIT
+						}
+					};
+				}
+			}
+		});
 		
 		$("#manufacturerDropdown").select2({
 			placeholder: 'Manufacturer',
@@ -393,27 +416,29 @@
 					};
 				}
 			}
-		});
-		
-		function populateFailureDropdown(){
-			$("#failureDropdown").empty();
-			$.ajax({
-				type : 'GET',
-				url : 'rest/validdata/failure',
-				success : function(data){
-					for(i=0;i<data.length;i++){
-						var opt = data[i];  
-						var text = "<option value=\""+i+"\">"+opt+"</option>";
-						$("#failureDropdown").append(text);
-					}
-					var $example = $("#failureDropdown").select2();
-					$example.val("0").trigger("change");
-				},
-			});
-		}				
+		});		
 		
 		$("#manufacturerDropdown").on("change",function(e) {
 			$("#modelDropdown").val('').trigger('change');	
+		});
+		
+		$(function() {
+			$('#fromdatetimepicker').datetimepicker({
+				locale : 'en-gb'
+			});
+			$('#todatetimepicker').datetimepicker({
+				useCurrent : false,
+				locale : 'en-gb'
+			});
+			
+			$("#fromdatetimepicker").on("dp.change", function(e) {
+				$('#todatetimepicker').data("DateTimePicker").minDate(e.date);
+			});
+			$("#todatetimepicker").on("dp.change", function(e) {
+				$('#fromdatetimepicker').data("DateTimePicker").maxDate(e.date);
+			});
+			$('#fromdatetimepicker').data("DateTimePicker").date(new Date());
+			$('#todatetimepicker').data("DateTimePicker").date(new Date());
 		});
 
 		$("#query1").click(function() {
@@ -505,53 +530,51 @@
 			var inputData=[];
 			
 			
-			var ajaxDetails={
-				type : queryType,
-				url : queryUrl,
-				dataType : null,
-				contentType : null,
-				data : null,
-			}
-			
+			var enablesort = true;
+			var enablesearch = true;
 			switch(selectedQuery){
 			case 1:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 2:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
 				var manufacturer = $("#manufacturerDropdown").select2('data')[0].text
 				var model = $("#modelDropdown").select2('data')[0].text;
-				inputData.push(manufacturer);
-				inputData.push(model);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("manufacturer="+manufacturer);
+				inputData.push("model="+model);
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 4:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 5:
-				inputData.push($("#manufacturerDropdown").select2('data')[0].text);
-				inputData.push($("#modelDropdown").select2('data')[0].text);
+				inputData.push("manufacturer="+$("#manufacturerDropdown").select2('data')[0].text);
+				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
-				inputData.push($("#imsiDropdown").select2('data')[0].text);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("imsi="+$("#imsiDropdown").select2('data')[0].text);
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;				
 			case 12:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
+				enablesort=false;
+				enablesearch=false;
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
 				break;
 			case 15:
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
+				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
+				enablesort=false;
+				enablesearch=false;
 				break;
 			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
@@ -560,65 +583,51 @@
 			
 			queryTitle(selectedQuery);
 			
-			
-			if(queryType=="POST"){
-				ajaxDetails.data=JSON.stringify(inputData);
-				ajaxDetails.dataType="json";
-				ajaxDetails.contentType='application/json';
+			queryUrl+="?";
+			for(i=0;i<inputData.length;i++){
+				if(i!=0){
+					queryUrl+="&";
+				}
+				queryUrl+=inputData[i];
 			}
-		
+			
+			
 			$.ajax({
-				type : queryType,
-				url : queryUrl,
-				dataType : ajaxDetails.dataType,
-				contentType : ajaxDetails.contentType,
-				data : ajaxDetails.data,
+				type : "GET",
+				url : queryUrl+"&start=0&length=1&headings=true",
 				success : function(data) {
 					$("#resultsDiv").empty();
-					var table = $("<table id='dataTable' class='table tablesorter tablesorter-default table-striped table-bordered'>");
+					var table = $("<table id='dataTable' class='table table-striped table-bordered'>");
 					
 					$("#resultsDiv").append(table);
-					if(data.dataCollection.length - 1 === 0){
-						document.getElementById("graph_button").style.display="none";
-					}
-					else{
-						if(selectedQuery == 12){
-							document.getElementById("graph_button").style.display="block";
-						}
-					}
+					
 					var columnTitles = [];
-					for (j = 0; j < data.dataCollection[0].length; j++) {
+					for (j = 0; j < data.data[0].length; j++) {
 						columnTitles.push({
-							title : "" + data.dataCollection[0][j],
-							field : "" + data.dataCollection[0][j],
-							align : 'center',
-							valign : 'middle',
-							sortable : true
+							title : "" + data.data[0][j]
 						});
 					}
-	
-					$('#dataTable').bootstrapTable({
-						columns : columnTitles
+					
+					$('#dataTable').DataTable({
+						columns : columnTitles,
+						serverSide: true,
+				        ajax: queryUrl,
+				        sort: enablesort,
+				        searching: enablesearch
 					});
-	
-					var arr = [];
-					for (i = 1; i < data.dataCollection.length; i++) {
-						var rowData = '{';
-						for (j = 0; j < data.dataCollection[i].length - 1; j++) {
-							rowData += '"' + data.dataCollection[0][j]
-									+ '" : "'
-									+ data.dataCollection[i][j] + '",';
-						}
-						rowData += '"'
-								+ data.dataCollection[0][data.dataCollection[i].length - 1]
-								+ '" : "'
-								+ data.dataCollection[i][data.dataCollection[i].length - 1]
-								+ '"';
-						rowData += '}';
-						arr.push(JSON.parse(rowData));
+					document.getElementById('dataTable').style.width="100%";
+					
+					$(".js-example-basic-hide-search").select2({
+						  minimumResultsForSearch: Infinity
+					});
+					
+					if(selectedQuery == 12 && data.data.length > 0){
+						document.getElementById("graph_button").style.display="block";
 					}
-					$('#dataTable').bootstrapTable('load', arr);
-					$("#dataTable").trigger("update");
+					else{
+						document.getElementById("graph_button").style.display="none";
+					}
+					
 					document.getElementById("resultsDiv").style.display = "block";
 					document.getElementById("collapseTwo")
 							.scrollIntoView();
@@ -702,48 +711,36 @@
 			
 			switch(selectedQuery){
 			case 1:
-				queryType="GET";
 				imsiPickers.style.display="block";
 				break;
 			case 2:
 				dateTimePickers.style.display="block";
-				queryType="POST";
 				break;
 			case 3:
-				queryType="POST";
 				dateTimePickers.style.display="block";
 				tacPickers.style.display="block";
 				break;
 			case 4:
 				dateTimePickers.style.display="block";
-				queryType="POST";
 				break;
 			case 5:
-				queryType="POST";
-				tacPickers.style.display="block";
+				tacPickers.style.display="block"
 				break;				
 			case 9:
-				queryType="POST";
 				imsiPickers.style.display="block";
 				dateTimePickers.style.display="block";
-				graphButton.style.display="none";
 				break;
 			case 12:
 				dateTimePickers.style.display="block";
-				queryType="POST";
-				graphButton.style.display="block";
 				break;				
 			case 14:
-				queryType="GET";
 				imsiPickers.style.display="block";
 				break;
 			case 15:
 				dateTimePickers.style.display="block";
-				queryType="POST";
 				break;
 			case 16:
 				failurePickers.style.display="block";
-				queryType="GET";
 				break;
 			
 			}
@@ -751,14 +748,13 @@
 		
 		$("#graph_button").click(function(e) {
 
-		var jsonArray = $("#dataTable").bootstrapTable('getData');
+		var jsonArray = $("#dataTable").DataTable().data();
+
 
 		var data = [];
-
+		
 		for(var i = 0; i < jsonArray.length; i++){
-
-		data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
-	
+			data.push({label: jsonArray[i][0]+" "+jsonArray[i][1]+" "+jsonArray[i][2], data: jsonArray[i][3] });	
 		}	 
 
 		var placeholder = $("#placeholder");
