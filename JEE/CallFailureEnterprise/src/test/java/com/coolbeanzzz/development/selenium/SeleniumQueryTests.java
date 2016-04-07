@@ -55,8 +55,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query1test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query1test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query1test.add(element.getText());
         }
         Assert.assertArrayEquals(query1headings, query1test.toArray());
     }
@@ -81,8 +81,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query14test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query14test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query14test.add(element.getText());
         }
         Assert.assertArrayEquals(query14headings, query14test.toArray());
     }
@@ -111,8 +111,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query9test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query9test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query9test.add(element.getText());
         }
         Assert.assertArrayEquals(query9headings, query9test.toArray());
     }
@@ -136,8 +136,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query2test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query2test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query2test.add(element.getText());
         }
         Assert.assertArrayEquals(query2headings, query2test.toArray());
     }
@@ -169,8 +169,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query3test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query3test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query3test.add(element.getText());
         }
         Assert.assertArrayEquals(query3headings, query3test.toArray());
     }
@@ -197,8 +197,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query16test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query16test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query16test.add(element.getText());
         }
         Assert.assertArrayEquals(query16headings, query16test.toArray());
     }
@@ -223,8 +223,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query4test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query4test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query4test.add(element.getText());
         }
         Assert.assertArrayEquals(query4headings, query4test.toArray());
     }
@@ -254,8 +254,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query5test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query5test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query5test.add(element.getText());
         }
         Assert.assertArrayEquals(query5headings, query5test.toArray());
     }
@@ -280,8 +280,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query12test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query12test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query12test.add(element.getText());
         }
         Assert.assertArrayEquals(query12headings, query12test.toArray());
     }
@@ -306,8 +306,8 @@ public class SeleniumQueryTests extends TestCase {
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query15test = new ArrayList<String>();
-        for(WebElement e : tableRows){
-        	query15test.add(e.getText());
+        for(WebElement element : tableRows){
+        	query15test.add(element.getText());
         }
         Assert.assertArrayEquals(query15headings, query15test.toArray());
     }
