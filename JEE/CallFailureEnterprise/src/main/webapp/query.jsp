@@ -18,7 +18,7 @@
 <style type="text/css">
 
 	#placeholder {
-		width: 800px;
+		width: 550px;
 		height: 400px;
 	}
 	
@@ -31,25 +31,8 @@
 	a:hover { color: #28b; }
 	
 	.legend table {
-		position: relative;
-		width: 300px;
 		border-spacing: 5px;
-		font-size: 20px;
 	}
-	
-	@media screen and (min-width: 768px) {
-        .modal-dialog {
-          width: 800px;
-        }
-        .modal-sm {
-          width: 400px;
-        }
-    }
-    @media screen and (min-width: 992px) {
-        .modal-lg {
-          width: 950px;
-        }
-    }
 
 </style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
@@ -104,22 +87,22 @@
 		</div>
 	</nav>
 	<div class="dropdown">
-		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+		<button id="button1" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 			<b>Select Query</b> <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event IDs and Cause Codes for a given IMSI</a></li>
-			<li><a id="availQuery14" onClick=selectQuery(14)>Display unique Event IDs and Cause Codes for a given IMSI</a></li>
-			<li><a id="availQuery9" onClick=selectQuery(9)>Display number of failures for a given IMSI during a time period.</a><br></li>
+			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event ID and CauseCodes for given IMSI</a></li>
+			<li><a id="availQuery14" onClick=selectQuery(14)>Display Unique CauseCodes for given IMSI</a></li>
+			<li><a id="availQuery9" onClick=selectQuery(9)>Display failure count for given IMSI during a time period.</a></li>
 			<shiro:hasAnyRoles name="SupEng, NetManEng">
-			<li><a id="availQuery2" onClick=selectQuery(2)>Display IMSIs with failures during a time period</a></li>
-			<li><a id="availQuery3" onClick=selectQuery(3)>Display number of failures for a given model of phone, during a time period</a></li>
-			<li><a id="availQuery16" onClick=selectQuery(16)>Display IMSIs for a given Failure Class</a><br></li>
+			<li><a id="availQuery2" onClick=selectQuery(2)>Display all IMSIs with call failures during a period</a></li>
+			<li><a id="availQuery3" onClick=selectQuery(3)>Display count of call failures for a given model of phone, during time period</a></li>
+			<li><a id="availQuery16" onClick=selectQuery(16)>Display IMSIs for a given failure Cause Class</a></li>
 			<shiro:hasRole name="NetManEng">
-			<li><a id="availQuery4" onClick=selectQuery(4)>Display the number of failures and their total duration during a time period for each IMSI</a></li>
-			<li><a id="availQuery5" onClick=selectQuery(5)>Display the unique Event ID and Cause Code combinations and the number of occurrences for a given model of phone</a></li>
-			<li><a id="availQuery12" onClick=selectQuery(12)>Display top 10 Market/Operator/Cell ID combinations with failures during a time period</a></li>			 
-			<li><a id="availQuery15" onClick=selectQuery(15)>Display top 10 IMSIs with failures during a time period</a></li>
+			<li><a id="availQuery4" onClick=selectQuery(4)>Display count, for each IMSI, the number of call failures and their total duration during a time period</a></li>
+			<li><a id="availQuery5" onClick=selectQuery(5)>Display, for a given model of phone, all the unique failure Event Id and Cause Code combinations and the number of occurrences</a></li>
+			<li><a id="availQuery12" onClick=selectQuery(12)>Display Top 10 Market/Operator/Cell ID combinations with call failures during a time period</a></li>			 
+			<li><a id="availQuery15" onClick=selectQuery(15)>Display top 10 IMSIs with call failures during a time period</a></li>
 			
 			</shiro:hasRole>
 			</shiro:hasAnyRoles>
@@ -194,7 +177,7 @@
 	<div class="col-lg-12">
 		<div class="panel panel-primary">
 			<div id="phead2" class="panel-heading">
-				<h4 id="selectedquery2"></h4>
+				<h4>Query Results</h4>
 			</div>
 			<div id="collapseTwo" class="collapse">
 				<div class="panel-body" style="font-size: 15px;">
@@ -204,12 +187,7 @@
 					</div>
 				</div>
 				<div class="panel-footer" style="font-size: 15px;">
-<<<<<<< HEAD
-					<p id="count"></p>					
-<button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">Look at this Graph</button>
-=======
 					<button id="graph_button" type="button" class="btn btn-primary">Look at this Graph!</button>
->>>>>>> refs/heads/Thomas_Review
 				</div>
 			</div>
 		</div>
@@ -217,33 +195,12 @@
 	<br />
 	<br />
 
-
-		
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-	
-	<div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Look at this Graph</h4>
-      </div>
-      <div class="modal-body">
-        <p>Look at this graph</p>
-        <div id="placeholder" ></div>
-      </div>
-      <div class="modal-footer">
-      	<div class="col-lg-10">
-      		<p align="left"><b id = "percent"></b></p>
-      	</div>
-      	<div class="col-lg-2">
-      		<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
-      	</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-	
+	<!--  div class="demo-container"-->	
+	<div class="container">
+		<div id="placeholder" ></div>
+	</div>
+	<!--  /div -->
+	<p id = "percent"></p>
 	<script>
 		const QUERYPAGELIMIT = 20;
 		var selectedQuery=1;
@@ -289,37 +246,9 @@
 			}
 		});
 		
-<<<<<<< HEAD
-		$(function() {
-			$('#fromdatetimepicker').datetimepicker({
-				locale : 'en-gb'
-			});
-			$('#todatetimepicker').datetimepicker({
-				useCurrent : false,
-				locale : 'en-gb'
-			});
-			
-			$("#fromdatetimepicker").on("dp.change", function(e) {
-				$('#todatetimepicker').data("DateTimePicker").minDate(e.date);
-			});
-			$("#todatetimepicker").on("dp.change", function(e) {
-				$('#fromdatetimepicker').data("DateTimePicker").maxDate(e.date);
-			});
-			$('#fromdatetimepicker').data("DateTimePicker").date(new Date());
-			$('#todatetimepicker').data("DateTimePicker").date(new Date());
-		});
-		
-		function clearPercent() {
-			document.getElementById("percent").innerHTML = "";
-		}
-
-		function setUserDetails() {
-			$.ajax({
-=======
 		$("#failureDropdown").select2({
 			placeholder: 'Failure Class',
 			ajax: {
->>>>>>> refs/heads/Thomas_Review
 				type : 'GET',
 				url: 'rest/failureclasses/descriptions',
 				dataType: 'json',
@@ -547,7 +476,6 @@
 			var queryUrl='rest/validdata/CB-'+(selectedQuery+3);
 			var inputData=[];
 			
-			
 			var enablesort = true;
 			var enablesearch = true;
 			switch(selectedQuery){
@@ -559,19 +487,10 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				break;
 			case 3:
-<<<<<<< HEAD
-				var manufacturer = $("#manufacturerDropdown").select2('data')[0].text
-				var model = $("#modelDropdown").select2('data')[0].text;
-				inputData.push(manufacturer);
-				inputData.push(model);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-=======
 				inputData.push("manufacturer="+$("#manufacturerDropdown").select2('data')[0].text);
 				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
->>>>>>> refs/heads/Thomas_Review
 				break;
 			case 4:
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
@@ -582,15 +501,9 @@
 				inputData.push("model="+$("#modelDropdown").select2('data')[0].text);
 				break;
 			case 9:
-<<<<<<< HEAD
-				inputData.push($("#imsiDropdown").select2('data')[0].text);
-				inputData.push(fromdate.format("YYYY-MM-DD HH:mm"));
-				inputData.push(todate.format("YYYY-MM-DD HH:mm"));
-=======
 				inputData.push("imsi="+$("#imsiDropdown").select2('data')[0].text);
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
->>>>>>> refs/heads/Thomas_Review
 				break;				
 			case 12:
 				inputData.push("fromdate="+fromdate.format("YYYY-MM-DD HH:mm"));
@@ -612,22 +525,12 @@
 				break;	
 			}
 			
-<<<<<<< HEAD
-			queryTitle(selectedQuery);
-			
-			
-			if(queryType=="POST"){
-				ajaxDetails.data=JSON.stringify(inputData);
-				ajaxDetails.dataType="json";
-				ajaxDetails.contentType='application/json';
-=======
 			queryUrl+="?";
 			for(i=0;i<inputData.length;i++){
 				if(i!=0){
 					queryUrl+="&";
 				}
 				queryUrl+=inputData[i];
->>>>>>> refs/heads/Thomas_Review
 			}
 			
 			
@@ -639,17 +542,6 @@
 					var table = $("<table id='dataTable' class='display'>");
 					
 					$("#resultsDiv").append(table);
-<<<<<<< HEAD
-					if(data.dataCollection.length - 1 === 0){
-						document.getElementById("graph_button").style.display="none";
-					}
-					else{
-						if(selectedQuery == 12){
-							document.getElementById("graph_button").style.display="block";
-						}
-					}
-=======
->>>>>>> refs/heads/Thomas_Review
 					var columnTitles = [];
 					for (j = 0; j < data.data[0].length; j++) {
 						columnTitles.push({
@@ -671,56 +563,6 @@
 			});
 
 		}
-		
-		function queryTitle(selectedQuery){
-			var title = document.getElementById("selectedquery2");
-			var fromdate = $("#fromdatetimepicker").data("DateTimePicker").date();
-			var todate = $("#todatetimepicker").data("DateTimePicker").date();
-			switch(selectedQuery){
-			case 1:
-				title.innerHTML = "Event ID and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
-				break;
-			case 2:
-				title.innerHTML = "IMSIs with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
-				" and " + todate.format("DD-MM-YYYY HH:mm");
-				break;
-			case 3:
-				var manufacturer = $("#manufacturerDropdown").select2('data')[0].text
-				var model = $("#modelDropdown").select2('data')[0].text;
-				title.innerHTML = "Number of failures for " + manufacturer + " " + model 
-				+ " between " + fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
-				break;
-			case 4:
-				title.innerHTML = "Number of failures and duration, for each IMSI, between " 
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
-				break;
-			case 5:
-				title.innerHTML = "Unique Event ID and Cause Code combinations for " +
-				$("#manufacturerDropdown").select2('data')[0].text + " " + $("#modelDropdown").select2('data')[0].text;
-				break;
-			case 9:
-				title.innerHTML = "Number of failures for IMSI: " + $("#imsiDropdown").select2('data')[0].text + " between " 
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
-				break;				
-			case 12:
-				title.innerHTML = "Top 10 Market/Operator/Cell ID combinations with failures between " + fromdate.format("DD-MM-YYYY HH:mm") + 
-				" and " + todate.format("DD-MM-YYYY HH:mm");
-				break;
-			case 14:
-				title.innerHTML = "Unique Event IDs and Cause Codes for IMSI: " + $("#imsiDropdown").select2('data')[0].text;
-				break;
-			case 15:
-				title.innerHTML = "Top 10 IMSIs with failures between "
-				+ fromdate.format("DD-MM-YYYY HH:mm") + " and " + todate.format("DD-MM-YYYY HH:mm"); 
-				break;
-			case 16:  
-				title.innerHTML = "IMSIs for Failure Class: " + $("#failureDropdown").select2('data')[0].text;
-				break;	
-			default:
-				title.innerHTML = " No Query Selected ";
-			}
-			
-		}
 
 		$('#phead').click(function(e) {
 			$('#collapseOne').collapse('toggle');
@@ -735,7 +577,6 @@
 			var tacPickers=document.getElementById("tacPicker");
 			var imsiPickers=document.getElementById("imsiPicker");
 			var failurePickers=document.getElementById("failurePicker");
-			var graphButton = document.getElementById("graph_button");
 			selectedQuery=i;
 			document.getElementById("selectedquery").innerHTML=document.getElementById("availQuery"+selectedQuery).innerHTML;
 			
@@ -743,7 +584,6 @@
 			dateTimePickers.style.display="none";
 			imsiPickers.style.display="none";
 			failurePickers.style.display="none";
-			graphButton.style.display = "none";
 			
 			switch(selectedQuery){
 			case 1:
@@ -754,31 +594,20 @@
 				break;
 			case 3:
 				dateTimePickers.style.display="block";
-				tacPickers.style.display="block";
+				tacPickers.style.display="block"
 				break;
 			case 4:
 				dateTimePickers.style.display="block";
 				break;
 			case 5:
-<<<<<<< HEAD
-				queryType="POST";
-				tacPickers.style.display="block";
-=======
 				tacPickers.style.display="block"
->>>>>>> refs/heads/Thomas_Review
 				break;				
 			case 9:
 				imsiPickers.style.display="block";
 				dateTimePickers.style.display="block";
-				graphButton.style.display="none";
 				break;
 			case 12:
 				dateTimePickers.style.display="block";
-<<<<<<< HEAD
-				queryType="POST";
-				graphButton.style.display="block";
-=======
->>>>>>> refs/heads/Thomas_Review
 				break;				
 			case 14:
 				imsiPickers.style.display="block";
@@ -789,92 +618,98 @@
 			case 16:
 				failurePickers.style.display="block";
 				break;
-			
 			}
 		}
 		
 		$("#graph_button").click(function(e) {
 
-<<<<<<< HEAD
-		var jsonArray = $("#dataTable").bootstrapTable('getData');
-=======
 var jsonArray = $("#dataTable").DataTable().data();
->>>>>>> refs/heads/Thomas_Review
 
-<<<<<<< HEAD
-		var data = [];
-
-		for(var i = 0; i < jsonArray.length; i++){
-=======
 var data = [];
 		
 for(var i = 0; i < jsonArray.length; i++){
->>>>>>> refs/heads/Thomas_Review
 
-<<<<<<< HEAD
-		data.push({label: jsonArray[i].Market+" "+jsonArray[i].Operator+" "+jsonArray[i]["Cell Id"], data: jsonArray[i].Count });
-=======
 	data.push({label: jsonArray[i][0]+" "+jsonArray[i][1]+" "+jsonArray[i][2], data: jsonArray[i][3] });
->>>>>>> refs/heads/Thomas_Review
 	
-		}	 
+	}	 
 
-		var placeholder = $("#placeholder");
+			var placeholder = $("#placeholder");
 
 
-		$.plot(placeholder, data, {
-			series: {
-				pie: { 
-					show: true
+			$.plot(placeholder, data, {
+				series: {
+					pie: { 
+						show: true/*,
+						//Label on pie slice code attempt 
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: {
+								opacity: 0.5
+							}
+						}  */ 
+					}
+				},
+				grid: {
+					hoverable: true,
+					clickable: true
 				}
-			},
-			grid: {
-				hoverable: true,
-				clickable: true
-			}
+			});
+
+			setCode([
+				"$.plot('#placeholder', data, {",
+				"    series: {",
+				"        pie: {",
+				"            show: true",
+				//Label on pie slice code attempt 
+				/*,
+				"            radius: 1,",
+				"            label: {",
+				"                show: true,",
+				"                radius: 3/4,",
+				"                formatter: labelFormatter,",
+				"                background: {",
+				"                    opacity: 0.5",
+				"                }",
+				"            }",    */
+				"        }",
+				"    },",
+				"    grid: {",
+				"        hoverable: true,",
+				"        clickable: true",
+				"    }",
+				"});"
+			]);
+
+			placeholder.bind("plothover", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+
+				var percent = parseFloat(obj.series.percent).toFixed(2);
+				$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
+			});
+
+			placeholder.bind("plotclick", function(event, pos, obj) {
+
+				if (!obj) {
+					return;
+				}
+				percent = parseFloat(obj.series.percent).toFixed(2);
+				document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "% "+ obj.series.data.toString().split(",").pop();
+			});
 		});
 
-		setCode([
-			"$.plot('#placeholder', data, {",
-			"    series: {",
-			"        pie: {",
-			"            show: true",
-			"        }",
-			"    },",
-			"    grid: {",
-			"        hoverable: true,",
-			"        clickable: true",
-			"    }",
-			"});"
-		]);
+		function labelFormatter(label, series) {
+			return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+		}
 
-		placeholder.bind("plothover", function(event, pos, obj) {
-
-			if (!obj) {
-				return;
-			}
-
-			var percent = parseFloat(obj.series.percent).toFixed(2);
-			$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
-		});
-
-		placeholder.bind("plotclick", function(event, pos, obj) {
-
-			if (!obj) {
-				return;
-			}
-			percent = parseFloat(obj.series.percent).toFixed(2);
-			document.getElementById("percent").innerHTML = ""  + obj.series.label + ": " + percent + "% "+ obj.series.data.toString().split(",").pop();
-		});
-	});
-
-	function labelFormatter(label, series) {
-		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-	}
-
-	function setCode(lines) {
-		$("#code").text(lines.join("\n"));
-	}
+		function setCode(lines) {
+			$("#code").text(lines.join("\n"));
+		}
 	</script>
 </body>
 </html>
