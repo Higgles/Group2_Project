@@ -1,9 +1,11 @@
 package com.coolbeanzzz.development.selenium;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -40,18 +42,23 @@ public class SeleniumQueryTests extends TestCase {
      * @throws Exception
      */
     public void testQuery1() throws Exception {
+    	driver.findElement(By.id("button1")).click();
+    	driver.findElement(By.id("availQuery1")).click();
         driver.findElement(By.id("select2-imsiDropdown-container")).click();
         Thread.sleep(1000);
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
         
-        String[] query1headings = {"Dat/Time", "Event Id", "Cause Code", "Description"};
+        Thread.sleep(3000);
+        
+        String[] query1headings = {"Date/Time", "Event Id", "Cause Code", "Description"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query1test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query1headings[count]));
-        	count++;
+        	query1test.add(e.getText());
         }
+        Assert.assertArrayEquals(query1headings, query1test.toArray());
     }
     
     /**
@@ -68,15 +75,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
         
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query14headings = {"Event Id", "Cause Code", "Description", "Number of Occurences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query14test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query14headings[count]));
-        	count++;
+        	query14test.add(e.getText());
         }
+        Assert.assertArrayEquals(query14headings, query14test.toArray());
     }
     
     /**
@@ -97,15 +105,16 @@ public class SeleniumQueryTests extends TestCase {
         Thread.sleep(500);
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
-        String[] query3headings = {"Count", "Total Duration"};
+        String[] query9headings = {"Count", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query9test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query3headings[count]));
-        	count++;
+        	query9test.add(e.getText());
         }
+        Assert.assertArrayEquals(query9headings, query9test.toArray());
     }
     
     /**
@@ -121,15 +130,16 @@ public class SeleniumQueryTests extends TestCase {
     	driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
     	driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query2headings = {"IMSI", "Market", "Operator", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query2test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query2headings[count]));
-        	count++;
+        	query2test.add(e.getText());
         }
+        Assert.assertArrayEquals(query2headings, query2test.toArray());
     }
     
     /**
@@ -153,15 +163,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
-        String[] query3headings = {"Manufacturer", "Model", "Number of Failures", "Total Failures"};
+        String[] query3headings = {"Manufacturer", "Model", "Number of Failures", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query3test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query3headings[count]));
-        	count++;
+        	query3test.add(e.getText());
         }
+        Assert.assertArrayEquals(query3headings, query3test.toArray());
     }
     
     /**
@@ -180,15 +191,16 @@ public class SeleniumQueryTests extends TestCase {
         Thread.sleep(500);
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query16headings = {"IMSIs", "Count"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query16test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query16headings[count]));
-        	count++;
+        	query16test.add(e.getText());
         }
+        Assert.assertArrayEquals(query16headings, query16test.toArray());
     }
     
     /**
@@ -205,15 +217,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query4headings = {"IMSI", "Number of Failures", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query4test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query4headings[count]));
-        	count++;
+        	query4test.add(e.getText());
         }
+        Assert.assertArrayEquals(query4headings, query4test.toArray());
     }
     
     /**
@@ -235,15 +248,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query5headings = {"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Model"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query5test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query5headings[count]));
-        	count++;
+        	query5test.add(e.getText());
         }
+        Assert.assertArrayEquals(query5headings, query5test.toArray());
     }
     
     /**
@@ -260,15 +274,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
         String[] query12headings = {"Market", "Operator", "Cell Id", "Count"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query12test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query12headings[count]));
-        	count++;
+        	query12test.add(e.getText());
         }
+        Assert.assertArrayEquals(query12headings, query12test.toArray());
     }
     
     /**
@@ -285,15 +300,16 @@ public class SeleniumQueryTests extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         
-        String[] query12headings = {"IMSI", "Market", "Operator", "Number of Occurences"};
+        String[] query15headings = {"IMSI", "Market", "Operator", "Number of Occurences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
-        int count = 0;
+        
+        ArrayList<String> query15test = new ArrayList<String>();
         for(WebElement e : tableRows){
-        	assert(e.getText().equals(query12headings[count]));
-        	count++;
+        	query15test.add(e.getText());
         }
+        Assert.assertArrayEquals(query15headings, query15test.toArray());
     }
     
     /**
