@@ -5,11 +5,9 @@ import java.util.concurrent.TimeUnit;
 import junit.framework.TestCase;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class LoginTest extends TestCase {
 	
@@ -20,12 +18,8 @@ public class LoginTest extends TestCase {
 	 *
 	 */
     public void setUp() throws Exception {
-        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        capabilities.setCapability("version", "11");
-        capabilities.setCapability("platform", Platform.WINDOWS);
-        capabilities.setCapability("name", "Testing Selenium 2");
         driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     /**
@@ -38,8 +32,7 @@ public class LoginTest extends TestCase {
     }
     
     /**
-     * Test the login for admin user and that they have
-     * SysAd role
+     * Test the login for admin user and that they have SysAd role
      * @throws Exception
      */
     public void testLogin() throws Exception {
@@ -59,8 +52,12 @@ public class LoginTest extends TestCase {
 	    
 	    assert(user.contains("SysAd"));
     }
-
+    
+    /**
+     * Close the web driver for selenium
+     */
     public void tearDown() throws Exception {
         this.driver.quit();
     }
+    
 }
