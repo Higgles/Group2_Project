@@ -59,5 +59,4 @@ public class LoginTest extends TestCase {
     public void tearDown() throws Exception {
         this.driver.quit();
     }
-    
 }

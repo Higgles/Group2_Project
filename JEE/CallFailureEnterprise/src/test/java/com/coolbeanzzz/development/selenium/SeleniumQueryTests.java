@@ -318,5 +318,4 @@ public class SeleniumQueryTests extends TestCase {
     public void tearDown() throws Exception {
         this.driver.quit();
     }
-    
 }
