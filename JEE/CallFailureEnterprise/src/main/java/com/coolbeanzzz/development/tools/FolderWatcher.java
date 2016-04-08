@@ -77,8 +77,7 @@ public class FolderWatcher{
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_MODIFY);
-	            
-	            
+	        
 	        Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
 	    		public void run(){
 	    			try{
@@ -87,7 +86,8 @@ public class FolderWatcher{
 	    				System.out.println("IOEXception: " + e.toString()); 
 	    			}  
 	    		}
-	    	});			
+	    	});		
+	        
 			WatchKey key = null;
             while (true){
             	try{
