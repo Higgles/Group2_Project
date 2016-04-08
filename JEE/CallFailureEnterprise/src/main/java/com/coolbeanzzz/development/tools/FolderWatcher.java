@@ -71,7 +71,7 @@ public class FolderWatcher{
 	 * The comparison tables are added to the database and this data is
 	 * compared to the base data JSON array that gets returns from the convert operation.
 	 * This is used to create valid data and erroneous data tables which are then
-	 * added to the database.
+	 * added to the database. File gets renamed with current date and time
 	 * 
 	 * @param path Directory to monitor for changes
 	 */
@@ -94,12 +94,12 @@ public class FolderWatcher{
 			WatchKey key = null;
             while (true){
             	try{
-	            	key = folderWatchService.take();//
+	            	key = folderWatchService.take();
 	                Kind<?> kind = null;
 	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
 	                    kind = watchEvent.kind();
 	                    if (ENTRY_MODIFY == kind) {
-	                    	System.out.println("New File "+watchEvent.context());
+	                    	System.out.println("New File: "+watchEvent.context());
 	                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
 	                        if(watchEvent.context().toString().endsWith(".xls")){
 	                        	long startTime = System.currentTimeMillis();
@@ -142,12 +142,12 @@ public class FolderWatcher{
 	                        	
 	                    		System.out.println("Dataset import complete");
 	                    		
-	                    		Date today = new Date();
+	                    		Date now = new Date();
 	        					SimpleDateFormat dateFormat = new SimpleDateFormat();
 	        					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
 	        					Path source = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
 	                        	Files.move(source, source.resolveSibling(watchEvent.context().toString().replace(".xls", 
-	                        			" " + dateFormat.format(today) + ".xls")));
+	                        			" " + dateFormat.format(now) + ".xls")));
 	                    		
 	                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
 	                        }

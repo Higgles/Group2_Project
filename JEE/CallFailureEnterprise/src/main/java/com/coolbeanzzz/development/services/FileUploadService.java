@@ -27,7 +27,7 @@ public class FileUploadService {
 	
 	/**
 	 * Upload the user's selected file to the server and return the file location and
-	 * success message
+	 * success message. File gets renamed with date and time
 	 * 
 	 * @param input file details from upload form input on the html page
 	 * @return Rest response
@@ -52,11 +52,11 @@ public class FileUploadService {
 					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
 					
-					Date today = new Date();
+					Date now = new Date();
 					SimpleDateFormat dateFormat = new SimpleDateFormat();
 					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
 					
-					writeFile(bytes, fileName.replace(".xls", " " + dateFormat.format(today) + ".xls"));
+					writeFile(bytes, fileName.replace(".xls", " " + dateFormat.format(now) + ".xls"));
 					
 					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
 					
