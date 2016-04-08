@@ -55,6 +55,7 @@
 	</dependencyManagement>
 	
 	<dependencies>
+		<!-- Selenium dependencies -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
