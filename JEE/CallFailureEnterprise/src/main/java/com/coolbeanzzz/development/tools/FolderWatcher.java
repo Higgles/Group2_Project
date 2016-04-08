@@ -16,6 +16,8 @@ import java.util.Collection;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import jxl.read.biff.BiffException;
@@ -31,17 +33,8 @@ import com.coolbeanzzz.development.services.UETableService;
 
 
 @Stateless
+@TransactionAttribute (TransactionAttributeType.NOT_SUPPORTED)
 public class FolderWatcher{
-	
-	private Collection<Integer> uniqueEventIds;
-	private Collection<Integer> uniqueCauseCodes;
-	
-	private Collection<Integer> uniqueFailureCodes;
-	
-	private Collection<Integer> mccs;
-	private Collection<Integer> mncs;
-	
-	private Collection<Integer> ueTypes;
 	
 	@Inject
 	private FailureClassService failureClassService;
@@ -91,7 +84,7 @@ public class FolderWatcher{
 			WatchKey key = null;
             while (true){
             	try{
-	            	key = folderWatchService.take();//
+	            	key = folderWatchService.take();
 	                Kind<?> kind = null;
 	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
 	                    kind = watchEvent.kind();
@@ -110,15 +103,15 @@ public class FolderWatcher{
 	                        	ueTableService.populateTable(datasetArray.get(3));
 	                        	System.out.println("4/6 tables complete");
 	                        	
-	                    		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-	                    		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+	                        	Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+	                        	Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
 	                    		
-	                    		uniqueFailureCodes = failureClassService.getFailureClassCodes();
+	                        	Collection<Integer> uniqueFailureCodes = failureClassService.getFailureClassCodes();
 	                    		
-	                    		mccs = mccMncService.getAllUniqueMCCs();
-	                    		mncs = mccMncService.getAllUniqueMNCs();
+	                        	Collection<Integer> mccs = mccMncService.getAllUniqueMCCs();
+	                        	Collection<Integer> mncs = mccMncService.getAllUniqueMNCs();
 	                    		
-	                    		ueTypes = ueTableService.getUETypes();
+	                        	Collection<Integer> ueTypes = ueTableService.getUETypes();
 	                    		
 	                    		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
 	                        	

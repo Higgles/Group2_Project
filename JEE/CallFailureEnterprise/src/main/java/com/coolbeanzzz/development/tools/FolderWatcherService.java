@@ -6,12 +6,15 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 
 @Startup
 @Singleton
 public class FolderWatcherService {
 	
-	@EJB
+	@Inject
 	private FolderWatcher folderWatcher;
 	
 	@PostConstruct
