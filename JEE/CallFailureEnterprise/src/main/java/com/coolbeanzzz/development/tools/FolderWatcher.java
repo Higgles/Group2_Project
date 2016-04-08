@@ -4,14 +4,18 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
@@ -76,74 +80,93 @@ public class FolderWatcher{
 		FileSystem fileSystem = path.getFileSystem();
 		try(WatchService folderWatchService = fileSystem.newWatchService()){
 			path.register(folderWatchService, ENTRY_MODIFY);
-            WatchKey key = null;
+	            
+	            
+	        Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
+	    		public void run(){
+	    			try{
+	    				folderWatchService.close();
+	    			}catch (IOException e){
+	    				System.out.println("IOEXception: " + e.toString()); 
+	    			}  
+	    		}
+	    	});			
+			WatchKey key = null;
             while (true){
-                key = folderWatchService.take();
-                Kind<?> kind = null;
-                for (WatchEvent<?> watchEvent : key.pollEvents()) {
-                    kind = watchEvent.kind();
-                    if (ENTRY_MODIFY == kind) {
-                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
-                        if(watchEvent.context().toString().endsWith(".xls")){
-                        	long startTime = System.currentTimeMillis();
-                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
-                        	
-                        	failureClassService.populateTable(datasetArray.get(2));
-                    		System.out.println("1/6 tables complete");
-                        	eventCauseService.populateTable(datasetArray.get(1));
-                        	System.out.println("2/6 tables complete");
-                        	mccMncService.populateTable(datasetArray.get(4));
-                        	System.out.println("3/6 tables complete");
-                        	ueTableService.populateTable(datasetArray.get(3));
-                        	System.out.println("4/6 tables complete");
-                        	
-                    		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-                    		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-                    		
-                    		uniqueFailureCodes = failureClassService.getFailureClassCodes();
-                    		
-                    		mccs = mccMncService.getAllUniqueMCCs();
-                    		mncs = mccMncService.getAllUniqueMNCs();
-                    		
-                    		ueTypes = ueTableService.getUETypes();
-                    		
-                    		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
-                        	
-                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
-                        	
-                        	JSONArray validData = baseData.get(0);
-                        	baseDataService.populateTable(validData);
-                        	System.out.println("5/6 tables complete");
-                        	
-                        	JSONArray erroneousData = baseData.get(1);
-                        	erroneousDataService.populateTable(erroneousData);
-                        	System.out.println("6/6 tables complete");
-                        	
-                    		System.out.println("Dataset import complete");
-                    		
-                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
-                        }
-                    }
-                }
-                
-                Runtime.getRuntime().addShutdownHook(new Thread("Close file watcher service") {  
-        			public void run(){
-        				try{
-        					folderWatchService.close();
-        				}catch (IOException e){
-        					System.out.println("IOEXception: " + e.toString()); 
-        				}  
-        			}
-        		});
-
-                if (!key.reset()) {
+            	try{
+	            	key = folderWatchService.take();//
+	                Kind<?> kind = null;
+	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
+	                    kind = watchEvent.kind();
+	                    if (ENTRY_MODIFY == kind) {
+	                    	System.out.println("New File "+watchEvent.context());
+	                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
+	                        if(watchEvent.context().toString().endsWith(".xls")){
+	                        	long startTime = System.currentTimeMillis();
+	                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
+	                        	failureClassService.populateTable(datasetArray.get(2));
+	                    		System.out.println("1/6 tables complete");
+	                        	eventCauseService.populateTable(datasetArray.get(1));
+	                        	System.out.println("2/6 tables complete");
+	                        	mccMncService.populateTable(datasetArray.get(4));
+	                        	System.out.println("3/6 tables complete");
+	                        	ueTableService.populateTable(datasetArray.get(3));
+	                        	System.out.println("4/6 tables complete");
+	                        	
+	                    		uniqueEventIds = eventCauseService.getAllUniqueEventIds();
+	                    		uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
+	                    		
+	                    		uniqueFailureCodes = failureClassService.getFailureClassCodes();
+	                    		
+	                    		mccs = mccMncService.getAllUniqueMCCs();
+	                    		mncs = mccMncService.getAllUniqueMNCs();
+	                    		
+	                    		ueTypes = ueTableService.getUETypes();
+	                    		
+	                    		CompareData compare = new CompareData(uniqueEventIds, uniqueCauseCodes, uniqueFailureCodes, mccs, mncs, ueTypes);
+	                        	
+	                    		JSONArray baseDataCompare = datasetArray.get(0);
+	                    		datasetArray.clear();
+	                    		
+	                    		ArrayList<JSONArray> baseData = compare.compareData(baseDataCompare);
+	                        	
+	                    		System.out.println(baseData.get(0).size());
+	                    		
+	                        	JSONArray validData = baseData.get(0);
+	                        	baseDataService.populateTable(validData);
+	                        	System.out.println("5/6 tables complete");
+	                        	
+	                        	JSONArray erroneousData = baseData.get(1);
+	                        	erroneousDataService.populateTable(erroneousData);
+	                        	System.out.println("6/6 tables complete");
+	                        	
+	                    		System.out.println("Dataset import complete");
+	                    		
+	                    		Date today = new Date();
+	        					SimpleDateFormat dateFormat = new SimpleDateFormat();
+	        					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
+	        					Path source = new File("/home/user1/datasets/" + watchEvent.context()).toPath();
+	                        	Files.move(source, source.resolveSibling(watchEvent.context().toString().replace(".xls", 
+	                        			" " + dateFormat.format(today) + ".xls")));
+	                    		
+	                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
+	                        }
+	                    }
+	                }
+            	}catch(IOException e){
+        			System.out.println(e.getMessage());
+        		}catch (InterruptedException e){
+        			System.out.println(e.getMessage());
+        		}
+            	
+            	if (!key.reset()) {
                     break;
-                }
+                } 
             }
 		}catch(IOException e){
-			System.out.println("IOEXception: " + e.toString());
-		}catch (InterruptedException e){
-			System.out.println("InterruptException: " + e.toString());
+			System.out.println(e.getMessage());
+		}catch(ClosedWatchServiceException e){
+			System.out.println(e.getMessage());
 		}
 	}
 	

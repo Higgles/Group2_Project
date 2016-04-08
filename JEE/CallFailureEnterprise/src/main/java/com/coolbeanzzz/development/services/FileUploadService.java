@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,11 @@ public class FileUploadService {
 					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
 					
-					writeFile(bytes, fileName);
+					Date today = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat();
+					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
+					
+					writeFile(bytes, fileName.replace(".xls", " " + dateFormat.format(today) + ".xls"));
 					
 					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
 					
