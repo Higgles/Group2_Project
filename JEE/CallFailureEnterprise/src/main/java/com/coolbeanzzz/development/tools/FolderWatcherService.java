@@ -23,4 +23,7 @@ public class FolderWatcherService {
 		folderWatcher.watchDirectoryPath(dir.toPath());
 	}
 	
+	public int getFileProgress(String filename){
+		return folderWatcher.getFileProgress(filename);
+	}
 }

@@ -35,17 +35,12 @@
 		font-size: 20px;
 	}
 	
-	@media screen and (min-width: 768px) {
+	@media screen and (min-width: 10px) {
+		.modal-open .modal{
+			overflow-x: auto;
+		}
         .modal-dialog {
-          width: 800px;
-        }
-        .modal-sm {
-          width: 400px;
-        }
-    }
-    @media screen and (min-width: 992px) {
-        .modal-lg {
-          width: 950px;
+         	width: 800px;
         }
     }
 
@@ -532,6 +527,7 @@
 			
 			var enablesort = true;
 			var enablesearch = true;
+			var enablelengthChange = true;
 			switch(selectedQuery){
 			case 1:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -566,6 +562,7 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				enablesort=false;
 				enablesearch=false;
+				enablelengthChange=false;
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -575,6 +572,7 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				enablesort=false;
 				enablesearch=false;
+				enablelengthChange=false;
 				break;
 			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
@@ -613,7 +611,8 @@
 						serverSide: true,
 				        ajax: queryUrl,
 				        sort: enablesort,
-				        searching: enablesearch
+				        searching: enablesearch,
+				        lengthChange: enablelengthChange
 					});
 					document.getElementById('dataTable').style.width="100%";
 					

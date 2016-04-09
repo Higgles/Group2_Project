@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="../media/js/collapse.js"></script>
 	<script type="text/javascript" language="javascript" class="init"></script>
 	<script type="text/javascript" src="../media/js/select2.full.js"></script>
+	<script type="text/javascript" src="../media/js/jquery.form.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="upload.css" rel="stylesheet">
@@ -71,20 +72,82 @@
 				<h4>Dataset Upload</h4>
 			</div>
 			<div class="panel-body" style="font-size: 15px;">
-				<form class="upload" action="../rest/file/upload" method="POST" enctype="multipart/form-data">
+				<form id="uploadForm" action="dummy.php" class="upload" enctype="multipart/form-data">
 			       <p>  
-			       <input type="file" name="uploadFile" button class="btn btn-primary" />
+			       <input id="uploadFile" type="file" name="uploadFile" button class="btn btn-primary" />
 			       </p>  
 			       <input id="upload-button" type="submit" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
 					
 				</form>
+				
+			    <div class='col_md_8'>
+				    <h4>Upload Progress</h4>
+				    <div class="progress">
+				    	
+					    <div id="uploadprogressbar" class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+					    	0%
+					    </div>
+				    </div>
+			    </div>
+			    <div class='col_lg_8'>
+			    	<h4>Update Tables Progress</h4>
+				    <div class="progress">
+					    <div id="commitprogressbar" class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+					    	0%
+					    </div>
+				    </div>
+			    </div>
+			    <div id="status"></div>
+				<!-- div class="progress">
+			        <div id='commitBar' class="bar"></div >
+			        <div id='commitPercent' class="percent">0%</div >
+			    </div--> 
 			</div>
 		</div>
 	</div>
 	<script>
+		var filename="";
 		$(document).ready(function() {
 			$(function() {
 				setUserDetails();
+				var bar = $('#uploadprogressbar');
+				var commitbar = $('#commitprogressbar');
+				var status = $('#status');
+				var options={					
+					url: "../rest/file/upload",
+					type: 'post',
+					dataType: 'text',
+					clearForm: true,
+					resetForm: true,
+					
+					beforeSend: function(formData, jqForm, options) {
+				        status.empty();
+				        var percentVal = '0%';
+				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+				        bar.html(percentVal);
+				    },
+				    uploadProgress: function(event, position, total, percentComplete) {
+				        var percentVal = percentComplete + '%';
+				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+				        bar.html(percentVal);
+				    },
+				    success: function(responseText, statusText, xhr, $form) {
+				        var percentVal = '100%';
+				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+				        commitbar.attr('aria-valuenow', '0%').css('width','0%');
+				        bar.html(percentVal);
+				        commitbar.html("0%");
+				        filename = responseText;
+				        setTimeout(updateCommitBar, 2000);
+				    },
+					complete: function(xhr) {
+						status.html(xhr.responseText);
+					}
+					
+				};
+				
+				
+				$(this).ajaxForm(options);
 			});
 		});
 		
@@ -98,6 +161,22 @@
 					var loginType = document.getElementById("logintype");
 					loginType.innerHTML = "<span></span>Logged in as: "
 							+ data[0];
+				}
+			});
+		}
+		
+		function updateCommitBar(){
+			$.ajax({
+				type : 'GET',
+				url : '../rest/folderWatcher?filename='+filename,
+				success : function(data) {
+					
+					var percentVal = data[0]+'%';
+					$('#commitprogressbar').attr('aria-valuenow', percentVal).css('width',percentVal);
+					$('#commitprogressbar').html(percentVal);
+					if(percentVal != '100%'){
+						setTimeout(updateCommitBar, 2000);
+					}
 				},
 			});
 		}

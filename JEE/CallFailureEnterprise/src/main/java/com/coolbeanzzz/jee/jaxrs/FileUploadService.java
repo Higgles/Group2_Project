@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
@@ -52,9 +53,9 @@ public class FileUploadService {
 					
 					writeFile(bytes, fileName);
 					
-					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.jsp");
+					//java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.jsp");
 					
-					return Response.temporaryRedirect(location).build();
+					return Response.ok(fileName, MediaType.TEXT_PLAIN).build();//.temporaryRedirect(location).build();
 				}
 				else{
 					return null;
