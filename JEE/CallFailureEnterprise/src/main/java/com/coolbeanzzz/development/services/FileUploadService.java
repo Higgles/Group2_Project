@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
@@ -55,12 +56,12 @@ public class FileUploadService {
 					Date now = new Date();
 					SimpleDateFormat dateFormat = new SimpleDateFormat();
 					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
+					String uploadedFilename = fileName.replace(".xls", " " + dateFormat.format(now) + ".xls");
+					writeFile(bytes, uploadedFilename);
 					
-					writeFile(bytes, fileName.replace(".xls", " " + dateFormat.format(now) + ".xls"));
+					//java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
 					
-					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
-					
-					return Response.temporaryRedirect(location).build();
+					return Response.ok(uploadedFilename, MediaType.TEXT_PLAIN).build();
 				}
 				else{
 					return null;
