@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=1,initial-scale=1,user-scalable=1" />
 	<title>Coolbeanzzz</title>
 
-	<!-- link href="http://fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css"-->
+	<link href="http://fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="media/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="media/css/style.css" />
 	

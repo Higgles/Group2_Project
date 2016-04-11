@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.json.simple.JSONObject;
 
 @Path("/file")
 public class FileUploadService {
@@ -47,8 +48,8 @@ public class FileUploadService {
 			try {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				String fileName = getFileName(header);
-				
-				if(fileName.contains(".xls")){
+				String fileType = getFileType(header);
+				if(fileName.contains(".xls")&&fileType.equals("application/vnd.ms-excel")){
 					InputStream inputStream = inputPart.getBody(InputStream.class, null);
 					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -60,18 +61,19 @@ public class FileUploadService {
 					writeFile(bytes, uploadedFilename);
 					
 					//java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
-					
-					return Response.ok(uploadedFilename, MediaType.TEXT_PLAIN).build();
+					JSONObject result=new JSONObject();
+					result.put("filename", uploadedFilename);
+					return Response.ok(result, MediaType.APPLICATION_JSON).build();
 				}
 				else{
-					return Response.status(404).build();
+					return Response.status(415).build();
 				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return Response.status(404).build();
 	}
 
 	/**
@@ -94,6 +96,23 @@ public class FileUploadService {
 			}
 		}
 		return "unknown";
+	}
+	
+	/**
+	 * Get filetype from uploaded file
+	 * 
+	 * @param header
+	 * @return filetype
+	 */
+	private String getFileType(MultivaluedMap<String, String> header) {
+
+		String[] contentType = header.getFirst("Content-Type").split(";");
+		if(contentType.length==1){
+			return contentType[0].trim();
+		}
+		else{
+			return "unknown";
+		}
 	}
 
 	/**

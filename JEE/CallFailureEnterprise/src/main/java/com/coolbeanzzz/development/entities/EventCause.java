@@ -25,7 +25,7 @@ public class EventCause implements Serializable, FailureTable{
 	@Column(name="Description") private String description;
 	
 	//Adding relationships
-	@OneToMany(mappedBy="eventCause", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="eventCause")//, cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 	//@XmlTransient

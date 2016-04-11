@@ -49,7 +49,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
+				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -79,8 +79,8 @@
 			       <input id="upload-button" type="button" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
 					
 				</form>
-				
-			    <div align="center">
+				<h3 id="uploadStatus" style="display: none; text-align: center;"></h3>
+			    <div id="upBar" align="center" style="display: none">
 				    <h4>Upload Progress</h4>
 				    <div class="progress" style="width:50%">
 					    <div id="uploadprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -89,7 +89,7 @@
 				    </div>
 				    
 			    </div>
-			    <div align="center">
+			    <div id="comBar" align="center" style="display: none">
 			    	<h4>Update Tables Progress</h4>
 				    <div class="progress" style="width:50%">
 					    <div id="commitprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -97,7 +97,6 @@
 					    </div>
 				    </div>
 			    </div>
-			    <div id="status"></div>
 			</div>
 		</div>
 	</div>
@@ -112,15 +111,17 @@
 				var options={					
 					url: "../rest/file/upload",
 					type: 'post',
-					dataType: 'text',
+					dataType: 'json',
 					clearForm: true,
 					resetForm: true,
 					
 					beforeSend: function(formData, jqForm, options) {
-				        status.empty();
+						document.getElementById("uploadStatus").style.display="none";
 				        var percentVal = '0%';
 				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
 				        bar.html(percentVal);
+				        
+				        document.getElementById("upBar").style.display="block";
 				    },
 				    uploadProgress: function(event, position, total, percentComplete) {
 				        var percentVal = percentComplete + '%';
@@ -128,18 +129,25 @@
 				        bar.html(percentVal);
 				    },
 				    success: function(responseText, statusText, xhr, $form) {
-				        var percentVal = '100%';
-				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
-				        commitbar.attr('aria-valuenow', '0%').css('width','0%');
-				        bar.html(percentVal);
-				        commitbar.html("0%");
-				        filename = responseText;
-				        setTimeout(updateCommitBar, 5000);
-				    },
-					complete: function(xhr) {
-						status.html(xhr.responseText);
-					}
-					
+				    	if(statusText!= "success"){
+				    		alert("Invalid File Chosen! Please choose a valid excel file")
+				    		document.getElementById("upBar").style.display="none";
+				    		document.getElementById("comBar").style.display="none";
+				    		document.getElementById("uploadStatus").style.display="block";
+							$('#uploadStatus').html("Upload Failed!");
+				    	}
+				    	else{
+					        var percentVal = '100%';
+					        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+					        commitbar.attr('aria-valuenow', '0%').css('width','0%');
+					        bar.html(percentVal);
+					        commitbar.html("0%");
+					        document.getElementById("comBar").style.display="block";
+					        filename = responseText.filename;
+					        setTimeout(updateCommitBar, 5000);
+				    	}
+				    }
+				    
 				};
 				
 				
@@ -162,7 +170,7 @@
 				url : '../rest/users/currentUser',
 				success : function(data) {
 					var userBar = document.getElementById("userBar");
-					userBar.innerHTML = "Priviledge type: " + data[1];
+					userBar.innerHTML = "Privilege type: " + data[1];
 					var loginType = document.getElementById("logintype");
 					loginType.innerHTML = "<span></span>Logged in as: "
 							+ data[0];
@@ -180,7 +188,13 @@
 					$('#commitprogressbar').attr('aria-valuenow', percentVal).css('width',percentVal);
 					$('#commitprogressbar').html(percentVal);
 					if(percentVal != '100%'){
-						setTimeout(updateCommitBar, 5000);
+						setTimeout(updateCommitBar, 3000);
+					}
+					else{
+						document.getElementById("upBar").style.display="none";
+						document.getElementById("comBar").style.display="none";
+						document.getElementById("uploadStatus").style.display="block";
+						$('#uploadStatus').html("Upload Complete!");
 					}
 				},
 			});

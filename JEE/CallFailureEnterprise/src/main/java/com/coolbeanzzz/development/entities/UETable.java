@@ -30,7 +30,7 @@ public class UETable implements Serializable, FailureTable{
 	@Column(name="`Input Mode`") private String inputMode;
 	
 	//Adding relationships
-	@OneToMany(mappedBy="ueTable", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="ueTable")//, cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 	//@XmlTransient

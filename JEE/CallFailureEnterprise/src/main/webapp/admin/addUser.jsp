@@ -55,7 +55,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
+				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -145,7 +145,7 @@
 			url : '../rest/users/currentUser',
 			success : function(data) {
 				var userBar = document.getElementById("userBar");
-				userBar.innerHTML = "Priviledge type: " + data[1];
+				userBar.innerHTML = "Privilege type: " + data[1];
 				var loginType = document.getElementById("logintype");
 				loginType.innerHTML = "<span></span>Logged in as: "
 						+ data[0];
