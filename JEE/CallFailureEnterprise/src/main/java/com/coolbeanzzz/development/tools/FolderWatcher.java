@@ -99,24 +99,25 @@ public class FolderWatcher{
 	                Kind<?> kind = null;
 	                for (WatchEvent<?> watchEvent : key.pollEvents()) {
 	                    kind = watchEvent.kind();
-	                    if (ENTRY_MODIFY == kind) {
-	                    	System.out.println("New File "+watchEvent.context());
-	                        File dataset = new File("/home/user1/datasets/" + watchEvent.context());
-	                        filesInProgress.put(watchEvent.context().toString(), 0);
-	                        if(watchEvent.context().toString().endsWith(".xls")){
+	                    String filename = watchEvent.context().toString();
+	                    if (ENTRY_MODIFY == kind && this.getFileProgress(filename)==0) {
+	                        File dataset = new File("/home/user1/datasets/" + filename);
+	                        if(filename.endsWith(".xls")){
+		                    	System.out.println("New File "+filename);
+	                        	filesInProgress.put(filename, 0);
 	                        	long startTime = System.currentTimeMillis();
 	                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
 	                        	failureClassService.populateTable(datasetArray.get(2));
-	                        	filesInProgress.put(watchEvent.context().toString(), 16);
+	                        	filesInProgress.put(filename, 16);
 	                    		System.out.println("1/6 tables complete");
 	                        	eventCauseService.populateTable(datasetArray.get(1));
-	                        	filesInProgress.put(watchEvent.context().toString(), 33);
+	                        	filesInProgress.put(filename, 33);
 	                        	System.out.println("2/6 tables complete");
 	                        	mccMncService.populateTable(datasetArray.get(4));
-	                        	filesInProgress.put(watchEvent.context().toString(), 50);
+	                        	filesInProgress.put(filename, 50);
 	                        	System.out.println("3/6 tables complete");
 	                        	ueTableService.populateTable(datasetArray.get(3));
-	                        	filesInProgress.put(watchEvent.context().toString(), 65);
+	                        	filesInProgress.put(filename, 65);
 	                        	System.out.println("4/6 tables complete");
 	                        	
 	                        	Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
@@ -137,12 +138,12 @@ public class FolderWatcher{
 	                    		
 	                        	JSONArray validData = baseData.get(0);
 	                        	baseDataService.populateTable(validData);
-	                        	filesInProgress.put(watchEvent.context().toString(), 80);
+	                        	filesInProgress.put(filename, 80);
 	                        	System.out.println("5/6 tables complete");
 	                        	
 	                        	JSONArray erroneousData = baseData.get(1);
 	                        	erroneousDataService.populateTable(erroneousData);
-	                        	filesInProgress.put(watchEvent.context().toString(), 100);
+	                        	filesInProgress.put(filename, 100);
 	                        	System.out.println("6/6 tables complete");
 	                        	
 	                    		System.out.println("Dataset import complete");

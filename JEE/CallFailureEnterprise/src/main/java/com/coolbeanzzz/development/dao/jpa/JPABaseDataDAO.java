@@ -110,7 +110,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 					em.find(FailureClass.class, Integer.parseInt(validObj.get("Failure Class").toString()))
 					);
 			
-			em.merge(baseDataObject);
+			em.persist(baseDataObject);
 		}
 	}
 	

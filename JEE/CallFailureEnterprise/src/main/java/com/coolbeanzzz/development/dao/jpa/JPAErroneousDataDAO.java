@@ -105,7 +105,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 					erroneousRow.get("HIER321_ID").toString()
 					);
 			
-			em.merge(erroneousObj);
+			em.persist(erroneousObj);
 		}
 	}
 

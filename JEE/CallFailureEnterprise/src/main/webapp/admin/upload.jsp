@@ -76,32 +76,28 @@
 			       <p>  
 			       <input id="uploadFile" type="file" name="uploadFile" button class="btn btn-primary" />
 			       </p>  
-			       <input id="upload-button" type="submit" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
+			       <input id="upload-button" type="button" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
 					
 				</form>
 				
-			    <div class='col_md_8'>
+			    <div align="center">
 				    <h4>Upload Progress</h4>
-				    <div class="progress">
-				    	
-					    <div id="uploadprogressbar" class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+				    <div class="progress" style="width:50%">
+					    <div id="uploadprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 					    	0%
 					    </div>
 				    </div>
+				    
 			    </div>
-			    <div class='col_lg_8'>
+			    <div align="center">
 			    	<h4>Update Tables Progress</h4>
-				    <div class="progress">
-					    <div id="commitprogressbar" class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+				    <div class="progress" style="width:50%">
+					    <div id="commitprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 					    	0%
 					    </div>
 				    </div>
 			    </div>
 			    <div id="status"></div>
-				<!-- div class="progress">
-			        <div id='commitBar' class="bar"></div >
-			        <div id='commitPercent' class="percent">0%</div >
-			    </div--> 
 			</div>
 		</div>
 	</div>
@@ -138,7 +134,7 @@
 				        bar.html(percentVal);
 				        commitbar.html("0%");
 				        filename = responseText;
-				        setTimeout(updateCommitBar, 2000);
+				        setTimeout(updateCommitBar, 5000);
 				    },
 					complete: function(xhr) {
 						status.html(xhr.responseText);
@@ -149,6 +145,15 @@
 				
 				$(this).ajaxForm(options);
 			});
+		});
+		
+		$('#upload-button').click(function(e){
+			if($('#uploadFile').val() == ""){
+				alert("Please Choose a File!");
+			}
+			else{
+				$('#uploadForm').submit();
+			}
 		});
 		
 		function setUserDetails() {
@@ -175,7 +180,7 @@
 					$('#commitprogressbar').attr('aria-valuenow', percentVal).css('width',percentVal);
 					$('#commitprogressbar').html(percentVal);
 					if(percentVal != '100%'){
-						setTimeout(updateCommitBar, 2000);
+						setTimeout(updateCommitBar, 5000);
 					}
 				},
 			});

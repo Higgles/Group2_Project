@@ -64,7 +64,7 @@ public class FileUploadService {
 					return Response.ok(uploadedFilename, MediaType.TEXT_PLAIN).build();
 				}
 				else{
-					return null;
+					return Response.status(404).build();
 				}
 				
 			} catch (Exception e) {
