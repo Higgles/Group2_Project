@@ -94,7 +94,7 @@
 		</div>
 	</nav>
 	<div class="dropdown">
-		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+		<button id="button1" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 			<b>Select Query</b> <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
