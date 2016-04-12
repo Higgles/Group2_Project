@@ -79,7 +79,9 @@
 			       <input id="upload-button" type="button" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
 					
 				</form>
-				<h3 id="uploadStatus" style="display: none; text-align: center;"></h3>
+				<div align="center">
+					<h3 id="uploadStatus" style="display: none;"></h3>
+				</div>
 			    <div id="upBar" align="center" style="display: none">
 				    <h4>Upload Progress</h4>
 				    <div class="progress" style="width:50%">
@@ -121,7 +123,7 @@
 				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
 				        bar.html(percentVal);
 				        
-				        document.getElementById("upBar").style.display="block";
+				        document.getElementById("upBar").style.display="inline";
 				    },
 				    uploadProgress: function(event, position, total, percentComplete) {
 				        var percentVal = percentComplete + '%';
@@ -133,7 +135,7 @@
 				    		alert("Invalid File Chosen! Please choose a valid excel file")
 				    		document.getElementById("upBar").style.display="none";
 				    		document.getElementById("comBar").style.display="none";
-				    		document.getElementById("uploadStatus").style.display="block";
+				    		document.getElementById("uploadStatus").style.display="inline";
 							$('#uploadStatus').html("Upload Failed!");
 				    	}
 				    	else{
@@ -142,7 +144,7 @@
 					        commitbar.attr('aria-valuenow', '0%').css('width','0%');
 					        bar.html(percentVal);
 					        commitbar.html("0%");
-					        document.getElementById("comBar").style.display="block";
+					        document.getElementById("comBar").style.display="inline";
 					        filename = responseText.filename;
 					        setTimeout(updateCommitBar, 5000);
 				    	}
@@ -193,7 +195,7 @@
 					else{
 						document.getElementById("upBar").style.display="none";
 						document.getElementById("comBar").style.display="none";
-						document.getElementById("uploadStatus").style.display="block";
+						document.getElementById("uploadStatus").style.display="inline";
 						$('#uploadStatus').html("Upload Complete!");
 					}
 				},

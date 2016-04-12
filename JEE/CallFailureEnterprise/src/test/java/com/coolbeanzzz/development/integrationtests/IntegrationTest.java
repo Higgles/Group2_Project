@@ -3,10 +3,7 @@ package com.coolbeanzzz.development.integrationtests;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -31,7 +28,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +41,6 @@ import com.coolbeanzzz.development.entities.EventCause;
 import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.entities.UETable;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;

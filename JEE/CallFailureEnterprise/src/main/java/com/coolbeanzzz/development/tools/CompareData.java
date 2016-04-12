@@ -44,6 +44,7 @@ public class CompareData {
 	 * to split it into erroneous data and valid data JSON arrays.
 	 * Return a list of JSON arrays for importing to the database.
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<JSONArray> compareData(JSONArray baseDataRows){
 		
 		int eventId;
@@ -68,13 +69,8 @@ public class CompareData {
 
 			eventId = checkInt(baseData.get("Event Id").toString());
 			causeCode = checkInt(baseData.get("Cause Code").toString());
-//			failureCode = checkInt(baseData.get("Failure Class").toString());
-			try{
-				failureCode = Integer.parseInt(baseData.get("Failure Class").toString());
-			}
-			catch(NumberFormatException e){
-				failureCode = -1;
-			}
+			failureCode = checkInt(baseData.get("Failure Class").toString());
+			
 			mcc = checkInt(baseData.get("Market").toString());
 			mnc = checkInt(baseData.get("Operator").toString());
 			ueType = checkInt(baseData.get("UE Type").toString());
@@ -151,11 +147,11 @@ public class CompareData {
 	 * @return
 	 */
 	private int checkInt(String intCheck){
-		if(intCheck.equals("(null)")){
-			return -1;
-		}
-		else{
+		try{
 			return Integer.parseInt(intCheck);
+		}
+		catch(NumberFormatException e){
+			return -1;
 		}
 	}
 }

@@ -22,12 +22,13 @@ import jxl.read.biff.BiffException;
 public class Convert {
 	
 	/**
-	 * Creates a json araay from each sheet in a provided xls file
+	 * Creates a json array from each sheet in a provided xls file
 	 * Creates and returns a JSON array for the base data sheet to be used for consistency checking
 	 * 
 	 * @param inputFile Set the xls file to be converted to json arrays
 	 * @throws IOException, InterruptedException 
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<JSONArray> convert(File inputFile) throws IOException, InterruptedException, BiffException{
 		Workbook workbook;
 		

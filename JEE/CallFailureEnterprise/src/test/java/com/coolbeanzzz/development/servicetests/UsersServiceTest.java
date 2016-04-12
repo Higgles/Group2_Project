@@ -16,9 +16,7 @@ import com.coolbeanzzz.development.services.UsersServiceEJB;
 
 public class UsersServiceTest {
 	private UsersServiceEJB UsersService;
-	private Users users1;
-	private Users users2;
-	private Users users3; 
+	private Users users1; 
 	
 	@Before
 	public void setUp() throws Exception {
@@ -28,7 +26,7 @@ public class UsersServiceTest {
 		bds.add(users1);
 		
 	
-		when(mockedUsersDao.getAllUsers()).thenReturn(bds);
+		when(mockedUsersDao.getAllUsers(1, "", -1)).thenReturn(bds);
 		when(mockedUsersDao.removeUser("")).thenReturn(users1);
 		UsersService=new UsersServiceEJB();
 		UsersService.setDao(mockedUsersDao);
@@ -36,7 +34,7 @@ public class UsersServiceTest {
 
 	@Test
 	public void getUsersTest() {
-		Collection<Users> users = UsersService.getAllUsers();
+		Collection<Users> users = UsersService.getAllUsers(1, "", -1);
 		assertEquals(users1, users.iterator().next());
 		assertTrue(users.iterator().hasNext());
 	}

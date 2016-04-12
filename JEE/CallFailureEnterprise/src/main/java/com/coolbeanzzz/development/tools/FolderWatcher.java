@@ -101,7 +101,7 @@ public class FolderWatcher{
 	                    kind = watchEvent.kind();
 	                    String filename = watchEvent.context().toString();
 	                    if (ENTRY_MODIFY == kind && this.getFileProgress(filename)==0) {
-	                        File dataset = new File("/home/user1/datasets/" + filename);
+	                        File dataset = new File(path.toString()+"/"+ filename);
 	                        if(filename.endsWith(".xls")){
 		                    	System.out.println("New File "+filename);
 	                        	filesInProgress.put(filename, 0);

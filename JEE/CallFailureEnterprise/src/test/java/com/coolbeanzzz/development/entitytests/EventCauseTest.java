@@ -2,15 +2,9 @@ package com.coolbeanzzz.development.entitytests;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.FailureClass;
-import com.coolbeanzzz.development.tools.Convert;
 
 public class EventCauseTest {
 

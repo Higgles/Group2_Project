@@ -35,6 +35,7 @@ public class FileUploadService {
 	 * @return Rest response
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/upload")
 	@Consumes("multipart/form-data")
@@ -60,7 +61,6 @@ public class FileUploadService {
 					String uploadedFilename = fileName.replace(".xls", " " + dateFormat.format(now) + ".xls");
 					writeFile(bytes, uploadedFilename);
 					
-					//java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
 					JSONObject result=new JSONObject();
 					result.put("filename", uploadedFilename);
 					return Response.ok(result, MediaType.APPLICATION_JSON).build();

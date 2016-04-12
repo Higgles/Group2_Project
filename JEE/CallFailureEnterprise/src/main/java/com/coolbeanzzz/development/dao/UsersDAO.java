@@ -17,9 +17,12 @@ public interface UsersDAO {
 	
 	/**
 	 * Retrieves all rows from UsersTable
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return Collection of UsersTable rows
 	 */
-	Collection<Users> getAllUsers();
+	Collection<Users> getAllUsers(int page, String searchTerm, int pageLimit);
 	
 	/**
 	 * Deletes a row from UsersTable
@@ -33,7 +36,4 @@ public interface UsersDAO {
 	 * @param user to be updated
 	 */
 	void updateUser(Users user);
-	
-	
-	
 }

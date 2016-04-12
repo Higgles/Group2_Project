@@ -24,11 +24,9 @@ public class MccMnc implements Serializable, FailureTable{
 	@Column(name="Country") private String country;
 	@Column(name="Operator") private String operator;
 	
-	//Adding relationships
 	@OneToMany(mappedBy="mccmnc")//, cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
-	//@XmlTransient
 	
 	public MccMnc(){}
 	

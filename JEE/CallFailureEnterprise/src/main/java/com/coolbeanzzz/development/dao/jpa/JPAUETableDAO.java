@@ -104,6 +104,7 @@ public class JPAUETableDAO implements UETableDAO {
 		query.executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<String> getAllManufacturers(int page, String searchTerm, int pageLimit) {
 		Query query = em.createQuery("select distinct u.manufacturer from UETable u where u.manufacturer like :searchTerm order by u.manufacturer");
@@ -117,6 +118,7 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<String> getModelsForManufacturer(String manufacturer, int page, String searchTerm, int pageLimit) {
 		Query query = em.createQuery("select u.model from UETable u where u.manufacturer=:manufacturer and u.model like :searchTerm");
@@ -131,6 +133,7 @@ public class JPAUETableDAO implements UETableDAO {
 		return ueTables;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Integer> getUETypes(String manufacturer, String model) {
 		Query query = em.createQuery("select u.tac from UETable u where u.manufacturer=:manufacturer and u.marketingName=:marketingName");
