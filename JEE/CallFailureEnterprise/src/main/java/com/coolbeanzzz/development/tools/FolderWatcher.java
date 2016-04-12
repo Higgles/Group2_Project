@@ -3,6 +3,7 @@ package com.coolbeanzzz.development.tools;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystem;
@@ -11,8 +12,10 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.ejb.Asynchronous;
@@ -31,6 +34,7 @@ import com.coolbeanzzz.development.services.EventCauseService;
 import com.coolbeanzzz.development.services.FailureClassService;
 import com.coolbeanzzz.development.services.MccMncService;
 import com.coolbeanzzz.development.services.UETableService;
+import com.google.common.io.Files;
 
 
 @Stateless
@@ -103,22 +107,45 @@ public class FolderWatcher{
 	                    if (ENTRY_MODIFY == kind && this.getFileProgress(filename)==0) {
 	                        File dataset = new File(path.toString()+"/"+ filename);
 	                        if(filename.endsWith(".xls")){
-		                    	System.out.println("New File "+filename);
+	                        	Date now = new Date();
+	                    		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
+	                    		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+	                    		
+	                    		String datasetFilename = filename.replace(".xls", " " + dateFormat.format(now) + ".xls");
+	                    		
+	                    		File logFile = new File("./datasets/logs/" + dateFormat.format(now) + " - " + filename + ".log");
+	                    		FileWriter fw = new FileWriter(logFile);
+	                    		
+		                    	System.out.println("New File: " + filename);
+		                    	Date time = new Date();
+		                    	fw.append(timeFormat.format(time) + ": New File: " + filename + "\n");
+		                    	
 	                        	filesInProgress.put(filename, 0);
 	                        	long startTime = System.currentTimeMillis();
 	                        	ArrayList<JSONArray> datasetArray = Convert.convert(dataset);
 	                        	failureClassService.populateTable(datasetArray.get(2));
 	                        	filesInProgress.put(filename, 16);
 	                    		System.out.println("1/6 tables complete");
+	                    		time = new Date();
+	                    		fw.append(timeFormat.format(time) + ": 1/6 tables complete\n");
+	                    		
 	                        	eventCauseService.populateTable(datasetArray.get(1));
 	                        	filesInProgress.put(filename, 33);
 	                        	System.out.println("2/6 tables complete");
+	                        	time = new Date();
+	                        	fw.append(timeFormat.format(time) + ": 2/6 tables complete\n");
+	                        	
 	                        	mccMncService.populateTable(datasetArray.get(4));
 	                        	filesInProgress.put(filename, 50);
 	                        	System.out.println("3/6 tables complete");
+	                        	time = new Date();
+	                        	fw.append(timeFormat.format(time) + ": 3/6 tables complete\n");
+	                        	
 	                        	ueTableService.populateTable(datasetArray.get(3));
 	                        	filesInProgress.put(filename, 65);
 	                        	System.out.println("4/6 tables complete");
+	                        	time = new Date();
+	                        	fw.append(timeFormat.format(time) + ": 4/6 tables complete\n");
 	                        	
 	                        	Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
 	                        	Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
@@ -135,20 +162,35 @@ public class FolderWatcher{
 	                    		ArrayList<JSONArray> baseData = compare.compareData(datasetArray.get(0));
 	                        	
 	                    		System.out.println(baseData.get(0).size());
+	                    		time = new Date();
+	                    		fw.append(timeFormat.format(time) + ": Base Data valid data row count: " + baseData.get(0).size() + "\n");
 	                    		
 	                        	JSONArray validData = baseData.get(0);
 	                        	baseDataService.populateTable(validData);
 	                        	filesInProgress.put(filename, 80);
 	                        	System.out.println("5/6 tables complete");
+	                        	time = new Date();
+	                        	fw.append(timeFormat.format(time) + ": 5/6 tables complete\n");
 	                        	
 	                        	JSONArray erroneousData = baseData.get(1);
 	                        	erroneousDataService.populateTable(erroneousData);
 	                        	filesInProgress.put(filename, 100);
 	                        	System.out.println("6/6 tables complete");
+	                        	time = new Date();
+	                        	fw.append(timeFormat.format(time) + ": 6/6 tables complete\n");
 	                        	
 	                    		System.out.println("Dataset import complete");
+	                    		time = new Date();
+	                    		fw.append(timeFormat.format(time) + ": Dataset import complete\n");
 	                    		
 	                    		System.out.println((System.currentTimeMillis() - startTime) / 1000 + " seconds");
+	                    		time = new Date();
+	                    		fw.append(timeFormat.format(time) + ": Total import time: " + (System.currentTimeMillis() - startTime) / 1000 + " seconds\n");
+	        					
+	                    		Files.move(dataset, new File("./datasets/savedDatasets/" + datasetFilename));
+	                    		time = new Date();
+		                    	fw.append(timeFormat.format(time) + ": File moved to savedDatasets: " + datasetFilename + "\n");
+	                    		fw.close();
 	                        }
 	                    }
 	                }

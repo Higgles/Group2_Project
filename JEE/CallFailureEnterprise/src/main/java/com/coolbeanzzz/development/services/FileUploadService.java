@@ -124,7 +124,7 @@ public class FileUploadService {
 	 * @throws IOException
 	 */
 	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File("/home/user1/datasets/" + filename);
+		File file = new File("./datasets/" + filename);
 		if (!file.exists()) {
 			System.out.println("Creating file " + file.getAbsolutePath());
 			file.createNewFile();
