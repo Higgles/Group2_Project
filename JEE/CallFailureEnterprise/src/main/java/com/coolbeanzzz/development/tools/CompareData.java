@@ -111,6 +111,7 @@ public class CompareData {
 	 * Format the date for the database tables
 	 * @param dateTime
 	 */
+	@SuppressWarnings("unchecked")
 	private void dateFormatter(String dateTime) {
 		
 		Calendar cal = Calendar.getInstance();
