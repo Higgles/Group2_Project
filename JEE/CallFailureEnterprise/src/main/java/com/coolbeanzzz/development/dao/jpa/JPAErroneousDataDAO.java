@@ -3,10 +3,6 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,19 +20,10 @@ import javax.persistence.Query;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
-import com.coolbeanzzz.development.entities.BaseData;
 import com.coolbeanzzz.development.entities.ErroneousData;
-import com.coolbeanzzz.development.entities.EventCause;
-import com.coolbeanzzz.development.entities.EventCausePrimaryKey;
-import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.FailureTable;
-import com.coolbeanzzz.development.entities.MccMnc;
-import com.coolbeanzzz.development.entities.MccMncPrimaryKey;
-import com.coolbeanzzz.development.entities.UETable;
 
 @Default
 @Stateless
@@ -105,7 +92,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 					erroneousRow.get("HIER321_ID").toString()
 					);
 			
-			em.merge(erroneousObj);
+			em.persist(erroneousObj);
 		}
 	}
 

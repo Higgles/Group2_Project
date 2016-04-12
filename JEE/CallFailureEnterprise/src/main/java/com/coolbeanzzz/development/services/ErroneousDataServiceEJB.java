@@ -3,7 +3,6 @@
  */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -72,5 +71,4 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	public void clearAllEntries() {
 		dao.clearAllEntries();
 	}
-
 }

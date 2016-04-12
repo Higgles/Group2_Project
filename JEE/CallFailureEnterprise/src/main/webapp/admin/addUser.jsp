@@ -55,7 +55,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
+				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -92,7 +92,7 @@
 					</div>
 					<div id="uNameDropdownDiv">
 						<label for="uNameDropdown">Username</label><br>
-						<select id="uNameDropdown" class="js-example-responsive" style="width: 450px;"></select>
+						<select id="uNameDropdown" class="js-data-example-ajax" style="width: 450px;"></select>
 					</div>
 					<br/>
 					<br/>
@@ -126,15 +126,12 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
 	<script>
+	const QUERYPAGELIMIT = 20;
 	
 	$(document).ready(function() {
 		$(function() {
 			setUserDetails();
-			populateUsernameDropdown();
 			swapType(1);
 		});
 	});
@@ -145,7 +142,7 @@
 			url : '../rest/users/currentUser',
 			success : function(data) {
 				var userBar = document.getElementById("userBar");
-				userBar.innerHTML = "Priviledge type: " + data[1];
+				userBar.innerHTML = "Privilege type: " + data[1];
 				var loginType = document.getElementById("logintype");
 				loginType.innerHTML = "<span></span>Logged in as: "
 						+ data[0];
@@ -153,197 +150,212 @@
 		});
 	}
 		
-//define Users object
-function Users(userName,passWord,userType) {
-	this.id=0;
-	this.username = userName;
-	this.passkey = passWord;
-	this.userType = userType;
-}
-
-function swapType(i){
-	switch(i){
-	case 1:
-		document.getElementById("addUserToggle").checked=true;
-		document.getElementById("editUserToggle").checked=false;
-		document.getElementById("uNameDropdownDiv").style.display="none";
-		document.getElementById("uNameDiv").style.display="block";
-		document.getElementById("addUser").style.display="block";
-		document.getElementById("editUser").style.display="none";
-		document.getElementById("removeUser").style.display="none";
-		break;
-	case 2:
-		document.getElementById("addUserToggle").checked=false;
-		document.getElementById("editUserToggle").checked=true;
-		document.getElementById("uNameDiv").style.display="none";
-		document.getElementById("uNameDropdownDiv").style.display="block";
-		document.getElementById("addUser").style.display="none";
-		document.getElementById("editUser").style.display="block";
-		document.getElementById("removeUser").style.display="block";
-		break;
+	//define Users object
+	function Users(userName,passWord,userType) {
+		this.id=0;
+		this.username = userName;
+		this.passkey = passWord;
+		this.userType = userType;
 	}
-}
-
-//Get input from page
-function addUser() {
 	
-	var radios = document.getElementsByName("userType");
-	var uType="none";
-	for (var i = 0; i < radios.length; i++) {
-    	if (radios[i].checked) {
-	        var uType = radios[i].value;
-	        // only one radio can be logically checked, don't check the rest
-	        break;
-    	}
-	}//radio loop
-	
-	var uName = $("#uName").val();
-
-	var pWord0 = $("#pWord").val();
-
-	var pWord1 = $("#pWordConf").val();
-	
-	
-		if(uName.length==0){
-			alert("Choose a longer user name");
+	function swapType(i){
+		switch(i){
+		case 1:
+			document.getElementById("addUserToggle").checked=true;
+			document.getElementById("editUserToggle").checked=false;
+			document.getElementById("uNameDropdownDiv").style.display="none";
+			document.getElementById("uNameDiv").style.display="block";
+			document.getElementById("addUser").style.display="block";
+			document.getElementById("editUser").style.display="none";
+			document.getElementById("removeUser").style.display="none";
+			break;
+		case 2:
+			document.getElementById("addUserToggle").checked=false;
+			document.getElementById("editUserToggle").checked=true;
+			document.getElementById("uNameDiv").style.display="none";
+			document.getElementById("uNameDropdownDiv").style.display="block";
+			document.getElementById("addUser").style.display="none";
+			document.getElementById("editUser").style.display="block";
+			document.getElementById("removeUser").style.display="block";
+			break;
 		}
-		else{
-			if(pWord0==pWord1){
-				if(pWord0.length<6){
-					alert("Password must be at least 6 characters");
-				}
-				else{
-					var pWord = pWord0;
-					var user = new Users(uName, pWord, uType);
-					call(user);
-				}
-			}else{
-				alert("Passwords do not match");
-			}
+	}
 	
-		}
-
-}
-
-//Get input from page
-function editUser() {
+	//Get input from page
+	function addUser() {
+		
+		var radios = document.getElementsByName("userType");
+		var uType="none";
+		for (var i = 0; i < radios.length; i++) {
+	    	if (radios[i].checked) {
+		        var uType = radios[i].value;
+		        // only one radio can be logically checked, don't check the rest
+		        break;
+	    	}
+		}//radio loop
+		
+		var uName = $("#uName").val();
 	
-	var radios = document.getElementsByName("userType");
-	var uType="none";
-	for (var i = 0; i < radios.length; i++) {
-    	if (radios[i].checked) {
-	        var uType = radios[i].value;
-	        // only one radio can be logically checked, don't check the rest
-	        break;
-    	}
-	}//radio loop
+		var pWord0 = $("#pWord").val();
 	
-	var uName = $("#uNameDropdown").select2('data')[0].text;
-
-	var pWord0 = $("#pWord").val();
-
-	var pWord1 = $("#pWordConf").val();
-	
-	
-	if(uName.length==0){
-		alert("Choose a longer user name");
-	}else{
-		if(pWord0==pWord1){
-			if(pWord0.length<6){
-				alert("Password must be at least 6 characters");
+		var pWord1 = $("#pWordConf").val();
+		
+		
+			if(uName.length==0){
+				alert("Choose a longer user name");
 			}
 			else{
-				var pWord = pWord0;
-				var user = new Users(uName, pWord, uType);
-				$.ajax({
-					type : 'PUT',
-					url : '../rest/users',
-					dataType: "json",
-					contentType: 'application/json',
-					data: JSON.stringify(user),
-					success: function(){
-						alert(" User Edited ");
-					},
-				}); 
+				if(pWord0==pWord1){
+					if(pWord0.length<6){
+						alert("Password must be at least 6 characters");
+					}
+					else{
+						var pWord = pWord0;
+						var user = new Users(uName, pWord, uType);
+						call(user);
+					}
+				}else{
+					alert("Passwords do not match");
+				}
+		
 			}
-		}else{
-			alert("Passwords do not match");
+	
+	}
+	
+	//Get input from page
+	function editUser() {
+		if($("#uNameDropdown").select2('data').length == 0){
+			alert("Please choose a user");			
+		}
+		else{
+			var radios = document.getElementsByName("userType");
+			var uType="none";
+			for (var i = 0; i < radios.length; i++) {
+		    	if (radios[i].checked) {
+			        var uType = radios[i].value;
+			        // only one radio can be logically checked, don't check the rest
+			        break;
+		    	}
+			}//radio loop
+			
+			var uName = $("#uNameDropdown").select2('data')[0].text;
+		
+			var pWord0 = $("#pWord").val();
+		
+			var pWord1 = $("#pWordConf").val();
+			
+			
+			if(uName.length==0){
+				alert("Choose a longer user name");
+			}else{
+				if(pWord0==pWord1){
+					if(pWord0.length<6){
+						alert("Password must be at least 6 characters");
+					}
+					else{
+						var pWord = pWord0;
+						var user = new Users(uName, pWord, uType);
+						$.ajax({
+							type : 'PUT',
+							url : '../rest/users',
+							dataType: "json",
+							contentType: 'application/json',
+							data: JSON.stringify(user),
+							success: function(){
+								alert(" User Edited ");
+							},
+						}); 
+					}
+				}else{
+					alert("Passwords do not match");
+				}
+			
+			}
 		}
 	
 	}
-
-}
-
-function removeUser(){
-	if($("#uNameDropdown").select2('data')[0].text=="admin"){
-		alert("Admin User Cannot be removed!");
-		return;
+	
+	function removeUser(){
+		if($("#uNameDropdown").select2('data').length == 0){
+			alert("Please choose a user");			
+		}
+		else if($("#uNameDropdown").select2('data')[0].text=="admin"){
+			alert("Admin User Cannot be removed!");
+		}
+		else{
+			$.ajax({
+				type : 'DELETE',
+				url : '../rest/users/'+$("#uNameDropdown").select2('data')[0].text,
+				success: function(){
+					alert(" User Deleted ");
+				},
+			}); 
+		}
 	}
-	$.ajax({
-		type : 'DELETE',
-		url : '../rest/users/'+$("#uNameDropdown").select2('data')[0].text,
-		success: function(){
-			alert(" User Deleted ");
-			populateUsernameDropdown()
-		},
-	}); 
 	
-}
-
-function call(user){
-	
-	$.ajax({
-		type : 'GET',
-		url : '../rest/users',
-		success : function(data) {
-			for (i = 0; i < data.usersCollection.length; i++) {
-				var add=true;
-				var opt = data.usersCollection[i].username;
-				if(opt == user.username){
-					alert("User Already Exists");
-					add=false;
-					break;
+	function call(user){
+		
+		$.ajax({
+			type : 'GET',
+			url : '../rest/users',
+			success : function(data) {
+				for (i = 0; i < data.usersCollection.length; i++) {
+					var add=true;
+					var opt = data.usersCollection[i].username;
+					if(opt == user.username){
+						alert("User Already Exists");
+						add=false;
+						break;
+					}
 				}
+				if(add){
+					$.ajax({
+						type : 'POST',
+						url : '../rest/users',
+						dataType: "json",
+						contentType: 'application/json',
+						data: JSON.stringify(user),
+						success: function(){
+							alert(" User added ");
+						},
+					}); 
+				}
+			},
+		});
+	}	
+	
+	$("#uNameDropdown").select2({
+		placeholder: 'Username',
+		ajax: {
+			type : 'GET',
+			url: '../rest/users',
+			dataType: 'json',
+			delay: 250,
+			data: function(params){
+				return{
+					term: params.term || '',
+		            page: params.page || 1,
+		            pageLimit: QUERYPAGELIMIT
+				};
+			},
+			processResults: function (data, params){
+				
+				params.page = params.page || 1;
+				
+				return {
+					results: $.map(data.usersCollection, function(item){
+						return {
+							text: item.username,
+							id: item.username
+						}
+					}),
+					pagination: {
+						more:  data.length == QUERYPAGELIMIT
+					}
+				};
 			}
-			if(add){
-				$.ajax({
-					type : 'POST',
-					url : '../rest/users',
-					dataType: "json",
-					contentType: 'application/json',
-					data: JSON.stringify(user),
-					success: function(){
-						alert(" User added ");
-					},
-				}); 
-			}
-			populateUsernameDropdown();
-		},
-	});
-	
-	
-}	
-
-function populateUsernameDropdown() {
-	$("#uNameDropdown").empty();
-	$.ajax({
-		type : 'GET',
-		url : '../rest/users',
-		success : function(data) {
-			for (i = 0; i < data.usersCollection.length; i++) {
-				var opt = data.usersCollection[i].username;
-				var text = "<option value=\""+i+"\">" + opt
-						+ "</option>";
-				$("#uNameDropdown").append(text);
-			}
-			var $example = $("#uNameDropdown").select2();
-			$example.val("0").trigger("change");
-		},
-	});
-}
-	
-	
-		 
+		}
+	});	 
 	</script>
 </body>
 </html>

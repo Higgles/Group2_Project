@@ -7,12 +7,14 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -36,9 +38,9 @@ public class UsersCRUDService {
 	 */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UsersList getUsers() {
+    public UsersList getUsers(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
     	UsersList users = new UsersList();
-    	users.setUsersCollection(service.getAllUsers());  
+    	users.setUsersCollection(service.getAllUsers(page, searchTerm, pageLimit));  
         return users;
     }
     
@@ -113,8 +115,6 @@ public class UsersCRUDService {
 		service.addUser(user);
 	}
 
-   
-    
     @DELETE
     @Path("/{username}")
 	public void removeUser(@PathParam("username") String username) {

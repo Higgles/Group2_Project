@@ -3,11 +3,8 @@ package com.coolbeanzzz.development.tools;
 import java.io.File;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 @Startup
@@ -23,4 +20,7 @@ public class FolderWatcherService {
 		folderWatcher.watchDirectoryPath(dir.toPath());
 	}
 	
+	public int getFileProgress(String filename){
+		return folderWatcher.getFileProgress(filename);
+	}
 }

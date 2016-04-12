@@ -3,13 +3,9 @@
  */
 package com.coolbeanzzz.development.services;
 
-import java.math.BigInteger;
 import java.util.Collection;
 
 import javax.ejb.Local;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.tools.QueryOptions;

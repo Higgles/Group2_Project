@@ -48,8 +48,8 @@ Logger logger = Logger.getLogger("UsersEJB");
 	}
 	
 	@Override
-	public Collection<Users> getAllUsers() {
-		return dao.getAllUsers();  
+	public Collection<Users> getAllUsers(int page, String searchTerm, int pageLimit) {
+		return dao.getAllUsers(page, searchTerm, pageLimit);  
 	}
 	
 	@Override
@@ -68,6 +68,4 @@ Logger logger = Logger.getLogger("UsersEJB");
 		dao.updateUser(user);
 		
 	}
-	
-	
 }

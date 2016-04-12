@@ -73,10 +73,6 @@ public class JPAFailureClassDAO implements FailureClassDAO {
 		return descriptions;
 	}
 	
-	/**
-	 * Populate database table for failure class. Send to Failure Class entity using column names
-	 * used in dataset by getting keyset
-	 */
 	@Override
     public void populateTable(JSONArray failureClassRows) {
 

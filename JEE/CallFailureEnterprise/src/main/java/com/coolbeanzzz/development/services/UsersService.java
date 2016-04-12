@@ -19,9 +19,12 @@ public interface UsersService {
 	
 	/**
 	 * Gets all users from the Users within the database
+	 * @param pageLimit 
+	 * @param searchTerm 
+	 * @param page 
 	 * @return a collection of users
 	 */
-	public Collection<Users> getAllUsers();
+	public Collection<Users> getAllUsers(int page, String searchTerm, int pageLimit);
 	
 	/**
 	 * Remove a user

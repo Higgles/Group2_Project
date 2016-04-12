@@ -15,12 +15,14 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.json.simple.JSONObject;
 
 @Path("/file")
 public class FileUploadService {
@@ -33,6 +35,7 @@ public class FileUploadService {
 	 * @return Rest response
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/upload")
 	@Consumes("multipart/form-data")
@@ -46,8 +49,8 @@ public class FileUploadService {
 			try {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				String fileName = getFileName(header);
-				
-				if(fileName.contains(".xls")){
+				String fileType = getFileType(header);
+				if(fileName.contains(".xls")&&fileType.equals("application/vnd.ms-excel")){
 					InputStream inputStream = inputPart.getBody(InputStream.class, null);
 					
 					byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -55,22 +58,22 @@ public class FileUploadService {
 					Date now = new Date();
 					SimpleDateFormat dateFormat = new SimpleDateFormat();
 					dateFormat = new SimpleDateFormat("dd-MM-yyyy hh.mm.ss");
+					String uploadedFilename = fileName.replace(".xls", " " + dateFormat.format(now) + ".xls");
+					writeFile(bytes, uploadedFilename);
 					
-					writeFile(bytes, fileName.replace(".xls", " " + dateFormat.format(now) + ".xls"));
-					
-					java.net.URI location = new java.net.URI("http://localhost:8080/CallFailureEnterprise/admin/uploadComplete.html");
-					
-					return Response.temporaryRedirect(location).build();
+					JSONObject result=new JSONObject();
+					result.put("filename", uploadedFilename);
+					return Response.ok(result, MediaType.APPLICATION_JSON).build();
 				}
 				else{
-					return null;
+					return Response.status(415).build();
 				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return Response.status(404).build();
 	}
 
 	/**
@@ -93,6 +96,23 @@ public class FileUploadService {
 			}
 		}
 		return "unknown";
+	}
+	
+	/**
+	 * Get filetype from uploaded file
+	 * 
+	 * @param header
+	 * @return filetype
+	 */
+	private String getFileType(MultivaluedMap<String, String> header) {
+
+		String[] contentType = header.getFirst("Content-Type").split(";");
+		if(contentType.length==1){
+			return contentType[0].trim();
+		}
+		else{
+			return "unknown";
+		}
 	}
 
 	/**

@@ -39,8 +39,14 @@ static Logger logger = Logger.getLogger("JPAUserDAO");
 	
 	@SuppressWarnings("unchecked")
 	@Override	
-	public Collection<Users> getAllUsers() {
-		Query query = em.createQuery("from Users");
+	public Collection<Users> getAllUsers(int page, String searchTerm, int pageLimit) {
+		
+		Query query = em.createQuery("from Users us where us.username like :searchTerm");
+		query.setParameter("searchTerm", "%"+searchTerm+"%");
+		if(pageLimit != -1){
+			int start = pageLimit * (page - 1);
+			query.setFirstResult(start).setMaxResults(pageLimit);
+		}
 		List<Users> users = query.getResultList();
 		return users;
 	}

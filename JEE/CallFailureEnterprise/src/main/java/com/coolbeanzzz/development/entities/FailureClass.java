@@ -23,7 +23,7 @@ public class FailureClass implements Serializable, FailureTable{
 	@Id @Column(name="`Failure Class`") private int failureClass;
 	@Column(name="Description") private String description;
 	
-	@OneToMany(mappedBy="failureClass", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="failureClass")//, cascade={CascadeType.ALL})
 	@JsonIgnore
 	private Set<BaseData> baseData = new HashSet<BaseData>();
 

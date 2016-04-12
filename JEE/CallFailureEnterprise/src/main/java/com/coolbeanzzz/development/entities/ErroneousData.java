@@ -41,7 +41,6 @@ public class ErroneousData implements Serializable, FailureTable{
 			String failureClass, int ueType, int market, int operator,
 			String cellId, String duration, String causeCode, String neVersion,
 			String imsi, String hier3_Id, String hier32_Id, String hier321_Id) {
-		super();
 		this.id = id;
 		this.dateTime = dateTime;
 		this.eventId = eventId;

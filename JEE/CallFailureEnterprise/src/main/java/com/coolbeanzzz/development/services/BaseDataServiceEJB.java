@@ -3,8 +3,6 @@
  */
 package com.coolbeanzzz.development.services;
 
-import java.io.File;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -20,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import com.coolbeanzzz.development.dao.BaseDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;

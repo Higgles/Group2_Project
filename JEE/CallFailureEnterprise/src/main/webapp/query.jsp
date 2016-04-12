@@ -35,24 +35,18 @@
 		font-size: 20px;
 	}
 	
-	@media screen and (min-width: 768px) {
+	@media screen and (min-width: 10px) {
+		.modal-open .modal{
+			overflow-x: auto;
+		}
         .modal-dialog {
-          width: 800px;
-        }
-        .modal-sm {
-          width: 400px;
-        }
-    }
-    @media screen and (min-width: 992px) {
-        .modal-lg {
-          width: 950px;
+         	width: 800px;
         }
     }
 
 </style>
 <script type="text/javascript" language="javascript" src="media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
-<!-- script type="text/javascript" language="javascript" src="resources/demo.js"></script-->
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="media/js/transition.js"></script>
 <script type="text/javascript" src="media/js/moment-with-locales.js"></script>
@@ -83,7 +77,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
+				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -100,7 +94,7 @@
 		</div>
 	</nav>
 	<div class="dropdown">
-		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+		<button id="button1" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 			<b>Select Query</b> <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
@@ -272,7 +266,7 @@
 				url : 'rest/users/currentUser',
 				success : function(data) {
 					var userBar = document.getElementById("userBar");
-					userBar.innerHTML = "Priviledge type: " + data[1];
+					userBar.innerHTML = "Privilege type: " + data[1];
 					var loginType = document.getElementById("logintype");
 					loginType.innerHTML = "<span></span>Logged in as: "
 							+ data[0];
@@ -532,6 +526,7 @@
 			
 			var enablesort = true;
 			var enablesearch = true;
+			var enablelengthChange = true;
 			switch(selectedQuery){
 			case 1:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -566,6 +561,7 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				enablesort=false;
 				enablesearch=false;
+				enablelengthChange=false;
 				break;
 			case 14:
 				queryUrl+="/"+$("#imsiDropdown").select2('data')[0].text;
@@ -575,6 +571,7 @@
 				inputData.push("todate="+todate.format("YYYY-MM-DD HH:mm"));
 				enablesort=false;
 				enablesearch=false;
+				enablelengthChange=false;
 				break;
 			case 16:  
 				queryUrl+="/"+$("#failureDropdown").select2('data')[0].text;
@@ -613,7 +610,8 @@
 						serverSide: true,
 				        ajax: queryUrl,
 				        sort: enablesort,
-				        searching: enablesearch
+				        searching: enablesearch,
+				        lengthChange: enablelengthChange
 					});
 					document.getElementById('dataTable').style.width="100%";
 					

@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="../media/js/collapse.js"></script>
 	<script type="text/javascript" language="javascript" class="init"></script>
 	<script type="text/javascript" src="../media/js/select2.full.js"></script>
+	<script type="text/javascript" src="../media/js/jquery.form.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="upload.css" rel="stylesheet">
@@ -48,7 +49,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" id="userBar">User Name...Role</a>
+				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -71,21 +72,98 @@
 				<h4>Dataset Upload</h4>
 			</div>
 			<div class="panel-body" style="font-size: 15px;">
-				<form class="upload" action="../rest/file/upload" method="POST" enctype="multipart/form-data">
+				<form id="uploadForm" action="dummy.php" class="upload" enctype="multipart/form-data">
 			       <p>  
-			       <input type="file" name="uploadFile" button class="btn btn-primary" />
+			       <input id="uploadFile" type="file" name="uploadFile" button class="btn btn-primary" />
 			       </p>  
-			       <input id="upload-button" type="submit" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
+			       <input id="upload-button" type="button" value="Upload File (xls only)" button class="btn btn-lg btn-primary" />
 					
 				</form>
+				<div align="center">
+					<h3 id="uploadStatus" style="display: none;"></h3>
+				</div>
+			    <div id="upBar" align="center" style="display: none">
+				    <h4>Upload Progress</h4>
+				    <div class="progress" style="width:50%">
+					    <div id="uploadprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+					    	0%
+					    </div>
+				    </div>
+				    
+			    </div>
+			    <div id="comBar" align="center" style="display: none">
+			    	<h4>Update Tables Progress</h4>
+				    <div class="progress" style="width:50%">
+					    <div id="commitprogressbar" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+					    	0%
+					    </div>
+				    </div>
+			    </div>
 			</div>
 		</div>
 	</div>
 	<script>
+		var filename="";
 		$(document).ready(function() {
 			$(function() {
 				setUserDetails();
+				var bar = $('#uploadprogressbar');
+				var commitbar = $('#commitprogressbar');
+				var status = $('#status');
+				var options={					
+					url: "../rest/file/upload",
+					type: 'post',
+					dataType: 'json',
+					clearForm: true,
+					resetForm: true,
+					
+					beforeSend: function(formData, jqForm, options) {
+						document.getElementById("uploadStatus").style.display="none";
+				        var percentVal = '0%';
+				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+				        bar.html(percentVal);
+				        
+				        document.getElementById("upBar").style.display="inline";
+				    },
+				    uploadProgress: function(event, position, total, percentComplete) {
+				        var percentVal = percentComplete + '%';
+				        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+				        bar.html(percentVal);
+				    },
+				    success: function(responseText, statusText, xhr, $form) {
+				    	if(statusText!= "success"){
+				    		alert("Invalid File Chosen! Please choose a valid excel file")
+				    		document.getElementById("upBar").style.display="none";
+				    		document.getElementById("comBar").style.display="none";
+				    		document.getElementById("uploadStatus").style.display="inline";
+							$('#uploadStatus').html("Upload Failed!");
+				    	}
+				    	else{
+					        var percentVal = '100%';
+					        bar.attr('aria-valuenow', percentVal).css('width',percentVal);
+					        commitbar.attr('aria-valuenow', '0%').css('width','0%');
+					        bar.html(percentVal);
+					        commitbar.html("0%");
+					        document.getElementById("comBar").style.display="inline";
+					        filename = responseText.filename;
+					        setTimeout(updateCommitBar, 5000);
+				    	}
+				    }
+				    
+				};
+				
+				
+				$(this).ajaxForm(options);
 			});
+		});
+		
+		$('#upload-button').click(function(e){
+			if($('#uploadFile').val() == ""){
+				alert("Please Choose a File!");
+			}
+			else{
+				$('#uploadForm').submit();
+			}
 		});
 		
 		function setUserDetails() {
@@ -94,10 +172,32 @@
 				url : '../rest/users/currentUser',
 				success : function(data) {
 					var userBar = document.getElementById("userBar");
-					userBar.innerHTML = "Priviledge type: " + data[1];
+					userBar.innerHTML = "Privilege type: " + data[1];
 					var loginType = document.getElementById("logintype");
 					loginType.innerHTML = "<span></span>Logged in as: "
 							+ data[0];
+				}
+			});
+		}
+		
+		function updateCommitBar(){
+			$.ajax({
+				type : 'GET',
+				url : '../rest/folderWatcher?filename='+filename,
+				success : function(data) {
+					
+					var percentVal = data[0]+'%';
+					$('#commitprogressbar').attr('aria-valuenow', percentVal).css('width',percentVal);
+					$('#commitprogressbar').html(percentVal);
+					if(percentVal != '100%'){
+						setTimeout(updateCommitBar, 3000);
+					}
+					else{
+						document.getElementById("upBar").style.display="none";
+						document.getElementById("comBar").style.display="none";
+						document.getElementById("uploadStatus").style.display="inline";
+						$('#uploadStatus').html("Upload Complete!");
+					}
 				},
 			});
 		}
