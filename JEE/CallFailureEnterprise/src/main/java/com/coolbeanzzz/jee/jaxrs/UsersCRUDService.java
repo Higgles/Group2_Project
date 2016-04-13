@@ -91,9 +91,6 @@ public class UsersCRUDService {
     	else if(currentUser.hasRole("CSR")){
     		role = "Customer Support Representative";
     	}
-    	else if(currentUser.hasRole("CSR")){
-    		role = "Customer Service Representative";
-    	}
     	else if(currentUser.hasRole("NetManEng")){
     		role = "Network Management Engineer";
     	}

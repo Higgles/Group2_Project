@@ -20,7 +20,7 @@
 	<section class="container login-form">
 		<section>
 			<form name="loginform" method="post" action="" role="login">
-				<h2 class="form-signin-heading">Cool Beanzzz</h2>
+				<h2 class="form-signin-heading">CoolBeanzzz</h2>
 
 				<div class="form-group">
 					<input type="text" name="username" required class="form-control" placeholder="Enter username" />

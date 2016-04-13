@@ -1,7 +1,7 @@
 /**
  * @author Coolbeanzzz
  */
-package com.coolbeanzzz.development.services;
+package com.coolbeanzzz.jee.jaxrs;
 
 import java.io.File;
 import java.io.FileOutputStream;

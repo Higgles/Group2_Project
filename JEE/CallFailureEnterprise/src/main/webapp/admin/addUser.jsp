@@ -55,6 +55,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
+				<a href="#" id="logintype" class="navbar-brand"><span></span></a>
 				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
@@ -62,10 +63,9 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li style="font-size: 1.8em;"><a href="upload.jsp" class="navbar-brand"><span></span> Upload Dataset</a></li>
-					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
-					<li style="font-size: 1.8em;">
+					<li style="font-size: 1.5em;">
 						<a href="../logout">
-							<span class="glyphicon glyphicon-log-out"></span> Logout
+							<span class="glyphicon glyphicon-log-out"></span> Log out
 						</a>
 					</li>
 				</ul>
@@ -100,7 +100,7 @@
 					<input type="password" class="form-control" id="pWord">
 					<br/>
 					<br/>
-					<label for="pWordConf">Password Confirm</label>
+					<label for="pWordConf">Confirm Password</label>
 					<input type="password" class="form-control" id="pWordConf">
 					<br/>
 					<div>
@@ -116,11 +116,11 @@
 					<p id="count">
 					</p>			
 						
-						  <div id="addUserDiv" class="btn-group" role="group" aria-label="First group">
+						  <!--div id="addUserDiv" class="btn-group" role="group" aria-label="First group"-->
 						    <button id="addUser" type="button" class="btn btn-primary" onclick="addUser()">Add User</button>	
 						    <button id="editUser" type="button" class="btn btn-primary" onclick="editUser()">Edit User</button>	
 						    <button id="removeUser" type="button" class="btn btn-primary" onclick="removeUser()">Remove User</button>
-						  </div>
+						  <!--/div-->
 						
 					</div>
 			</div>
@@ -165,7 +165,7 @@
 			document.getElementById("editUserToggle").checked=false;
 			document.getElementById("uNameDropdownDiv").style.display="none";
 			document.getElementById("uNameDiv").style.display="block";
-			document.getElementById("addUser").style.display="block";
+			document.getElementById("addUser").style.display="inline";
 			document.getElementById("editUser").style.display="none";
 			document.getElementById("removeUser").style.display="none";
 			break;
@@ -175,10 +175,13 @@
 			document.getElementById("uNameDiv").style.display="none";
 			document.getElementById("uNameDropdownDiv").style.display="block";
 			document.getElementById("addUser").style.display="none";
-			document.getElementById("editUser").style.display="block";
-			document.getElementById("removeUser").style.display="block";
+			document.getElementById("editUser").style.display="inline";
+			document.getElementById("removeUser").style.display="inline";
 			break;
 		}
+		$('#uName').val('');
+		$('#uNameDropdown').val('').trigger('change');
+		$('input[type=password]').val('');
 	}
 	
 	//Get input from page
@@ -213,6 +216,8 @@
 						var pWord = pWord0;
 						var user = new Users(uName, pWord, uType);
 						call(user);
+						$('#uName').val('');
+						$('input[type=password]').val('');
 					}
 				}else{
 					alert("Passwords do not match");
@@ -265,6 +270,8 @@
 								alert(" User Edited ");
 							},
 						}); 
+						$('#uNameDropdown').val('').trigger('change');
+						$('input[type=password]').val('');
 					}
 				}else{
 					alert("Passwords do not match");
@@ -290,6 +297,8 @@
 					alert(" User Deleted ");
 				},
 			}); 
+			$('#uNameDropdown').val('').trigger('change');
+			$('input[type=password]').val('');
 		}
 	}
 	

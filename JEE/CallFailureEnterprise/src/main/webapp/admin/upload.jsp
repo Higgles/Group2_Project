@@ -49,6 +49,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
+				<a href="#" id="logintype" class="navbar-brand"><span></span></a>
 				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
@@ -56,10 +57,9 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li style="font-size: 1.8em;"><a href="addUser.jsp" class="navbar-brand"><span></span> Add/Edit Users</a></li>
-					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
-					<li style="font-size: 1.8em;">
+					<li style="font-size: 1.5em;">
 						<a href="../logout">
-							<span class="glyphicon glyphicon-log-out"></span> Logout
+							<span class="glyphicon glyphicon-log-out"></span> Log out
 						</a>
 					</li>
 				</ul>

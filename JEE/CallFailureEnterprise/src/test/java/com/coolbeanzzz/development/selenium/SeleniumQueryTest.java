@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class SeleniumQueryTests extends TestCase {
+public class SeleniumQueryTest extends TestCase {
 	
 	private WebDriver driver;
 

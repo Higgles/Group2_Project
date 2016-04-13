@@ -47,10 +47,10 @@ public class LoginTest extends TestCase {
         username.submit();
         
         driver.get("http://localhost:8080/CallFailureEnterprise/rest/users/currentUser");
+        
         String user = driver.getPageSource();
-	    driver.get("http://localhost:8080/CallFailureEnterprise/upload.jsp");
 	    
-	    assert(user.contains("SysAd"));
+	    assert(user.contains("System Administrator"));
     }
     
     /**

@@ -39,17 +39,17 @@ import com.coolbeanzzz.development.tools.QueryOptions;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueEventIdsCauseCodeForPhoneTypeHeadings=
-			new String[]{"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Model"};
+			new String[]{"Event ID", "Cause Code", "Description", "Number of Occurences", "UE Type"};
 	private static final String[] getImsiListBetween2DatesHeadings=
 			new String[]{"IMSI", "Market", "Operator", "Total Duration"};
 	private static final String[] noOfCallFailuresAndDurationForImsiInDateRangeHeadings=
-			new String[]{"IMSI", "Number of Failures", "Total Duration"};
+			new String[]{"IMSI", "Market", "Operator", "Number of Failures", "Total Duration"};
 	private static final String[] failCountByPhoneModelHeadings=
-			new String[]{"Manufacturer", "Model","Number of Failures", "Total Duration"};
+			new String[]{"Number of Failures", "Total Duration"};
 	private static final String[] failCountByImsiAndDateHeadings= 
-			new String[]{"Count", "Total Duration"};
+			new String[]{"Number of Occurrences", "Total Duration"};
 	private static final String[] uniqueCauseCodeForImsiHeadings=
-			new String[]{"Event Id", "Cause Code", "Description", "Number of Occurences"};
+			new String[]{"Event ID", "Cause Code", "Description", "Number of Occurences"};
 	private static final String[] allEventIdsCauseCodeForImsiHeadings=
 			new String[]{"Date/Time","Event Id", "Cause Code", "Description"};
 	private static final String[] top10ImsiListBetween2DatesHeadings=
@@ -57,9 +57,9 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] baseDataHeadings=
 			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
 	private static final String[] top10MarketOperatorCellBetween2DatesHeadings=
-			new String[]{"Market", "Operator","Cell Id","Count"};
+			new String[]{"Market", "Operator","Cell Id","Number of Occurrences"};
 	private static final String[] IMSIsforFailureClassHeadings=
-			new String[]{"IMSIs","Count"};
+			new String[]{"IMSIs", "Market", "Operator","Number of Occurrences"};
 	static Logger logger = Logger.getLogger("JPABaseDataDAO");
 	
 	@PersistenceContext
@@ -141,6 +141,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {	
 		Query query = em.createQuery(" select bd.eventCause.eventId,"
 				+ " bd.eventCause.causeCode,"
+				+ " bd.eventCause.description,"
 				+ " count(bd.id),"
 				+ " bd.ueTable.tac,"
 				+ " bd.ueTable.manufacturer,"
@@ -151,10 +152,9 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
 				+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
 				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+				+ " or Concat(bd.eventCause.description, '') like :searchTerm"
 				+ " or Concat(count(bd.id), '') like :searchTerm"
 				+ " or Concat(bd.ueTable.tac, '') like :searchTerm"
-				+ " or Concat(bd.ueTable.manufacturer, '') like :searchTerm"
-				+ " or Concat(bd.ueTable.model, '') like :searchTerm"
 				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("manufacturer", manufacturer);
 		query.setParameter("model", model);
@@ -170,6 +170,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			String fromDate, String toDate, QueryOptions options) {
 		Query query = em.createQuery("select bd.imsi,"
 				+ " count(bd.id),"
+				+ " bd.mccmnc.country,"
+				+ " bd.mccmnc.operator,"
 				+ " sum(duration) "
 				+ " from BaseData bd"
 				+ " where bd.dateTime>=:date1 and bd.dateTime<=:date2"
@@ -177,6 +179,8 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				+ " having Concat(bd.imsi, '') like :searchTerm"
 				+ " or Concat(count(bd.id), '') like :searchTerm"
 				+ " or Concat(sum(duration), '') like :searchTerm"
+				+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+				+ " or Concat(bd.mccmnc.operator, '') like :searchTerm"
 				+ " order by :order "+options.getOrderDirection());
 		query.setParameter("date1", fromDate);
 		query.setParameter("date2", toDate);
@@ -259,12 +263,16 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options){
 			Query query = em.createQuery(""
 					+ "select bd.imsi,"
+					+ " bd.mccmnc.country,"
+					+ " bd.mccmnc.operator,"
 					+ " count(bd.id)"  
 					+ " from BaseData bd"
 					+ " where bd.failureClass.description =:failureClass"
 					+ " group by bd.imsi"
 					+ " having Concat(bd.imsi, '') like :searchTerm"
 					+ " or Concat(count(bd.id), '') like :searchTerm"
+					+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+					+ " or Concat(count(bd.mccmnc.operator), '') like :searchTerm"
 					+ " order by :order "+options.getOrderDirection());
 			query.setParameter("failureClass",failureClass);			
 			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
@@ -279,9 +287,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String fromdate, String todate, QueryOptions options) {
 		Query query = em.createQuery(""
-		+ "select bd.ueTable.manufacturer,"
-		+ " bd.ueTable.model,"
-		+ " count(bd.id),"
+		+ "select count(bd.id),"
 		+ " sum(bd.duration)"
 		+ " from BaseData bd"
 		+ " where bd.ueTable.manufacturer=:manufacturer "
@@ -289,9 +295,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 		+ " and bd.dateTime >=:dateStart "
 		+ " and bd.dateTime <=:dateEnd "
 		+ " group by bd.ueTable.manufacturer"
-		+ " having Concat(bd.ueTable.manufacturer, '') like :searchTerm"
-		+ " or Concat(bd.ueTable.model, '') like :searchTerm"
-		+ " or Concat(count(bd.id), '') like :searchTerm"
+		+ " having Concat(count(bd.id), '') like :searchTerm"
 		+ " or Concat(sum(bd.duration), '') like :searchTerm "
 		+ " order by :order "+options.getOrderDirection());
 		query.setParameter("manufacturer", manufacturer);

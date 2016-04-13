@@ -77,16 +77,16 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
+				<a href="#" id="logintype" class="navbar-brand"><span></span></a>
 				<a class="navbar-brand" href="#" id="userBar"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li style="font-size: 1.8em;"><a href="#" id="logintype" class="navbar-brand"><span></span> Hello</a></li>
-					<li style="font-size: 1.8em;">
+					<li style="font-size: 1.5em;">
 						<a href="logout">
-							<span class="glyphicon glyphicon-log-out"></span> Logout
+							<span class="glyphicon glyphicon-log-out"></span> Log out
 						</a>
 					</li>
 				</ul>
@@ -100,11 +100,11 @@
 		<ul class="dropdown-menu">
 			<li><a id="availQuery1" onClick=selectQuery(1)>Display Event IDs and Cause Codes for a given IMSI</a></li>
 			<li><a id="availQuery14" onClick=selectQuery(14)>Display unique Event IDs and Cause Codes for a given IMSI</a></li>
-			<li><a id="availQuery9" onClick=selectQuery(9)>Display number of failures for a given IMSI during a time period.</a><br></li>
+			<li><a id="availQuery9" onClick=selectQuery(9)>Display number of failures for a given IMSI during a time period.</a></li>
 			<shiro:hasAnyRoles name="SupEng, NetManEng">
 			<li><a id="availQuery2" onClick=selectQuery(2)>Display IMSIs with failures during a time period</a></li>
 			<li><a id="availQuery3" onClick=selectQuery(3)>Display number of failures for a given model of phone, during a time period</a></li>
-			<li><a id="availQuery16" onClick=selectQuery(16)>Display IMSIs for a given Failure Class</a><br></li>
+			<li><a id="availQuery16" onClick=selectQuery(16)>Display IMSIs for a given Failure Class</a></li>
 			<shiro:hasRole name="NetManEng">
 			<li><a id="availQuery4" onClick=selectQuery(4)>Display the number of failures and their total duration during a time period for each IMSI</a></li>
 			<li><a id="availQuery5" onClick=selectQuery(5)>Display the unique Event ID and Cause Code combinations and the number of occurrences for a given model of phone</a></li>
@@ -181,7 +181,7 @@
 	</div>
 	<br />
 	<br />
-	<div class="col-lg-12">
+	<div id="resultsCollapse" class="col-lg-12" style="display: none">
 		<div class="panel panel-primary">
 			<div id="phead2" class="panel-heading">
 				<h4 id="selectedquery2"></h4>
@@ -194,7 +194,7 @@
 					</div>
 				</div>
 				<div class="panel-footer" style="font-size: 15px;">				
-					<button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">Look at this Graph</button>
+					<button id="graph_button" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="clearPercent()">View Graph of Results</button>
 				</div>
 			</div>
 		</div>
@@ -207,10 +207,9 @@
 		<div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title">Look at this Graph</h4>
+	        <h4 class="modal-title" id="graphTitle"></h4>
 	      </div>
 	      <div class="modal-body">
-	        <p>Look at this graph</p>
 	        <div id="placeholder" ></div>
 	      </div>
 	      <div class="modal-footer">
@@ -258,6 +257,7 @@
 		
 		function clearPercent() {
 			document.getElementById("percent").innerHTML = "";
+			document.getElementById("graphTitle").innerHTML=document.getElementById("selectedquery2").innerHTML;
 		}
 
 		function setUserDetails() {
@@ -511,6 +511,7 @@
 		}
 		
 		function showData(){
+			document.getElementById('resultsCollapse').style.display = "inline";
 			$('#collapseOne').collapse("hide");
 			$('#collapseTwo').collapse('show');
 			setTimeout(getData, 300);
