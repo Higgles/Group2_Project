@@ -16,7 +16,7 @@ public class FolderWatcherService {
 	
 	@PostConstruct
     public void init(){
-		File dir = new File("/home/user1/datasets/");
+		File dir = new File("./datasets/");
 		folderWatcher.watchDirectoryPath(dir.toPath());
 	}
 	
