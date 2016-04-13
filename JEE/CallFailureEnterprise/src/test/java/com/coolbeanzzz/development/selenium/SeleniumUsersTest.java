@@ -45,9 +45,7 @@ public class SeleniumUsersTest extends TestCase {
     	driver.get("http://localhost:8080/CallFailureEnterprise/admin/addUser.jsp");
         Thread.sleep(500);
         
-        String timeAdd = "" + System.currentTimeMillis();
-        
-        driver.findElement(By.id("uName")).sendKeys("selenium" + timeAdd);
+        driver.findElement(By.id("uName")).sendKeys("selenium");
         driver.findElement(By.id("pWord")).sendKeys("selenium");
         driver.findElement(By.id("pWordConf")).sendKeys("selenium");
         driver.findElement(By.name("userType")).click();
@@ -63,13 +61,15 @@ public class SeleniumUsersTest extends TestCase {
         Thread.sleep(1000);
         driver.findElement(By.className("select2-selection__arrow")).click();
         Thread.sleep(500);
-        driver.findElement(By.className("select2-search__field")).sendKeys("selenium" + timeAdd);
+        driver.findElement(By.className("select2-search__field")).sendKeys("selenium");
         Thread.sleep(500);
         driver.findElement(By.className("select2-search__field")).sendKeys(Keys.ENTER);
         Thread.sleep(500);
         String title = driver.findElement(By.id("select2-uNameDropdown-container")).getAttribute("title");
 
-        assertEquals("selenium" + timeAdd, title);
+        driver.findElement(By.id("removeUser")).click();
+        
+        assertEquals("selenium", title);
     }
     
     /**
