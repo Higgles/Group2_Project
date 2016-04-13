@@ -19,6 +19,12 @@ import com.coolbeanzzz.development.tools.CompareData;
 
 public class CompareDataTest {
 	
+	/**
+	 * Test for consistency checking of data and assigning objects to the correct arrays
+	 * from the dataset imported
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@Test
 	public void testConversion() throws IOException, ParseException {
 		Collection<Integer> failureClasses = new ArrayList<Integer>();
