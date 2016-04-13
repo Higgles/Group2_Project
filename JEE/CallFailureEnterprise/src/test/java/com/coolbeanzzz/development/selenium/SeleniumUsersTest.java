@@ -15,7 +15,7 @@ public class SeleniumUsersTest extends TestCase {
 	private WebDriver driver;
 
 	/**
-	 * Set up the web driver for selenium tests and login as NetMan
+	 * Set up the web driver for selenium tests and login as admin
 	 *
 	 */
     public void setUp() throws Exception {
@@ -36,9 +36,9 @@ public class SeleniumUsersTest extends TestCase {
     }
     
     /**
-     * Test adding a user to the system
-     * User is added to the system. The edit user page is loaded and the
-     * username dropdown is checked for the new username added
+     * Test adding a user to the system from addUser.jsp
+     * A new user is added to the system. The edit user page is loaded and the
+     * username dropdown is checked for the new username
      * @throws Exception
      */
     public void testAddUser() throws Exception {
