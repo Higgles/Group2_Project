@@ -6,7 +6,13 @@
    <persistence-unit name="coolbeanzzz1" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
       <jta-data-source>java:/mySQL/coolbeanzzz_test</jta-data-source>     
-      <!--  <class>com.coolbeanzzz.development.entities.MccMnc</class> -->
+      <class>com.coolbeanzzz.development.entities.BaseData</class>
+      <class>com.coolbeanzzz.development.entities.ErroneousData</class>
+      <class>com.coolbeanzzz.development.entities.EventCause</class>
+      <class>com.coolbeanzzz.development.entities.FailureClass</class>
+      <class>com.coolbeanzzz.development.entities.MccMnc</class>
+      <class>com.coolbeanzzz.development.entities.UETable</class>
+      <class>com.coolbeanzzz.development.entities.Users</class>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
       </properties>

@@ -20,6 +20,37 @@ import jxl.read.biff.BiffException;
 import jxl.write.WritableCell;
 import jxl.write.biff.BooleanRecord;
 
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.Authenticator;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.Authorizer;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.InvalidSessionException;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.SessionException;
+import org.apache.shiro.session.mgt.SessionContext;
+import org.apache.shiro.session.mgt.SessionKey;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.subject.ExecutionException;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.SubjectContext;
+import org.apache.shiro.util.Nameable;
+import org.apache.shiro.util.PatternMatcher;
+import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.filter.PathConfigProcessor;
+import org.apache.shiro.web.filter.PathMatchingFilter;
+import org.apache.shiro.web.filter.authz.AuthorizationFilter;
+import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
+import org.apache.shiro.web.servlet.AbstractFilter;
+import org.apache.shiro.web.servlet.AdviceFilter;
+import org.apache.shiro.web.servlet.NameableFilter;
+import org.apache.shiro.web.servlet.OncePerRequestFilter;
+import org.apache.shiro.web.servlet.ServletContextSupport;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -98,6 +129,37 @@ public class IntegrationTest {
 				ArchivePaths.create("beans.xml"))
 				.addPackage(JSONArray.class.getPackage())
 				.addPackage(ParseException.class.getPackage());
+		jar.addClass(ServletContextSupport.class)
+				.addClass(AbstractFilter.class)
+				.addClass(NameableFilter.class)
+				.addClass(OncePerRequestFilter.class)
+				.addClass(AdviceFilter.class)
+				.addClass(PathMatchingFilter.class)
+				.addClass(AccessControlFilter.class)
+				.addClass(AuthorizationFilter.class)
+				.addClass(RolesAuthorizationFilter.class)
+				.addClass(Nameable.class)
+				.addClass(PathConfigProcessor.class)
+				.addClass(PatternMatcher.class)
+				.addClass(SubjectContext.class)
+				.addClass(Subject.class)
+				.addClass(SecurityManager.class)
+				.addClass(Authenticator.class)
+				.addClass(Authorizer.class)
+				.addClass(SessionManager.class)
+				.addClass(Session.class)
+				.addClass(InvalidSessionException.class)
+				.addClass(SessionException.class)
+				.addClass(ShiroException.class)
+				.addClass(PrincipalCollection.class)
+				.addClass(Permission.class)
+				.addClass(AuthorizationException.class)
+				.addClass(AuthenticationToken.class)
+				.addClass(AuthenticationInfo.class)
+				.addClass(AuthenticationException.class)
+				.addClass(ExecutionException.class)
+				.addClass(SessionKey.class)
+				.addClass(SessionContext.class);
 		return jar;
 	}
 

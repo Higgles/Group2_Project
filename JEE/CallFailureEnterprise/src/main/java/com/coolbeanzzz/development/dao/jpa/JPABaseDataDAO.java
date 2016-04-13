@@ -139,28 +139,31 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueEventIdsCauseCodeForPhoneType(String manufacturer, String model, QueryOptions options) {	
-		Query query = em.createQuery(" select bd.eventCause.eventId,"
-				+ " bd.eventCause.causeCode,"
-				+ " bd.eventCause.description,"
-				+ " count(bd.id),"
-				+ " bd.ueTable.tac,"
-				+ " bd.ueTable.manufacturer,"
-				+ " bd.ueTable.model"
-				+ " from BaseData bd"
-				+ " where bd.ueTable.manufacturer=:manufacturer"
-				+ " and bd.ueTable.model=:model"
-				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
-				+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.description, '') like :searchTerm"
-				+ " or Concat(count(bd.id), '') like :searchTerm"
-				+ " or Concat(bd.ueTable.tac, '') like :searchTerm"
-				+ " order by :order "+options.getOrderDirection());
-		query.setParameter("manufacturer", manufacturer);
-		query.setParameter("model", model);
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(" select bd.eventCause.eventId,"
+					+ " bd.eventCause.causeCode,"
+					+ " bd.eventCause.description,"
+					+ " count(bd.id),"
+					+ " bd.ueTable.tac,"
+					+ " bd.ueTable.manufacturer,"
+					+ " bd.ueTable.model"
+					+ " from BaseData bd"
+					+ " where bd.ueTable.manufacturer=:manufacturer"
+					+ " and bd.ueTable.model=:model"
+					+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
+					+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.description, '') like :searchTerm"
+					+ " or Concat(count(bd.id), '') like :searchTerm"
+					+ " or Concat(bd.ueTable.tac, '') like :searchTerm"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("manufacturer", manufacturer);
+			query.setParameter("model", model);
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+		}
 		return this.getQueryResultList(basedata, options, uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 	}
 
@@ -168,146 +171,164 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@Override
 	public Collection<FailureTable> getNoOfCallFailuresAndDurationForImsiInDateRange(
 			String fromDate, String toDate, QueryOptions options) {
-		Query query = em.createQuery("select bd.imsi,"
-				+ " count(bd.id),"
-				+ " bd.mccmnc.country,"
-				+ " bd.mccmnc.operator,"
-				+ " sum(duration) "
-				+ " from BaseData bd"
-				+ " where bd.dateTime>=:date1 and bd.dateTime<=:date2"
-				+ " group by bd.imsi"
-				+ " having Concat(bd.imsi, '') like :searchTerm"
-				+ " or Concat(count(bd.id), '') like :searchTerm"
-				+ " or Concat(sum(duration), '') like :searchTerm"
-				+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
-				+ " or Concat(bd.mccmnc.operator, '') like :searchTerm"
-				+ " order by :order "+options.getOrderDirection());
-		query.setParameter("date1", fromDate);
-		query.setParameter("date2", toDate);
-		
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		
-		List basedata = query.getResultList();		
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery("select bd.imsi,"
+					+ " count(bd.id),"
+					+ " bd.mccmnc.country,"
+					+ " bd.mccmnc.operator,"
+					+ " sum(duration) "
+					+ " from BaseData bd"
+					+ " where bd.dateTime>=:date1 and bd.dateTime<=:date2"
+					+ " group by bd.imsi"
+					+ " having Concat(bd.imsi, '') like :searchTerm"
+					+ " or Concat(count(bd.id), '') like :searchTerm"
+					+ " or Concat(sum(duration), '') like :searchTerm"
+					+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+					+ " or Concat(bd.mccmnc.operator, '') like :searchTerm"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("date1", fromDate);
+			query.setParameter("date2", toDate);
+			
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			
+			basedata = query.getResultList();	
+		}
 		return this.getQueryResultList(basedata, options, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
-		Query query = em.createQuery(""
-		+ "select bd.imsi,"
-		+ " bd.mccmnc.country,"
-		+ " bd.mccmnc.operator,"
-		+ " sum(bd.duration)"
-		+ " from BaseData bd"
-		+ " where bd.dateTime >=:date1 and bd.dateTime <=:date2"
-		+ " group by bd.imsi"
-		+ " having Concat(bd.imsi, '') like :searchTerm"
-		+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
-		+ " or Concat(bd.mccmnc.operator, '') like :searchTerm"
-		+ " or Concat(sum(duration), '') like :searchTerm"
-		+ " order by :order "+options.getOrderDirection());
-		query.setParameter("date1", date1);
-		query.setParameter("date2", date2);
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(""
+			+ "select bd.imsi,"
+			+ " bd.mccmnc.country,"
+			+ " bd.mccmnc.operator,"
+			+ " sum(bd.duration)"
+			+ " from BaseData bd"
+			+ " where bd.dateTime >=:date1 and bd.dateTime <=:date2"
+			+ " group by bd.imsi"
+			+ " having Concat(bd.imsi, '') like :searchTerm"
+			+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+			+ " or Concat(bd.mccmnc.operator, '') like :searchTerm"
+			+ " or Concat(sum(duration), '') like :searchTerm"
+			+ " order by :order "+options.getOrderDirection());
+			query.setParameter("date1", date1);
+			query.setParameter("date2", date2);
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+		}
 		return this.getQueryResultList(basedata, options, getImsiListBetween2DatesHeadings);
 	}	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByImsiAndDate(String imsi, String date1, String date2, QueryOptions options){
-		Query query = em.createQuery(""
-				+ "select count(bd.id),"
-				+ " sum(duration)"
-				+ " from BaseData bd"
-				+ " where bd.imsi=:imsi"
-				+ " and bd.dateTime >=:date1 "
-				+ " and bd.dateTime <:date2"
-				+ " group by bd.imsi "
-				+ " having Concat(count(bd.id), '') like :searchTerm"
-				+ " or Concat(sum(duration), '') like :searchTerm"
-				+ " order by :order "+ options.getOrderDirection());
-		query.setParameter("imsi", imsi);
-		query.setParameter("date1", date1);
-		query.setParameter("date2", date2);
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(""
+					+ "select count(bd.id),"
+					+ " sum(duration)"
+					+ " from BaseData bd"
+					+ " where bd.imsi=:imsi"
+					+ " and bd.dateTime >=:date1 "
+					+ " and bd.dateTime <:date2"
+					+ " group by bd.imsi "
+					+ " having Concat(count(bd.id), '') like :searchTerm"
+					+ " or Concat(sum(duration), '') like :searchTerm"
+					+ " order by :order "+ options.getOrderDirection());
+			query.setParameter("imsi", imsi);
+			query.setParameter("date1", date1);
+			query.setParameter("date2", date2);
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+		}
 		return this.getQueryResultList(basedata, options, failCountByImsiAndDateHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getTop10MarketOperatorCellBetween2Dates(String dateStart, String dateEnd, QueryOptions options){
-		Query query = em.createQuery(""
-				+"select bd.mccmnc.country,"
-				+ " bd.mccmnc.operator,"
-				+ " bd.cellId,"
-				+ " count(bd.id)"  
-				+"from BaseData bd "
-				+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
-				+"group by bd.mccmnc.country, bd.mccmnc.operator, bd.cellId "						
-				+"order by count(bd.id) desc ");
-		query.setParameter("date1", dateStart);
-		query.setParameter("date2", dateEnd);
-		
-		List basedata = query.setMaxResults(10).getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(""
+					+"select bd.mccmnc.country,"
+					+ " bd.mccmnc.operator,"
+					+ " bd.cellId,"
+					+ " count(bd.id)"  
+					+"from BaseData bd "
+					+"where bd.dateTime >=:date1 and bd.dateTime <:date2 "
+					+"group by bd.mccmnc.country, bd.mccmnc.operator, bd.cellId "						
+					+"order by count(bd.id) desc ");
+			query.setParameter("date1", dateStart);
+			query.setParameter("date2", dateEnd);
+			
+			basedata = query.setMaxResults(10).getResultList();
+		}
 		return this.getQueryResultList(basedata, options, top10MarketOperatorCellBetween2DatesHeadings);	
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getIMSIsforFailureClass(String failureClass, QueryOptions options){
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){	
 			Query query = em.createQuery(""
-					+ "select bd.imsi,"
-					+ " bd.mccmnc.country,"
-					+ " bd.mccmnc.operator,"
-					+ " count(bd.id)"  
-					+ " from BaseData bd"
-					+ " where bd.failureClass.description =:failureClass"
-					+ " group by bd.imsi"
-					+ " having Concat(bd.imsi, '') like :searchTerm"
-					+ " or Concat(count(bd.id), '') like :searchTerm"
-					+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
-					+ " or Concat(count(bd.mccmnc.operator), '') like :searchTerm"
-					+ " order by :order "+options.getOrderDirection());
+						+ "select bd.imsi,"
+						+ " bd.mccmnc.country,"
+						+ " bd.mccmnc.operator,"
+						+ " count(bd.id)"  
+						+ " from BaseData bd"
+						+ " where bd.failureClass.description =:failureClass"
+						+ " group by bd.imsi"
+						+ " having Concat(bd.imsi, '') like :searchTerm"
+						+ " or Concat(count(bd.id), '') like :searchTerm"
+						+ " or Concat(bd.mccmnc.country, '') like :searchTerm"
+						+ " or Concat(count(bd.mccmnc.operator), '') like :searchTerm"
+						+ " order by :order "+options.getOrderDirection());
 			query.setParameter("failureClass",failureClass);			
 			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 			query.setParameter("order", (options.getOrderColumn()+1));
-			List basedata = query.getResultList();
-			return this.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
+			basedata = query.getResultList();
 		}
+		return this.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
+	}
 	
 	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getFailCountByPhoneModel(String manufacturer, String model, String fromdate, String todate, QueryOptions options) {
-		Query query = em.createQuery(""
-		+ "select count(bd.id),"
-		+ " sum(bd.duration)"
-		+ " from BaseData bd"
-		+ " where bd.ueTable.manufacturer=:manufacturer "
-		+ " and bd.ueTable.model=:model"
-		+ " and bd.dateTime >=:dateStart "
-		+ " and bd.dateTime <=:dateEnd "
-		+ " group by bd.ueTable.manufacturer"
-		+ " having Concat(count(bd.id), '') like :searchTerm"
-		+ " or Concat(sum(bd.duration), '') like :searchTerm "
-		+ " order by :order "+options.getOrderDirection());
-		query.setParameter("manufacturer", manufacturer);
-		query.setParameter("model", model);
-		query.setParameter("dateStart", fromdate);
-		query.setParameter("dateEnd", todate);
-		
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
-		if(basedata.size()==0){
-			basedata.add(0, new Object[]{manufacturer,model, 0, 0});
+		List basedata = new ArrayList();
+			if(!options.isHeadings()){
+			Query query = em.createQuery(""
+			+ "select count(bd.id),"
+			+ " sum(bd.duration)"
+			+ " from BaseData bd"
+			+ " where bd.ueTable.manufacturer=:manufacturer "
+			+ " and bd.ueTable.model=:model"
+			+ " and bd.dateTime >=:dateStart "
+			+ " and bd.dateTime <=:dateEnd "
+			+ " group by bd.ueTable.manufacturer"
+			+ " having Concat(count(bd.id), '') like :searchTerm"
+			+ " or Concat(sum(bd.duration), '') like :searchTerm "
+			+ " order by :order "+options.getOrderDirection());
+			query.setParameter("manufacturer", manufacturer);
+			query.setParameter("model", model);
+			query.setParameter("dateStart", fromdate);
+			query.setParameter("dateEnd", todate);
+			
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+			if(basedata.size()==0){
+				basedata.add(0, new Object[]{manufacturer,model, 0, 0});
+			}
 		}
 		return this.getQueryResultList(basedata, options, failCountByPhoneModelHeadings);
 	}
@@ -315,62 +336,71 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getEventIdsCauseCodeForIMSI(String IMSI, QueryOptions options) {
-		Query query = em.createQuery("select bd.dateTime,"
-				+ " bd.eventCause.eventId,"
-				+ " bd.eventCause.causeCode,"
-				+ " bd.eventCause.description "				
-				+ " from BaseData bd"
-				+ " where bd.imsi=:IMSI"
-				+ " and (Concat(bd.dateTime, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.eventId, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.description, '') like :searchTerm)"
-				+ " order by :order "+options.getOrderDirection());
-		query.setParameter("IMSI", IMSI);
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery("select bd.dateTime,"
+					+ " bd.eventCause.eventId,"
+					+ " bd.eventCause.causeCode,"
+					+ " bd.eventCause.description "				
+					+ " from BaseData bd"
+					+ " where bd.imsi=:IMSI"
+					+ " and (Concat(bd.dateTime, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.eventId, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.description, '') like :searchTerm)"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("IMSI", IMSI);
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+		}
 		return this.getQueryResultList(basedata, options, allEventIdsCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getUniqueCauseCodeForIMSI(String IMSI, QueryOptions options) {
-		Query query = em.createQuery("select bd.eventCause.eventId,"
-				+ " bd.eventCause.causeCode,"
-				+ " bd.eventCause.description,"
-				+ " count(bd.eventCause.causeCode)"
-				+ " from BaseData bd where bd.imsi=:IMSI"
-				+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
-				+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
-				+ " or Concat(bd.eventCause.description, '') like :searchTerm"
-				+ " or Concat(count(bd.eventCause.causeCode), '') like :searchTerm"
-				+ " order by :order "+options.getOrderDirection());
-		query.setParameter("IMSI", IMSI);		
-		query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
-		query.setParameter("order", (options.getOrderColumn()+1));
-		List basedata = query.getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery("select bd.eventCause.eventId,"
+					+ " bd.eventCause.causeCode,"
+					+ " bd.eventCause.description,"
+					+ " count(bd.eventCause.causeCode)"
+					+ " from BaseData bd where bd.imsi=:IMSI"
+					+ " group by bd.eventCause.eventId, bd.eventCause.causeCode"
+					+ " having Concat(bd.eventCause.eventId, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.causeCode, '') like :searchTerm"
+					+ " or Concat(bd.eventCause.description, '') like :searchTerm"
+					+ " or Concat(count(bd.eventCause.causeCode), '') like :searchTerm"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("IMSI", IMSI);		
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			basedata = query.getResultList();
+		}
 		return this.getQueryResultList(basedata, options, uniqueCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Collection<FailureTable> getTop10ImsiListBetween2Dates(String date1,String date2, QueryOptions options) {
-		Query query = em.createQuery(""
-				+ "select bd.imsi,"
-				+ " bd.mccmnc.country,"
-				+ " bd.mccmnc.operator,"
-				+ " count(bd.imsi)"
-				+ " from BaseData bd"
-				+ " where bd.dateTime >=:date1"
-				+ " and bd.dateTime <=:date2"
-				+ " group by bd.imsi"
-				+ " order by count(bd.imsi) desc");
-		query.setParameter("date1", date1);
-		query.setParameter("date2", date2);
-				
-		List basedata = query.setMaxResults(10).getResultList();
+		List basedata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(""
+					+ "select bd.imsi,"
+					+ " bd.mccmnc.country,"
+					+ " bd.mccmnc.operator,"
+					+ " count(bd.imsi)"
+					+ " from BaseData bd"
+					+ " where bd.dateTime >=:date1"
+					+ " and bd.dateTime <=:date2"
+					+ " group by bd.imsi"
+					+ " order by count(bd.imsi) desc");
+			query.setParameter("date1", date1);
+			query.setParameter("date2", date2);
+					
+			basedata = query.setMaxResults(10).getResultList();
+		}
 		return this.getQueryResultList(basedata, options, top10ImsiListBetween2DatesHeadings);
 	}
 	
