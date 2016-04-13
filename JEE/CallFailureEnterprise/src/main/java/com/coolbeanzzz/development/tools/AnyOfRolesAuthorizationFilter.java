@@ -17,7 +17,6 @@ public class AnyOfRolesAuthorizationFilter extends RolesAuthorizationFilter {
         final String[] rolesArray = (String[]) mappedValue;
 
         if (rolesArray == null || rolesArray.length == 0) {
-            //no roles specified, so nothing to check - allow access.
             return true;
         }
 
