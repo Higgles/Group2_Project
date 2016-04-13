@@ -69,7 +69,7 @@ public class BaseDataServiceTest {
 	@Test
 	public void getAllImsiValuestest() {
 		Collection<String> allImsiValues = baseDataService.getAllImsiValues(1,"", -1);
-		assert(allImsiValues.size()==0);
+		assertEquals(0,allImsiValues.size());
 	}
 	
 	@Test

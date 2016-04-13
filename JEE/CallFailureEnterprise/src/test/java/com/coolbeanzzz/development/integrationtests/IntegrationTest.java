@@ -73,12 +73,14 @@ import com.coolbeanzzz.development.entities.FailureClass;
 import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.MccMnc;
 import com.coolbeanzzz.development.entities.UETable;
+import com.coolbeanzzz.development.entities.Users;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.services.ErroneousDataService;
 import com.coolbeanzzz.development.services.EventCauseService;
 import com.coolbeanzzz.development.services.FailureClassService;
 import com.coolbeanzzz.development.services.MccMncService;
 import com.coolbeanzzz.development.services.UETableService;
+import com.coolbeanzzz.development.services.UsersService;
 import com.coolbeanzzz.development.tools.CompareData;
 import com.coolbeanzzz.development.tools.Convert;
 import com.coolbeanzzz.development.tools.QueryOptions;
@@ -103,6 +105,9 @@ public class IntegrationTest {
 
 	@Inject
 	ErroneousDataService erroneousDataService;
+	
+	@Inject
+	UsersService usersService;
 
 	@Deployment
 	public static JavaArchive createDeployment() {
@@ -182,13 +187,15 @@ public class IntegrationTest {
 		Collection<FailureTable> eventCauseResults = eventCauseService.getCatalog();
 		Collection<FailureTable> mccmncResults = mccmncService.getCatalog();
 		Collection<FailureTable> ueTableResults = ueTableService.getCatalog();
+		Collection<Users> usersResults = usersService.getAllUsers(1, "", -1);
 		
-		assert(failureClassResults.isEmpty()==true);
-		assert(baseDataResults.isEmpty()==true);
-		assert(erroneousDataResults.isEmpty()==true);
-		assert(eventCauseResults.isEmpty()==true);
-		assert(mccmncResults.isEmpty()==true);
-		assert(ueTableResults.isEmpty()==true);
+		assertEquals(0, failureClassResults.size());
+		assertEquals(1, baseDataResults.size());
+		assertEquals(0, erroneousDataResults.size());
+		assertEquals(0, eventCauseResults.size());
+		assertEquals(0, mccmncResults.size());
+		assertEquals(0, ueTableResults.size());
+		assertEquals(0, usersResults.size());
 	}
 
 	@Test
@@ -199,7 +206,7 @@ public class IntegrationTest {
 		Collection<FailureTable> failureClasses = failureClassService.getCatalog();
 		assert(failureClasses.contains(fc)==true);
 		Collection<Integer> failureClassCodes=failureClassService.getFailureClassCodes();
-		assert(failureClassCodes.size()==1);
+		assertEquals(1,failureClassCodes.size());
 		assert(failureClassCodes.contains(0));
 	}
 	
@@ -209,7 +216,7 @@ public class IntegrationTest {
 		EventCause ec = new EventCause(0, 0, "");
 		eventCauseService.addNewEntry(ec);
 		Collection<FailureTable> eventCauses = eventCauseService.getCatalog();
-		assert(eventCauses.contains(ec)==true);
+		assert(eventCauses.contains(ec));
 	}
 	
 	@Test
@@ -218,7 +225,7 @@ public class IntegrationTest {
 		MccMnc mccmnc = new MccMnc(0,0,"","");
 		mccmncService.addNewEntry(mccmnc);
 		Collection<FailureTable> mccmncs = mccmncService.getCatalog();
-		assert(mccmncs.contains(mccmnc)==true);
+		assert(mccmncs.contains(mccmnc));
 	}
 	
 	@Test
@@ -229,7 +236,7 @@ public class IntegrationTest {
 		Collection<FailureTable> ueTables = ueTableService.getCatalog();
 		assert(ueTables.contains(ueTable)==true);
 		Collection<Integer> ueTypes=ueTableService.getUETypes();
-		assert(ueTypes.size()==1);
+		assertEquals(1,ueTypes.size());
 		assert(ueTypes.contains(0));
 	}
 	
@@ -239,7 +246,7 @@ public class IntegrationTest {
 		ErroneousData erroneousData = new ErroneousData(0,"2013-11-10",0,"",0,0,0,"","","","","","","","");
 		erroneousDataService.addNewEntry(erroneousData);
 		Collection<FailureTable> erroneousDatas = erroneousDataService.getCatalog();
-		assert(erroneousDatas.contains(erroneousData)==true);
+		assert(erroneousDatas.contains(erroneousData));
 	}
 	
 	@Test
@@ -256,7 +263,7 @@ public class IntegrationTest {
 		BaseData baseData = new BaseData(0,"2013-11-10","","","","","","","",ec,mccmnc,ueTable,fc);
 		baseDataService.addNewEntry(baseData);
 		Collection<FailureTable> baseDatas = baseDataService.getCatalog();
-		assert(baseDatas.contains(baseData)==true);
+		assert(baseDatas.contains(baseData));
 	}
 	
 	@Test
@@ -271,7 +278,7 @@ public class IntegrationTest {
 		eventCauseService.addNewEntry(ec3);
 		eventCauseService.addNewEntry(ec4);
 		Collection<Integer> uniqueCauseCodes = eventCauseService.getAllUniqueCauseCodes();
-		assert(uniqueCauseCodes.size()==2);
+		assertEquals(2,uniqueCauseCodes.size());
 		assert(uniqueCauseCodes.contains(0));
 		assert(uniqueCauseCodes.contains(1));
 	}
@@ -288,7 +295,7 @@ public class IntegrationTest {
 		eventCauseService.addNewEntry(ec3);
 		eventCauseService.addNewEntry(ec4);
 		Collection<Integer> uniqueEventIds = eventCauseService.getAllUniqueEventIds();
-		assert(uniqueEventIds.size()==2);
+		assertEquals(2,uniqueEventIds.size());
 		assert(uniqueEventIds.contains(0));
 		assert(uniqueEventIds.contains(1));
 	}
@@ -305,7 +312,7 @@ public class IntegrationTest {
 		mccmncService.addNewEntry(mccmnc3);
 		mccmncService.addNewEntry(mccmnc4);
 		Collection<Integer> uniqueMccs = mccmncService.getAllUniqueMCCs();
-		assert(uniqueMccs.size()==2);
+		assertEquals(2,uniqueMccs.size());
 		assert(uniqueMccs.contains(0));
 		assert(uniqueMccs.contains(1));
 	}
@@ -407,7 +414,64 @@ public class IntegrationTest {
 		assertEquals(2,res.size());
 	}
 	
-	@Test @InSequence(22)
+	@Test
+	@InSequence(22)
+	public void getAllManufacturersTest() {
+		UETable ueTable = new UETable(0,"","a","","b","","","","");
+		ueTableService.addNewEntry(ueTable);
+		Collection<?> res=ueTableService.getAllManufacturers(1, "", -1);
+		assertEquals(1,res.size());
+		assertEquals("a",res.iterator().next());
+	}
+	
+	@Test
+	@InSequence(23)
+	public void getAllModelsForManufacturerTest() {
+		UETable ueTable = new UETable(0,"","a","","b","","","","");
+		ueTableService.addNewEntry(ueTable);
+		Collection<?> res=ueTableService.getModelsForManufacturer("a", 1, "", -1);
+		assertEquals(1,res.size());
+		assertEquals("b",res.iterator().next());
+	}
+	
+	@Test
+	@InSequence(24)
+	public void getAllFailureClassDescriptionsTest() {
+		FailureClass fc = new FailureClass(0, "Test");
+		failureClassService.addNewEntry(fc);
+		Collection<?> res=failureClassService.getAllDescriptions(1, "", -1);
+		assertEquals(1,res.size());
+		assertEquals("Test",res.iterator().next());
+	}
+	
+	@Test
+	@InSequence(25)
+	public void addUserTest() {
+		Users user = new Users("Test", "a", "SysAd");
+		usersService.addUser(user);
+		Collection<Users> usersResults = usersService.getAllUsers(1, "", -1);
+		assertEquals(user, usersResults.iterator().next());
+	}
+	
+	@Test
+	@InSequence(26)
+	public void editUserTest() {
+		Users user = new Users("Test", "b", "CSR");
+		usersService.updateUser(user);
+		Collection<Users> usersResults = usersService.getAllUsers(1, "", -1);
+		assertEquals(1, usersResults.size());
+		assertEquals(user, usersResults.iterator().next());
+	}
+	
+	@Test
+	@InSequence(27)
+	public void removeUserTest() {
+		usersService.removeUser("Test");
+		Collection<Users> usersResults = usersService.getAllUsers(1, "", -1);
+		assertEquals(0, usersResults.size());
+	}
+	
+	@Test @InSequence(28)
 	public void uploadFromFileTest() {
 		ArrayList<JSONArray> datasetArray;
 		try {
@@ -461,7 +525,7 @@ public class IntegrationTest {
 	}
 	 
 	@Test
-	@InSequence(23)
+	@InSequence(29)
 	public void tablesEndEmptyTest() {
 		Collection<FailureTable> failureClassResults = failureClassService.getCatalog();
 		Collection<FailureTable> baseDataResults = baseDataService.getCatalog();
@@ -469,12 +533,14 @@ public class IntegrationTest {
 		Collection<FailureTable> eventCauseResults = eventCauseService.getCatalog();
 		Collection<FailureTable> mccmncResults = mccmncService.getCatalog();
 		Collection<FailureTable> ueTableResults = ueTableService.getCatalog();
+		Collection<Users> usersResults = usersService.getAllUsers(1, "", -1);
 		
-		assert(failureClassResults.isEmpty()==true);
-		assert(baseDataResults.isEmpty()==true);
-		assert(erroneousDataResults.isEmpty()==true);
-		assert(eventCauseResults.isEmpty()==true);
-		assert(mccmncResults.isEmpty()==true);
-		assert(ueTableResults.isEmpty()==true);
+		assertEquals(0, failureClassResults.size());
+		assertEquals(1, baseDataResults.size());
+		assertEquals(0, erroneousDataResults.size());
+		assertEquals(0, eventCauseResults.size());
+		assertEquals(0, mccmncResults.size());
+		assertEquals(0, ueTableResults.size());
+		assertEquals(0, usersResults.size());
 	}
 }

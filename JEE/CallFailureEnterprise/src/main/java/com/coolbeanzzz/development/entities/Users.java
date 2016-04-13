@@ -35,7 +35,6 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public Users(String username, String passkey, String userType) {
-		super();
 		this.username = username;
 		this.passkey = passkey;
 		this.userType = userType;
@@ -114,8 +113,6 @@ private static final long serialVersionUID = 1L;
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		if (id != other.getId())
-			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;

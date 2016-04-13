@@ -45,15 +45,23 @@ public class UsersServiceTest {
 		assertEquals(users1,user);
 	}
 	
-//	@Test
-//	public void addUserTest() {
-//		
-//		users3 = new Users(1, "", "kony", "");
-//		UsersService.addUser(users3);
-//		Collection<Users> users = UsersService.getAllUsers();
-//		assertEquals(users3, users.iterator().next());
-//		
-//	}	
-
+	@Test
+	public void addUserTest() {
+		
+		Users users = new Users(1, "Test", "", "");
+		UsersService.addUser(users);
+		Collection<Users> usersList = UsersService.getAllUsers(1, "", -1);
+		assertEquals(users1, usersList.iterator().next());
+		
+	}	
 	
+	@Test
+	public void editUserTest() {
+		
+		Users users = new Users(1, "Test", "", "");
+		UsersService.updateUser(users);
+		Collection<Users> usersList = UsersService.getAllUsers(1, "", -1);
+		assertEquals(users1, usersList.iterator().next());
+		
+	}		
 }
