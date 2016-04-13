@@ -51,7 +51,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] uniqueCauseCodeForImsiHeadings=
 			new String[]{"Event ID", "Cause Code", "Description", "Number of Occurences"};
 	private static final String[] allEventIdsCauseCodeForImsiHeadings=
-			new String[]{"Date/Time","Event Id", "Cause Code", "Description"};
+			new String[]{"Date/Time","Event ID", "Cause Code", "Description"};
 	private static final String[] top10ImsiListBetween2DatesHeadings=
 			new String[]{"IMSI", "Market", "Operator", "Number of Occurences"};
 	private static final String[] baseDataHeadings=

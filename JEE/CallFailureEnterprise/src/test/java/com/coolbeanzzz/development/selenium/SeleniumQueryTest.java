@@ -51,7 +51,7 @@ public class SeleniumQueryTest extends TestCase {
         
         Thread.sleep(3000);
         
-        String[] query1headings = {"Date/Time", "Event Id", "Cause Code", "Description"};
+        String[] query1headings = {"Date/Time", "Event ID", "Cause Code", "Description"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query1test = new ArrayList<String>();
@@ -77,7 +77,7 @@ public class SeleniumQueryTest extends TestCase {
         
         Thread.sleep(3000);
         
-        String[] query14headings = {"Event Id", "Cause Code", "Description", "Number of Occurences"};
+        String[] query14headings = {"Event ID", "Cause Code", "Description", "Number of Occurences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query14test = new ArrayList<String>();
@@ -107,7 +107,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query9headings = {"Count", "Total Duration"};
+        String[] query9headings = {"Number of Occurrences", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query9test = new ArrayList<String>();
@@ -165,7 +165,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query3headings = {"Manufacturer", "Model", "Number of Failures", "Total Duration"};
+        String[] query3headings = {"Number of Failures", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query3test = new ArrayList<String>();
@@ -193,7 +193,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query16headings = {"IMSIs", "Count"};
+        String[] query16headings = {"IMSIs", "Market", "Operator", "Number of Occurrences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query16test = new ArrayList<String>();
@@ -219,7 +219,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query4headings = {"IMSI", "Number of Failures", "Total Duration"};
+        String[] query4headings = {"IMSI", "Market", "Operator", "Number of Failures", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query4test = new ArrayList<String>();
@@ -250,7 +250,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query5headings = {"Event Id", "Cause Code", "Number of Occurences", "UE Type", "Manufacturer", "Model"};
+        String[] query5headings = {"Event ID", "Cause Code", "Description", "Number of Occurences", "UE Type"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query5test = new ArrayList<String>();
@@ -276,7 +276,7 @@ public class SeleniumQueryTest extends TestCase {
 
         Thread.sleep(3000);
         
-        String[] query12headings = {"Market", "Operator", "Cell Id", "Count"};
+        String[] query12headings = {"Market", "Operator", "Cell Id", "Number of Occurrences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query12test = new ArrayList<String>();
