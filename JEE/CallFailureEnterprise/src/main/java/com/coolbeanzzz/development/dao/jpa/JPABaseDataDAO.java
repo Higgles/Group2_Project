@@ -327,7 +327,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 			if(basedata.size()==0){
-				basedata.add(0, new Object[]{manufacturer,model, 0, 0});
+				basedata.add(0, new Object[]{0, 0});
 			}
 		}
 		return this.getQueryResultList(basedata, options, failCountByPhoneModelHeadings);
