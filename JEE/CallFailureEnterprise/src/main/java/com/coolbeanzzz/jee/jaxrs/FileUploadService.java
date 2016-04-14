@@ -65,15 +65,13 @@ public class FileUploadService {
 					result.put("filename", uploadedFilename);
 					return Response.ok(result, MediaType.APPLICATION_JSON).build();
 				}
-				else{
-					return Response.status(415).build();
-				}
+				return null;
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return Response.status(404).build();
+		return null;
 	}
 
 	/**
@@ -124,7 +122,7 @@ public class FileUploadService {
 	 * @throws IOException
 	 */
 	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File("/home/user1/datasets/" + filename);
+		File file = new File("./datasets/" + filename);
 		if (!file.exists()) {
 			System.out.println("Creating file " + file.getAbsolutePath());
 			file.createNewFile();
