@@ -32,6 +32,7 @@ import com.coolbeanzzz.development.entities.MccMnc;
 import com.coolbeanzzz.development.entities.MccMncPrimaryKey;
 import com.coolbeanzzz.development.entities.UETable;
 import com.coolbeanzzz.development.tools.QueryOptions;
+import com.coolbeanzzz.development.tools.QueryPaginationHelper;
 
 @Default
 @Stateless
@@ -164,7 +165,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, uniqueEventIdsCauseCodeForPhoneTypeHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, uniqueEventIdsCauseCodeForPhoneTypeHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -195,7 +196,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			
 			basedata = query.getResultList();	
 		}
-		return this.getQueryResultList(basedata, options, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, noOfCallFailuresAndDurationForImsiInDateRangeHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -222,7 +223,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, getImsiListBetween2DatesHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, getImsiListBetween2DatesHeadings);
 	}	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -248,7 +249,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, failCountByImsiAndDateHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, failCountByImsiAndDateHeadings);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -270,7 +271,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			
 			basedata = query.setMaxResults(10).getResultList();
 		}
-		return this.getQueryResultList(basedata, options, top10MarketOperatorCellBetween2DatesHeadings);	
+		return QueryPaginationHelper.getQueryResultList(basedata, options, top10MarketOperatorCellBetween2DatesHeadings);	
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -296,7 +297,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, IMSIsforFailureClassHeadings);
 	}
 	
 	
@@ -330,7 +331,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 				basedata.add(0, new Object[]{0, 0});
 			}
 		}
-		return this.getQueryResultList(basedata, options, failCountByPhoneModelHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, failCountByPhoneModelHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -354,7 +355,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, allEventIdsCauseCodeForImsiHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, allEventIdsCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -378,7 +379,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 			query.setParameter("order", (options.getOrderColumn()+1));
 			basedata = query.getResultList();
 		}
-		return this.getQueryResultList(basedata, options, uniqueCauseCodeForImsiHeadings);
+		return QueryPaginationHelper.getQueryResultList(basedata, options, uniqueCauseCodeForImsiHeadings);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -401,19 +402,6 @@ public class JPABaseDataDAO implements BaseDataDAO {
 					
 			basedata = query.setMaxResults(10).getResultList();
 		}
-		return this.getQueryResultList(basedata, options, top10ImsiListBetween2DatesHeadings);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private List getQueryResultList(List originalResults, QueryOptions options, String[] headings){
-		int resultSize = originalResults.size();
-		List resultList = new ArrayList();
-		for(int i = options.getStart();i< options.getStart()+options.getLength() && i< resultSize; i++){
-			resultList.add(originalResults.get(i));
-		}
-		
-		resultList.add(0, resultSize);
-		resultList.add(0, headings);
-		return resultList;
+		return QueryPaginationHelper.getQueryResultList(basedata, options, top10ImsiListBetween2DatesHeadings);
 	}
 }

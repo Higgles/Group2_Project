@@ -1,3 +1,6 @@
+/**
+ * @author CoolBeanzzz
+ */
 package com.coolbeanzzz.development.tools;
 
 import org.apache.shiro.subject.Subject;
@@ -8,7 +11,10 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 public class AnyOfRolesAuthorizationFilter extends RolesAuthorizationFilter {
-
+	
+	/**
+	 * Extension of existing Shiro filter to allow logical or of roles allowed to page
+	 */
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response,
                                    Object mappedValue) throws IOException {

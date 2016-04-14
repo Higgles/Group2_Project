@@ -118,8 +118,16 @@ public class IntegrationTest {
 				.addPackage(FailureClassService.class.getPackage())
 				.addPackage(JPAFailureClassDAO.class.getPackage())
 				.addPackage(FailureClassDAO.class.getPackage())
-				.addPackage(Convert.class.getPackage())
-				.addPackage(Cell.class.getPackage())
+				.addPackage(Convert.class.getPackage());
+		
+		jar.addAsManifestResource("test_persistence.xml", "persistence.xml");
+		jar.addAsManifestResource(EmptyAsset.INSTANCE,
+				ArchivePaths.create("beans.xml"))
+				.addPackage(JSONArray.class.getPackage())
+				.addPackage(ParseException.class.getPackage());
+		
+		//JXL packages required
+		jar.addPackage(Cell.class.getPackage())
 				.addPackage(BiffException.class.getPackage())
 				.addPackage(RecordData.class.getPackage())
 				.addPackage(Font.class.getPackage())
@@ -129,11 +137,8 @@ public class IntegrationTest {
 				.addPackage(Drawing.class.getPackage())
 				.addPackage(Logger.class.getPackage())
 				.addPackage(SimpleLogger.class.getPackage());
-		jar.addAsManifestResource("test_persistence.xml", "persistence.xml");
-		jar.addAsManifestResource(EmptyAsset.INSTANCE,
-				ArchivePaths.create("beans.xml"))
-				.addPackage(JSONArray.class.getPackage())
-				.addPackage(ParseException.class.getPackage());
+		
+		//Shiro classes required
 		jar.addClass(ServletContextSupport.class)
 				.addClass(AbstractFilter.class)
 				.addClass(NameableFilter.class)

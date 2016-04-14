@@ -4,7 +4,6 @@
 package com.coolbeanzzz.jee.jaxrs;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,9 +24,10 @@ import com.coolbeanzzz.development.entities.FailureTable;
 import com.coolbeanzzz.development.entities.ResultList;
 import com.coolbeanzzz.development.services.BaseDataService;
 import com.coolbeanzzz.development.tools.QueryOptions;
+import com.coolbeanzzz.development.tools.QueryPaginationHelper;
 
 @Path("/validdata")
-public class ValidDataCRUDService {
+public class ValidDataCRUDService{
 	
 
 	@Inject
@@ -64,7 +64,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getUniqueEventIdsCauseCodeForPhoneType(manufacturer, model, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -86,7 +86,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getNoOfCallFailuresAndDurationForImsiInDateRange(fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -107,7 +107,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getEventIdsCauseCodeForIMSI(imsi, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {  
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getImsiListBetween2Dates(fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -153,7 +153,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {        
         QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getFailCountByPhoneModel(manufacturer, model, fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -176,7 +176,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getFailCountByImsiAndDate(imsi, fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
   
@@ -199,7 +199,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	    	
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getTop10MarketOperatorCellBetween2Dates(fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
         
     /**
@@ -220,7 +220,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	
  	   	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getIMSIsforFailureClass(failure, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
  	}
     
     /**
@@ -241,7 +241,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {        
         QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getUniqueCauseCodeForIMSI(imsi, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -263,7 +263,7 @@ public class ValidDataCRUDService {
     		@DefaultValue("asc") @QueryParam("order[0][dir]") String orderDirection) {    	    	
     	QueryOptions options = new QueryOptions(draw, start, length, headings, searchTerm, orderColumn, orderDirection);
     	List queryResults = (List) service.getTop10ImsiListBetween2Dates(fromdate, todate, options);
-    	return this.getQueryResultsAsJSON(queryResults, options);
+    	return QueryPaginationHelper.getQueryResultsAsJSON(queryResults, options);
     }
     
     /**
@@ -286,23 +286,7 @@ public class ValidDataCRUDService {
     @Path("/imsis")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
     public Collection<String> getAllImsis(@DefaultValue("1") @QueryParam("page") int page, @DefaultValue("") @QueryParam("term") String searchTerm, @DefaultValue("-1") @QueryParam("pageLimit") int pageLimit) {
         return service.getAllImsiValues(page, searchTerm, pageLimit);
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	private JSONObject getQueryResultsAsJSON(List queryResults, QueryOptions options){
-    	JSONObject result;
-    	HashMap resultsMap = new HashMap();
-    	resultsMap.put("draw", options.getDraw());
-    	int total = (int) queryResults.remove(1);
-    	if(!options.isHeadings())
-    		queryResults.remove(0);
-    	resultsMap.put("recordsTotal", total);
-    	resultsMap.put("recordsFiltered", total);
-    	resultsMap.put("data", queryResults);
-    	result = new JSONObject(resultsMap);
-        return result;
     }
 }

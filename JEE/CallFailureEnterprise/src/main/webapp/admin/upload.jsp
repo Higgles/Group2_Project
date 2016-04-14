@@ -14,6 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="../resources/demo.css">
 	<link rel="stylesheet" href="../media/css/bootstrap-table.css">
 	<link rel="stylesheet" type="text/css" href="../media/css/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../media/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="../media/css/mainPage.css">
 	<style type="text/css" class="init"></style>
 	<script type="text/javascript" language="javascript" src="../media/js/jquery.js"></script>
@@ -25,6 +26,7 @@
 	<script type="text/javascript" language="javascript" class="init"></script>
 	<script type="text/javascript" src="../media/js/select2.full.js"></script>
 	<script type="text/javascript" src="../media/js/jquery.form.js"></script>
+	<script type="text/javascript" src="../media/js/jquery.dataTables.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="upload.css" rel="stylesheet">
@@ -68,7 +70,7 @@
 	</nav>
 	<div class="col-lg-12">
 		<div class="panel panel-primary">
-			<div id="phead2" class="panel-heading">
+			<div id="erroneousHeader2" class="panel-heading">
 				<h4>Dataset Upload</h4>
 			</div>
 			<div class="panel-body" style="font-size: 15px;">
@@ -99,6 +101,24 @@
 					    </div>
 				    </div>
 			    </div>
+			</div>
+			<div class="panel-footer" style="font-size: 15px;">				
+					<button id="erroneous_button" class="btn btn-info btn-lg" onclick="viewErroneous()">View Erroneous Records</button>
+			</div>
+		</div>
+	</div>
+	<div id="resultsCollapse" class="col-lg-12" style="display: none">
+		<div class="panel panel-primary">
+			<div id="erroneousHeader" class="panel-heading">
+				<h4>Erroneous Records</h4>
+			</div>
+			<div id="erroneousCollapse" class="collapse">
+				<div class="panel-body" style="font-size: 9px;" ><!--overflow-x: scroll"-->
+					<div id="resultsDiv" style="display: none;">
+						<table id="dataTable" class="display">
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -157,6 +177,10 @@
 			});
 		});
 		
+		$('#erroneousHeader').click(function(e) {
+			$('#erroneousCollapse').collapse('toggle');
+		});
+		
 		$('#upload-button').click(function(e){
 			if($('#uploadFile').val() == ""){
 				alert("Please Choose a File!");
@@ -199,6 +223,44 @@
 						$('#uploadStatus').html("Upload Complete!");
 					}
 				},
+			});
+		}
+		
+		function viewErroneous(){
+			$.ajax({
+				type : "GET",
+				url : "../rest/erroneousdata?start=0&length=1&headings=true",
+				success : function(data) {
+					$("#resultsDiv").empty();
+					var table = $("<table id='dataTable' class='table table-striped table-bordered'>");
+					
+					$("#resultsDiv").append(table);
+					
+					var columnTitles = [];
+					for (j = 0; j < data.data[0].length; j++) {
+						columnTitles.push({
+							title : "" + data.data[0][j]
+						});
+					}
+					
+					$('#dataTable').DataTable({
+						columns : columnTitles,
+						serverSide: true,
+				        ajax: "../rest/erroneousdata",
+					});
+					document.getElementById('dataTable').style.width="100%";
+					
+					$(".js-example-basic-hide-search").select2({
+						  minimumResultsForSearch: Infinity
+					});
+					
+					document.getElementById("resultsCollapse").style.display = "block";
+					document.getElementById("resultsDiv").style.display = "block";
+					$('#erroneousCollapse').collapse("show");
+					document.getElementById("resultsDiv")
+					.scrollIntoView();
+					$('#dataTable').DataTable().columns.adjust().draw();
+				}
 			});
 		}
 	</script>

@@ -743,6 +743,8 @@
 				break;
 			
 			}
+			$('#collapseOne').collapse("show");
+			$('#collapseTwo').collapse('hide');
 		}
 		
 		$("#graph_button").click(function(e) {

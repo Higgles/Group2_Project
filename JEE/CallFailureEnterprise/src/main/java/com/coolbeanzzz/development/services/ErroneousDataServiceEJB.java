@@ -21,6 +21,7 @@ import org.json.simple.JSONArray;
 
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.tools.QueryOptions;
 
 @Stateless
 @Local
@@ -70,5 +71,10 @@ public class ErroneousDataServiceEJB implements ErroneousDataService {
 	@Override
 	public void clearAllEntries() {
 		dao.clearAllEntries();
+	}
+
+	@Override
+	public Collection<FailureTable> getAllResults(QueryOptions options) {
+		return dao.getAllErroneousRecords(options);
 	}
 }

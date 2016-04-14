@@ -96,7 +96,7 @@
 					</div>
 					<br/>
 					<br/>
-					<label for="pWord">Password</label>
+					<label for="pWord">Password (Minumum 6 characters)</label>
 					<input type="password" class="form-control" id="pWord">
 					<br/>
 					<br/>

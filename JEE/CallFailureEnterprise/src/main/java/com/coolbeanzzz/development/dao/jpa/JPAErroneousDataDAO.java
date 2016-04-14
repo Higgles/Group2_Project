@@ -3,6 +3,7 @@
  */
 package com.coolbeanzzz.development.dao.jpa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,8 @@ import org.json.simple.JSONObject;
 import com.coolbeanzzz.development.dao.ErroneousDataDAO;
 import com.coolbeanzzz.development.entities.ErroneousData;
 import com.coolbeanzzz.development.entities.FailureTable;
+import com.coolbeanzzz.development.tools.QueryOptions;
+import com.coolbeanzzz.development.tools.QueryPaginationHelper;
 
 @Default
 @Stateless
@@ -31,7 +34,9 @@ import com.coolbeanzzz.development.entities.FailureTable;
 @TransactionAttribute (TransactionAttributeType.REQUIRED)
 public class JPAErroneousDataDAO implements ErroneousDataDAO {
 	static Logger logger = Logger.getLogger("JPAErroneousDataDAO");
-
+	private static final String[] erroneousDataHeadings=
+			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
+	
 	@PersistenceContext
 	private EntityManager em;
 
@@ -109,5 +114,47 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 	public void clearAllEntries() {
 		Query query = em.createQuery("DELETE from ErroneousData");
 		query.executeUpdate();
+	}
+
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Collection<FailureTable> getAllErroneousRecords(QueryOptions options) {
+		List erroneousdata = new ArrayList();
+		if(!options.isHeadings()){
+			Query query = em.createQuery(" select ed.dateTime,"
+					+ " ed.eventId,"
+					+ " ed.failureClass,"
+					+ " ed.ueType,"
+					+ " ed.market,"
+					+ " ed.operator,"
+					+ " ed.cellId,"
+					+ " ed.duration,"
+					+ " ed.causeCode,"
+					+ " ed.neVersion,"
+					+ " ed.imsi,"
+					+ " ed.hier3_Id,"
+					+ " ed.hier32_Id,"
+					+ " ed.hier321_Id"
+					+ " from ErroneousData ed"
+					+ " where Concat(ed.eventId, '') like :searchTerm"
+					+ " or Concat(ed.failureClass, '') like :searchTerm"
+					+ " or Concat(ed.ueType, '') like :searchTerm"
+					+ " or Concat(ed.market, '') like :searchTerm"
+					+ " or Concat(ed.operator, '') like :searchTerm"
+					+ " or Concat(ed.cellId, '') like :searchTerm"
+					+ " or Concat(ed.duration, '') like :searchTerm"
+					+ " or Concat(ed.causeCode, '') like :searchTerm"
+					+ " or Concat(ed.neVersion, '') like :searchTerm"
+					+ " or Concat(ed.imsi, '') like :searchTerm"
+					+ " or Concat(ed.hier3_Id, '') like :searchTerm"
+					+ " or Concat(ed.hier32_Id, '') like :searchTerm"
+					+ " or Concat(ed.hier321_Id, '') like :searchTerm"
+					+ " order by :order "+options.getOrderDirection());
+			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
+			query.setParameter("order", (options.getOrderColumn()+1));
+			erroneousdata = query.getResultList();
+		}
+		return QueryPaginationHelper.getQueryResultList(erroneousdata, options, erroneousDataHeadings);
 	}	
 }
