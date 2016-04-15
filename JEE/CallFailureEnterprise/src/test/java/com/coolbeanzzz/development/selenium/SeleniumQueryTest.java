@@ -49,7 +49,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
         
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query1headings = {"Date/Time", "Event ID", "Cause Code", "Description"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -75,7 +75,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
         
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query14headings = {"Event ID", "Cause Code", "Description", "Number of Occurences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -105,7 +105,7 @@ public class SeleniumQueryTest extends TestCase {
         Thread.sleep(500);
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query9headings = {"Number of Occurrences", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -130,7 +130,7 @@ public class SeleniumQueryTest extends TestCase {
     	driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
     	driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query2headings = {"IMSI", "Market", "Operator", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -163,7 +163,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query3headings = {"Number of Failures", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -191,7 +191,7 @@ public class SeleniumQueryTest extends TestCase {
         Thread.sleep(500);
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query16headings = {"IMSIs", "Market", "Operator", "Number of Occurrences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -217,9 +217,9 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
-        String[] query4headings = {"IMSI", "Market", "Operator", "Number of Failures", "Total Duration"};
+        String[] query4headings = {"IMSI","Number of Failures", "Market", "Operator", "Total Duration"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> query4test = new ArrayList<String>();
@@ -248,7 +248,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.className("select2-results__option")).click();
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query5headings = {"Event ID", "Cause Code", "Description", "Number of Occurences", "UE Type"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -274,7 +274,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query12headings = {"Market", "Operator", "Cell Id", "Number of Occurrences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
@@ -300,7 +300,7 @@ public class SeleniumQueryTest extends TestCase {
         driver.findElement(By.id("datefrom")).sendKeys("01/04/2010 12:04");
         driver.findElement(By.id("query1")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         
         String[] query15headings = {"IMSI", "Market", "Operator", "Number of Occurences"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));

@@ -44,7 +44,7 @@ public class JPABaseDataDAO implements BaseDataDAO {
 	private static final String[] getImsiListBetween2DatesHeadings=
 			new String[]{"IMSI", "Market", "Operator", "Total Duration"};
 	private static final String[] noOfCallFailuresAndDurationForImsiInDateRangeHeadings=
-			new String[]{"IMSI", "Market", "Operator", "Number of Failures", "Total Duration"};
+			new String[]{"IMSI", "Number of Failures", "Market", "Operator", "Total Duration"};
 	private static final String[] failCountByPhoneModelHeadings=
 			new String[]{"Number of Failures", "Total Duration"};
 	private static final String[] failCountByImsiAndDateHeadings= 
