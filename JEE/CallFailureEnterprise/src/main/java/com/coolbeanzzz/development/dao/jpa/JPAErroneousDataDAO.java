@@ -35,7 +35,7 @@ import com.coolbeanzzz.development.tools.QueryPaginationHelper;
 public class JPAErroneousDataDAO implements ErroneousDataDAO {
 	static Logger logger = Logger.getLogger("JPAErroneousDataDAO");
 	private static final String[] erroneousDataHeadings=
-			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
+			new String[]{"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI"};
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -132,10 +132,7 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 					+ " ed.duration,"
 					+ " ed.causeCode,"
 					+ " ed.neVersion,"
-					+ " ed.imsi,"
-					+ " ed.hier3_Id,"
-					+ " ed.hier32_Id,"
-					+ " ed.hier321_Id"
+					+ " ed.imsi"
 					+ " from ErroneousData ed"
 					+ " where Concat(ed.eventId, '') like :searchTerm"
 					+ " or Concat(ed.failureClass, '') like :searchTerm"
@@ -147,9 +144,6 @@ public class JPAErroneousDataDAO implements ErroneousDataDAO {
 					+ " or Concat(ed.causeCode, '') like :searchTerm"
 					+ " or Concat(ed.neVersion, '') like :searchTerm"
 					+ " or Concat(ed.imsi, '') like :searchTerm"
-					+ " or Concat(ed.hier3_Id, '') like :searchTerm"
-					+ " or Concat(ed.hier32_Id, '') like :searchTerm"
-					+ " or Concat(ed.hier321_Id, '') like :searchTerm"
 					+ " order by :order "+options.getOrderDirection());
 			query.setParameter("searchTerm", "%"+options.getSearchTerm()+"%");
 			query.setParameter("order", (options.getOrderColumn()+1));

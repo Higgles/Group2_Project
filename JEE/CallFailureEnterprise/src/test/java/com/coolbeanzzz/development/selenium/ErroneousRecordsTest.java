@@ -44,7 +44,7 @@ public class ErroneousRecordsTest extends TestCase{
         
         Thread.sleep(3000);
         
-        String[] erroneousheadings = {"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI", "HIER3_ID", "HIER32_ID", "HIER321_ID"};
+        String[] erroneousheadings = {"dateTime","EventId", "FailureClass", "UEType", "Market", "Operator", "CellId", "Duration", "CauseCode", "NeVersion", "IMSI"};
         List<WebElement> tableRows = driver.findElements(By.tagName("th"));
         
         ArrayList<String> resultHeadings = new ArrayList<String>();
